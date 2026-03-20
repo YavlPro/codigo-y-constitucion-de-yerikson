@@ -1,1 +1,67 @@
-﻿# Código y Constitución de Yerikson Varela`n`nSistema personal **offline-first** de uso diario y lectura canónica, diseñado para funcionar en **móvil y PC** desde un **único archivo HTML monolítico**, sin depender de conexión entre múltiples documentos locales.`n`n**Identidad principal:** Yerikson Varela  `n**Sello editorial:** YAVL`n`n---`n`n## Qué es`n`nEste repositorio contiene un sistema personal estructurado en dos mundos internos dentro de un solo archivo:`n`n- **Código** → sistema operativo vivo`n- **Constitución** → núcleo canónico, identidad y lectura profunda`n`nLa fuente HTML principal y canónica es `Codigo y Constitucion de Yerikson Varela.html`.`n`n---`n`n## Arquitectura`n`n- Un solo HTML`n- Dos vistas maestras internas: Código / Constitución`n- Sin dependencia entre archivos`n- Offline-first`n- Navegación interna limpia`n`n---`n`n## Estructura del repositorio`n`n```text`ncodigo-y-constitucion-de-yerikson/`n├── Codigo y Constitucion de Yerikson Varela.html`n├── AGENTS.md`n├── ADN_VISUAL.md`n├── screenshots/`n├── .vscode/`n└── others/`n``` `n`n---`n`n## Tecnologías`n`nHTML · CSS · JavaScript · sin frameworks · sin dependencias remotas · local-first · offline-first`n`n---`n`n## Uso local`n`nAbre directamente `Codigo y Constitucion de Yerikson Varela.html` en cualquier navegador moderno. No necesita servidor.`n`n---`n`n## Identidad visual`n`nEl sistema debe sentirse sobrio, elegante, oscuro, firme y editorial.`n`nNaming correcto: **Yerikson Varela** · YAVL como sello secundario.`n`n---`n`n## Gobernanza`n`nLa arquitectura y las reglas de intervención están documentadas en `AGENTS.md` y `ADN_VISUAL.md`.`n`n---`n`n**Yerikson Varela · YAVL**
+# Codigo y Constitucion de Yerikson Varela
+
+Sistema personal **offline-first** para uso diario y lectura canonica.
+
+**Identidad principal:** Yerikson Varela
+**Sello editorial:** YAVL
+
+---
+
+## Que es
+
+Dos mundos internos dentro de un solo archivo:
+
+- **Codigo** - sistema operativo vivo
+- **Constitucion** - nucleo canonico, identidad y lectura profunda
+
+Fuente canonica: ``Codigo y Constitucion de Yerikson Varela.html``
+
+---
+
+## Arquitectura
+
+- Un solo HTML
+- Dos vistas maestras internas: Codigo / Constitucion
+- Sin dependencia entre archivos
+- Offline-first
+- Navegacion interna limpia
+
+---
+
+## Estructura
+
+``````
+codigo-y-constitucion-de-yerikson/
+  Codigo y Constitucion de Yerikson Varela.html
+  AGENTS.md
+  ADN_VISUAL.md
+  screenshots/
+  .vscode/
+  others/
+``````
+
+---
+
+## Tecnologias
+
+HTML, CSS, JavaScript. Sin frameworks. Sin dependencias externas. Local-first.
+
+---
+
+## Funciones destacadas
+
+- Cambio entre Codigo y Constitucion
+- Busqueda avanzada con highlight persistente
+- Persistencia local
+- Funcionamiento offline
+- Diseno editorial y personal
+
+---
+
+## Gobernanza
+
+Documentacion en ``AGENTS.md`` y ``ADN_VISUAL.md``.
+
+---
+
+**Yerikson Varela - YAVL**
