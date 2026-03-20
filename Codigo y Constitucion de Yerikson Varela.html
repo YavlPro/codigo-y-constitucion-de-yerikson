@@ -3,9 +3,397 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Constitución de Yerikson Varela — Archivo Canónico</title>
+    <title>Yerikson Varela · YAVL</title>
     <link rel="icon" href="data:,">
     <style>
+        :root {
+            --bg: #050505;
+            --bg-soft: #0b0b0b;
+            --surface: rgba(12, 12, 12, 0.94);
+            --surface-2: rgba(20, 20, 20, 0.96);
+            --gold: #c9a84c;
+            --gold-light: #e5c97b;
+            --gold-border: rgba(201, 168, 76, 0.2);
+            --gold-muted: rgba(201, 168, 76, 0.1);
+            --text: #d8d8d8;
+            --text-muted: #868686;
+            --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+            --bar-height: 88px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(201, 168, 76, 0.08), transparent 26%),
+                radial-gradient(circle at bottom right, rgba(201, 168, 76, 0.05), transparent 22%),
+                var(--bg);
+            color: var(--text);
+            font-family: "Inter", "Segoe UI", Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        body {
+            min-height: 100dvh;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .system-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            min-height: var(--bar-height);
+            padding: 16px 22px;
+            background: rgba(5, 5, 5, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.08);
+        }
+
+        .brand {
+            display: grid;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .brand-kicker {
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .brand-title {
+            margin: 0;
+            font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+            font-size: clamp(1rem, 2.2vw, 1.34rem);
+            font-weight: 400;
+            color: var(--gold-light);
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .brand-sub {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 0.65em;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .bar-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .view-switch {
+            display: inline-grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            padding: 6px;
+            border-radius: 999px;
+            background: rgba(201, 168, 76, 0.05);
+            border: 1px solid rgba(201, 168, 76, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+        }
+
+        .view-tab {
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-muted);
+            min-height: 44px;
+            padding: 0 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+        }
+
+        .view-tab:hover {
+            color: var(--gold-light);
+            border-color: rgba(201, 168, 76, 0.16);
+        }
+
+        .view-tab[aria-selected="true"] {
+            color: var(--gold-light);
+            background: rgba(201, 168, 76, 0.12);
+            border-color: var(--gold-border);
+        }
+
+        .shell {
+            padding-top: var(--bar-height);
+        }
+
+        .master-view {
+            display: none;
+            padding: 18px;
+        }
+
+        .master-view.active {
+            display: block;
+        }
+
+        /* ── Search button ── */
+        .search-trigger {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(201,168,76,0.06);
+            border: 1px solid rgba(201,168,76,0.14);
+            color: var(--text-muted);
+            padding: 0 14px;
+            min-height: 40px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+        .search-trigger:hover {
+            background: rgba(201,168,76,0.11);
+            border-color: rgba(201,168,76,0.26);
+            color: var(--gold-light);
+        }
+        .search-trigger svg { flex-shrink: 0; }
+
+        /* ── Search overlay ── */
+        /* Suprimir el app-bar interno de los templates cuando están dentro del monolito */
+        .view-content .app-bar { display: none !important; }
+
+        #searchOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            background: rgba(0,0,0,0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: clamp(70px,10vw,120px) 16px 24px;
+            overflow-y: auto;
+        }
+        #searchOverlay.open { display: block; }
+
+        .search-box {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .search-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(16,16,16,0.96);
+            border: 1px solid rgba(201,168,76,0.22);
+            border-radius: 16px;
+            padding: 0 16px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        }
+        .search-input-row svg { flex-shrink: 0; opacity: 0.5; }
+
+        #searchInput {
+            flex: 1;
+            background: transparent;
+            border: 0;
+            outline: none;
+            color: var(--text);
+            font-family: "Inter", "Segoe UI", sans-serif;
+            font-size: 1.05rem;
+            padding: 16px 0;
+            letter-spacing: 0.01em;
+        }
+        #searchInput::placeholder { color: var(--text-muted); }
+
+        #searchClear {
+            background: transparent;
+            border: 0;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            line-height: 1;
+            transition: color 0.18s;
+            display: none;
+        }
+        #searchClear.visible { display: block; }
+        #searchClear:hover { color: var(--gold-light); }
+
+        .search-meta {
+            margin: 12px 0 8px;
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            min-height: 18px;
+        }
+
+        .search-results { display: grid; gap: 8px; }
+
+        .search-result-item {
+            background: rgba(14,14,14,0.94);
+            border: 1px solid rgba(201,168,76,0.1);
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: background 0.18s, border-color 0.18s;
+            text-align: left;
+            width: 100%;
+        }
+        .search-result-item:hover {
+            background: rgba(201,168,76,0.07);
+            border-color: rgba(201,168,76,0.26);
+        }
+        .result-tag {
+            font-size: 0.67rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+        .result-title {
+            font-size: 0.92rem;
+            color: var(--text);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .result-snippet {
+            font-size: 0.79rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .result-snippet mark {
+            background: rgba(201,168,76,0.22);
+            color: var(--gold-light);
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+
+        .search-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+        .search-empty-icon { font-size: 2rem; opacity: 0.3; margin-bottom: 10px; }
+
+        @media (max-width: 860px) {
+            .system-bar {
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: center;
+                gap: 12px;
+                padding: 12px 14px 10px;
+                min-height: auto;
+            }
+
+            .brand-title {
+                white-space: normal;
+            }
+
+            .bar-controls {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .view-switch {
+                flex: 1;
+            }
+
+            .view-tab {
+                flex: 1;
+            }
+
+            .search-trigger {
+                flex-shrink: 0;
+                padding: 0 12px;
+            }
+
+            .search-trigger span { display: none; }
+
+            .shell { padding-top: calc(var(--bar-height) + 20px); }
+        }
+
+        @media (max-width: 640px) {
+            .master-view {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="system-bar">
+        <div class="brand">
+            <span class="brand-kicker">Sistema personal · monolito</span>
+            <h1 class="brand-title">Yerikson Varela <small class="brand-sub">YAVL</small></h1>
+        </div>
+
+        <div class="bar-controls">
+            <div class="view-switch" role="tablist" aria-label="Vistas maestras del sistema">
+                <button class="view-tab" id="tab-codigo" type="button" role="tab" aria-controls="panel-codigo" aria-selected="true" data-view="codigo">Código</button>
+                <button class="view-tab" id="tab-constitucion" type="button" role="tab" aria-controls="panel-constitucion" aria-selected="false" data-view="constitucion">Constitución</button>
+            </div>
+
+            <button class="search-trigger" id="searchTrigger" type="button" aria-label="Buscar en el sistema">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><line x1="16" y1="16" x2="12.65" y2="12.65"/></svg>
+                <span>Buscar</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Search overlay -->
+    <div id="searchOverlay" role="dialog" aria-modal="true" aria-label="Búsqueda del sistema">
+        <div class="search-box">
+            <div class="search-input-row">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><line x1="16" y1="16" x2="12.65" y2="12.65"/></svg>
+                <input id="searchInput" type="search" placeholder="Buscar en Código y Constitución…" autocomplete="off" autocorrect="off" spellcheck="false" />
+                <button id="searchClear" type="button" aria-label="Limpiar búsqueda">✕</button>
+            </div>
+            <p class="search-meta" id="searchMeta"></p>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <main class="shell">
+        <section class="master-view active" id="panel-codigo" role="tabpanel" aria-labelledby="tab-codigo" data-panel="codigo">
+            <div class="view-content" id="view-codigo">
+                <!-- Contenido del Código se inserta aquí dinámicamente -->
+            </div>
+        </section>
+
+        <section class="master-view" id="panel-constitucion" role="tabpanel" aria-labelledby="tab-constitucion" data-panel="constitucion">
+            <div class="view-content" id="view-constitucion">
+                <!-- Contenido de la Constitución se inserta aquí dinámicamente -->
+            </div>
+        </section>
+    </main>
+
+    <template id="template-codigo">
+<style>
 /* FONT FALLBACKS FOR OFFLINE */
         @font-face{font-family:'Playfair Display';font-display:swap;src:local('Playfair Display'),local('Georgia'),local('Times New Roman')}
         @font-face{font-family:'Inter';font-display:swap;src:local('Inter'),local('Segoe UI'),local('Arial')}
@@ -19,8 +407,10 @@
             --white:#F0F0F0;
         }
         *{margin:0;padding:0;box-sizing:border-box}
-        html{scroll-behavior:smooth}
-        body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(201,168,76,.06),transparent 24%),var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+        html{scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}
+        html::-webkit-scrollbar{display:none;width:0;height:0}
+        body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(201,168,76,.06),transparent 24%),var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-tap-highlight-color:transparent;scrollbar-width:none;-ms-overflow-style:none}
+        body::-webkit-scrollbar{display:none;width:0;height:0}
         button,input,textarea{font:inherit}
         textarea{resize:vertical}
 
@@ -58,7 +448,1571 @@
         .btn-back.visible{display:flex}
 
         /* PAGE */
-        #page{display:block;min-height:100vh;padding-top:56px}
+        #page{display:none;min-height:100vh;padding-top:0}
+        .section{display:none;max-width:1040px;margin:0 auto;padding:30px 18px 80px;animation:fadeUp .4s ease}
+        .section.active{display:block}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+
+        /* HOME DASHBOARD */
+        .home-section{padding-top:20px}
+        .home-header{text-align:center;margin-bottom:42px;padding-bottom:28px;border-bottom:1px solid rgba(201,168,76,.08)}
+        .home-header .icon{font-size:2.5em;margin-bottom:12px;display:block;opacity:.5}
+        .home-header h1{font-family:'Playfair Display',serif;font-size:1.8em;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+        .home-header p{color:var(--text-m);font-size:.9em;font-style:italic}
+
+        .home-grid{display:grid;grid-template-columns:1fr;gap:14px}
+        @media(min-width:500px){.home-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(min-width:900px){.home-grid{grid-template-columns:repeat(3,1fr)}}
+
+        .home-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:20px 18px;cursor:pointer;transition:all .3s;display:flex;align-items:flex-start;gap:14px}
+        .home-card:hover{border-color:var(--gold-b);transform:translateY(-2px)}
+        .home-card:active{transform:translateY(0)}
+        .home-card.featured{background:linear-gradient(160deg,var(--bg2),rgba(201,168,76,.05))}
+        .home-card-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--gold-m),rgba(201,168,76,.02));border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:1.5em;flex-shrink:0}
+        .home-card-body{flex:1}
+        .home-card-body h3{font-family:'Playfair Display',serif;font-size:1em;color:var(--gold-l);margin-bottom:4px}
+        .home-card-body p{font-size:.8em;color:var(--text-m);line-height:1.5}
+        .home-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+        .home-stat{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:18px 16px}
+        .home-stat-label{display:block;font-size:.72em;letter-spacing:1px;text-transform:uppercase;color:var(--text-d);margin-bottom:6px}
+        .home-stat-value{font-family:'JetBrains Mono',monospace;font-size:1.45em;color:var(--gold-l)}
+
+        /* HEADERS */
+        .s-head{text-align:center;margin-bottom:46px;padding-bottom:28px;border-bottom:1px solid rgba(201,168,76,.08)}
+        .s-head .icon{font-size:2em;margin-bottom:10px;display:block;opacity:.5}
+        .s-head h1{font-family:'Playfair Display',serif;font-size:1.7em;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+        .s-head p{color:var(--text-m);font-size:.85em;font-style:italic}
+
+        /* CARDS */
+        .card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:26px;margin-bottom:20px;position:relative;overflow:hidden;transition:border-color .3s}
+        .card:hover{border-color:var(--gold-b)}
+        .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
+        .card h2{font-family:'Playfair Display',serif;font-size:1.18em;color:var(--gold-l);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+        .card h2 .num{width:28px;height:28px;border-radius:50%;background:var(--gold-m);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7em;color:var(--gold);flex-shrink:0}
+        .card h3{font-size:.95em;color:var(--gold);margin:16px 0 8px}
+        .card p{font-size:.88em;color:var(--text);line-height:1.85;margin-bottom:8px}
+
+        .rule-box{background:var(--bg3);border-left:3px solid var(--gold-d);border-radius:0 10px 10px 0;padding:14px 16px;margin:14px 0}
+        .rule-box p{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold-l);font-size:.92em;line-height:1.8}
+
+        .table-wrap{overflow-x:auto;margin:14px 0}
+        table{width:100%;border-collapse:collapse;font-size:.84em}
+        th{text-align:left;padding:10px 12px;background:rgba(201,168,76,.06);color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase;font-size:.75em;border-bottom:1px solid var(--gold-m)}
+        td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--text);vertical-align:top}
+        tr:hover td{background:rgba(201,168,76,.02)}
+
+        .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+        .do-col,.dont-col{border-radius:10px;padding:14px;font-size:.84em}
+        .do-col{background:rgba(46,125,50,.06);border:1px solid rgba(46,125,50,.12)}
+        .do-col h4{color:#4CAF50;margin-bottom:8px;font-size:.85em}
+        .dont-col{background:var(--red-m);border:1px solid rgba(139,0,0,.15)}
+        .dont-col h4{color:#FF5252;margin-bottom:8px;font-size:.85em}
+        .do-col li,.dont-col li{margin:4px 0;list-style:none;line-height:1.7;color:var(--text)}
+        .do-col li::before{content:'✅ '}
+        .dont-col li::before{content:'❌ '}
+
+        .val-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+        .val-item:last-child{border:none}
+        .val-icon{font-size:1.3em;min-width:30px;text-align:center}
+        .val-text{font-size:.86em;color:var(--text);line-height:1.8}
+        .val-text strong{color:var(--gold-l)}
+
+        .card-lead{font-family:'Playfair Display',serif;font-size:1.1em;color:var(--gold);display:block;margin-bottom:4px}
+        .card-sub{font-size:.79em;color:var(--text-m);font-style:italic;display:block;margin-bottom:10px;letter-spacing:.2px}
+        .section-kicker{display:inline-block;margin-bottom:10px;padding:5px 12px;border:1px solid rgba(201,168,76,.14);border-radius:999px;background:rgba(201,168,76,.05);font-size:.68em;letter-spacing:2px;text-transform:uppercase;color:var(--gold-l)}
+        .brand-line{display:block;margin-top:14px;font-size:.76em;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-d)}
+        .note-grid,.stats-grid,.chart-grid,.guide-index,.review-tabs,.check-shell{display:grid;gap:16px}
+        .check-shell{grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);align-items:start}
+        .note-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+        .note-full{grid-column:1/-1}
+        .field-label{display:block;font-size:.78em;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+        .note-input{width:100%;min-height:120px;padding:14px 16px;border-radius:12px;border:1px solid rgba(201,168,76,.12);background:rgba(255,255,255,.02);color:var(--text);line-height:1.7}
+        .note-input::placeholder{color:var(--text-d)}
+        .save-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
+        .save-status{font-size:.8em;color:var(--text-d)}
+        .save-status.saved{color:#7cd2ac}
+        .action-btn{background:var(--gold-m);border:1px solid var(--gold-b);color:var(--gold-l);padding:10px 18px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-height:42px;font-weight:500;letter-spacing:.3px;transition:all .25s;text-decoration:none}
+        .action-btn:hover{border-color:var(--gold-b);background:rgba(201,168,76,.16);transform:translateY(-1px)}
+        .progress-card{display:grid;gap:14px}
+        .progress-ring-wrap{display:grid;place-items:center;padding-top:4px}
+        .progress-ring{width:180px;height:180px;position:relative}
+        .progress-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+        .progress-ring circle{fill:none;stroke-width:12}
+        .progress-track{stroke:rgba(255,255,255,.06)}
+        .progress-value{stroke:var(--gold);stroke-linecap:round;transition:stroke-dashoffset .3s ease}
+        .progress-copy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+        .progress-copy strong{font-family:'JetBrains Mono',monospace;font-size:1.9em;color:var(--gold-l)}
+        .progress-copy span{font-size:.82em;color:var(--text-m)}
+        .mini-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+        .mini-metric{background:var(--bg3);border:1px solid rgba(201,168,76,.08);border-radius:12px;padding:14px}
+        .mini-metric-label{display:block;font-size:.72em;color:var(--text-d);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+        .mini-metric-value{font-family:'JetBrains Mono',monospace;font-size:1.2em;color:var(--gold-l)}
+        .review-tabs{grid-template-columns:repeat(3,minmax(0,1fr));margin:16px 0}
+        .review-tab{padding:11px 14px;border-radius:999px;border:1px solid rgba(201,168,76,.12);background:transparent;color:var(--text-m);cursor:pointer}
+        .review-tab.active{background:var(--gold-m);color:var(--gold-l);border-color:var(--gold-b)}
+        .review-view{display:none}
+        .review-view.active{display:block}
+        .review-period{font-size:.84em;color:var(--text-m);margin-bottom:16px}
+        .review-question{background:var(--bg3);border:1px solid rgba(201,168,76,.08);border-radius:12px;padding:16px;margin-bottom:12px}
+        .review-question strong{display:block;color:var(--gold-l);margin-bottom:10px;font-size:.92em}
+        .review-question textarea{width:100%;min-height:86px;padding:12px 14px;border-radius:10px;border:1px solid rgba(201,168,76,.12);background:rgba(255,255,255,.02);color:var(--text)}
+        .stats-grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+        .stat-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:18px}
+        .stat-label{display:block;font-size:.74em;color:var(--text-d);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+        .stat-value{display:block;font-family:'JetBrains Mono',monospace;font-size:1.35em;color:var(--gold-l);line-height:1.35}
+        .stat-help{font-size:.78em;color:var(--text-d);margin-top:8px;line-height:1.5}
+        .chart-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+        .chart-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:22px;position:relative;overflow:hidden}
+        .chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
+        .chart-box{margin-top:16px;min-height:250px}
+        .chart-box svg{width:100%;height:auto;display:block}
+        .chart-meta{font-size:.78em;color:var(--text-d)}
+        .empty-chart{min-height:220px;display:grid;place-items:center;text-align:center;border:1px dashed rgba(201,168,76,.12);border-radius:12px;background:rgba(201,168,76,.02);padding:18px;color:var(--text-m)}
+        .guide-index{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:18px 0}
+        .guide-link{background:var(--bg3);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .25s}
+        .guide-link:hover,.guide-link.active{border-color:var(--gold-b);transform:translateY(-2px)}
+        .guide-link.active{background:linear-gradient(160deg,var(--bg3),rgba(201,168,76,.05))}
+        .guide-link h3{margin:0 0 6px;font-family:'Playfair Display',serif;color:var(--gold-l);font-size:1em}
+        .guide-link p{margin:0;font-size:.8em;color:var(--text-m);line-height:1.6}
+        .guide-panel{display:none}
+        .guide-panel.active{display:block}
+        .guide-laws{display:grid;gap:12px;margin-top:18px}
+        .law-detail{border:1px solid rgba(201,168,76,.08);border-radius:12px;background:var(--bg3);overflow:hidden}
+        .law-detail summary{cursor:pointer;padding:16px 18px;list-style:none;font-family:'Playfair Display',serif;color:var(--gold-l);display:flex;align-items:center;gap:12px}
+        .law-detail summary::-webkit-details-marker{display:none}
+        .law-num-badge{width:28px;height:28px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--gold-b);background:var(--gold-m);font-family:'JetBrains Mono',monospace;font-size:.72em;color:var(--gold)}
+        .law-body{padding:0 18px 18px}
+        .panel-intro{margin-bottom:18px}
+        .panel-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+        .subtle-btn{background:transparent;border:1px solid rgba(201,168,76,.12);color:var(--gold-l);padding:9px 16px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-height:42px;font-weight:500;letter-spacing:.3px;transition:all .25s;text-decoration:none}
+        .subtle-btn:hover{border-color:var(--gold-b);background:var(--gold-m);transform:translateY(-1px)}
+        .counter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+        .counter-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(201,168,76,.1);background:rgba(201,168,76,.04)}
+        .counter-pill strong{font-family:'JetBrains Mono',monospace;color:var(--gold-l)}
+
+        /* IDENTITY GRID */
+        .identity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+        .identity-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:22px 20px;transition:border-color .3s;position:relative;overflow:hidden}
+        .identity-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
+        .identity-card:hover{border-color:var(--gold-b)}
+        .card-icon{font-size:1.6em;display:block;margin-bottom:10px;opacity:.75}
+        .card-title{font-family:'Playfair Display',serif;font-size:1em;color:var(--gold-l);margin-bottom:8px;letter-spacing:.5px}
+        .card-copy{font-size:.84em;color:var(--text);line-height:1.75}
+
+        .timeline{margin:16px 0;padding-left:20px;border-left:2px solid rgba(201,168,76,.1)}
+        .t-step{padding:12px 0 12px 16px;position:relative;font-size:.86em;color:var(--text);line-height:1.8}
+        .t-step::before{content:'';position:absolute;left:-25px;top:18px;width:8px;height:8px;border-radius:50%;background:var(--gold-m);border:2px solid var(--gold-d)}
+        .t-step strong{color:var(--gold-l)}
+
+        .checklist{margin:16px 0}
+        .check-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.02);cursor:pointer;transition:background .2s;border-radius:6px;padding-left:8px}
+        .check-item:hover{background:rgba(201,168,76,.03)}
+        .check-box{width:22px;height:22px;border:2px solid var(--gold-b);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .3s;font-size:.7em;color:transparent}
+        .check-item.done .check-box{background:var(--gold-d);border-color:var(--gold);color:var(--bg)}
+        .check-label{font-size:.86em;color:var(--text);transition:color .3s}
+        .check-item.done .check-label{color:var(--text-m);text-decoration:line-through}
+
+        .oath{text-align:center;padding:30px;background:linear-gradient(160deg,var(--bg2),rgba(201,168,76,.03));border:1px solid var(--gold-b);border-radius:16px;margin:20px 0}
+        .oath p{font-family:'Playfair Display',serif;font-size:.95em;line-height:2.2;color:var(--gold-l)}
+        .oath .sign{margin-top:20px;font-family:'Playfair Display',serif;font-style:italic;font-size:1.1em;color:var(--gold)}
+
+        .badge{display:inline-block;font-size:.65em;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-left:8px;vertical-align:middle}
+        .badge-s{background:rgba(100,180,255,.1);color:rgba(100,180,255,.8);border:1px solid rgba(100,180,255,.15)}
+        .badge-r{background:rgba(255,100,150,.1);color:rgba(255,100,150,.8);border:1px solid rgba(255,100,150,.15)}
+
+        .counter-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(5,5,5,.95);backdrop-filter:blur(12px);border-top:1px solid rgba(201,168,76,.06);padding:12px 20px;display:none;justify-content:center;align-items:center;gap:15px;z-index:50;font-size:.8em}
+        .counter-bar.on{display:flex}
+        .counter-bar .ct{font-family:'JetBrains Mono',monospace;color:var(--gold);font-weight:600}
+        .counter-bar .ct-label{color:var(--text-m)}
+        .reset-btn{background:var(--gold-m);border:1px solid var(--gold-b);color:var(--gold);padding:6px 14px;border-radius:20px;font-size:.78em;cursor:pointer;font-family:'Inter',sans-serif}
+
+        .sep{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-d),transparent);margin:30px auto}
+
+        /* SECTION DIVIDERS */
+        .section-divider{display:flex;align-items:center;gap:12px;margin:30px 0 20px;padding:16px 0;border-top:1px solid rgba(201,168,76,.1);border-bottom:1px solid rgba(201,168,76,.1)}
+        .section-divider-icon{font-size:1.4em;opacity:.7}
+        .section-divider-text{font-family:'Playfair Display',serif;font-size:1.1em;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
+
+        @media(max-width:600px){
+            .c-title{font-size:1.5em;letter-spacing:2px}
+            .s-head h1{font-size:1.3em}
+            .home-header h1{font-size:1.4em}
+            .card{padding:20px}
+            .do-dont{grid-template-columns:1fr}
+            .section{padding:20px 14px 80px}
+            .identity-grid{grid-template-columns:1fr 1fr}
+            .app-bar{padding:10px 12px}
+            .app-bar-title{font-size:.95em}
+            .home-grid{grid-template-columns:1fr}
+            .home-card{padding:16px 14px}
+            .home-card-icon{width:42px;height:42px;font-size:1.3em}
+            .section-divider{padding:12px 0;margin:24px 0 16px}
+            .section-divider-text{font-size:.95em}
+            .note-grid,.check-shell,.review-tabs,.mini-metrics{grid-template-columns:1fr}
+            .home-stat{padding:14px}
+        }
+
+        .home-card{text-decoration:none;color:inherit}
+        .cta-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 28px}
+        .link-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+        .link-card{display:block;text-decoration:none;color:inherit;background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:20px 18px;transition:all .25s}
+        .link-card:hover{border-color:var(--gold-b);transform:translateY(-2px)}
+        .link-card h3{font-family:'Playfair Display',serif;color:var(--gold-l);font-size:1em;margin-bottom:6px}
+        .link-card p{margin:0;font-size:.82em;color:var(--text-m);line-height:1.65}
+        .link-card .card-icon{margin-bottom:12px}
+
+        /* MONOLITH OVERRIDES */
+        #cover{display:none !important}
+        #page{display:block !important}
+    
+</style>
+<div id="cover" role="button" tabindex="0" aria-label="Entrar al Código de Yerikson Varela">
+    <div class="c-symbol">⚔️</div>
+    <div class="c-title">Código de Yerikson Varela</div>
+    <div class="c-sub">Sistema operativo vivo</div>
+    <div class="c-line"></div>
+    <div class="c-author">Yerikson Varela · YAVL</div>
+    <div class="brand-line">disciplina diaria · seguimiento real · lectura útil</div>
+    <div class="c-hint">toca o presiona Enter para entrar</div>
+</div>
+<div id="page" aria-hidden="true">
+<header class="app-bar" style="display:none!important" aria-hidden="true"><div class="app-bar-title"><span>⚔️</span> Código de Yerikson Varela</div><button class="btn-back" id="btnBack" type="button" aria-label="Volver al inicio"><span>←</span> Inicio</button></header>
+
+<!-- ==================== HOME DASHBOARD ==================== -->
+<div id="sec-home" class="section active home-section" role="tabpanel">
+    <div class="home-header">
+        <span class="section-kicker">Sistema Operativo Vivo</span>
+        <span class="icon">⚔️</span>
+        <h1>Código de Yerikson Varela</h1>
+        <p>Práctica diaria, seguimiento real y acceso inmediato al núcleo constitucional.</p>
+        <span class="brand-line">Yerikson Varela · YAVL</span>
+        <div class="cta-row">
+            <a class="action-btn" href="#constitucion/sec-codigo" data-switch-view="constitucion" data-switch-target="sec-codigo">Ver Constitución completa</a>
+            <a class="subtle-btn" href="#constitucion/sec-oath" data-switch-view="constitucion" data-switch-target="sec-oath">Abrir juramento</a>
+            <a class="subtle-btn" href="#constitucion/sec-norte" data-switch-view="constitucion" data-switch-target="sec-norte">Abrir Mi Norte</a>
+        </div>
+        <div class="home-meta">
+            <div class="home-stat"><span class="home-stat-label">Cumplimiento de hoy</span><span class="home-stat-value" id="homeTodayPercent">0%</span></div>
+            <div class="home-stat"><span class="home-stat-label">Racha activa</span><span class="home-stat-value" id="homeStreak">0</span></div>
+            <div class="home-stat"><span class="home-stat-label">Promedio semanal</span><span class="home-stat-value" id="homeWeekAvg">0%</span></div>
+            <div class="home-stat"><span class="home-stat-label">Notas registradas</span><span class="home-stat-value" id="homeNotesCount">0</span></div>
+        </div>
+    </div>
+    <div class="home-grid" role="list">
+        <div class="home-card featured" role="listitem" tabindex="0" data-sec="sec-lectura"><div class="home-card-icon">🌅</div><div class="home-card-body"><h3>Leer Código Diario</h3><p>Entrada breve al día con dirección, foco y tono constitucional.</p></div></div>
+        <div class="home-card" role="listitem" tabindex="0" data-sec="sec-checklist"><div class="home-card-icon">📋</div><div class="home-card-body"><h3>Checklist Diario</h3><p>Registro real del cumplimiento, notas del día y puntaje automático.</p></div></div>
+        <div class="home-card" role="listitem" tabindex="0" data-sec="sec-preguntas"><div class="home-card-icon">❓</div><div class="home-card-body"><h3>Preguntas de Reflexión</h3><p>Preguntas breves para entrar, responder y cerrar con claridad.</p></div></div>
+        <div class="home-card" role="listitem" tabindex="0" data-sec="sec-semanal"><div class="home-card-icon">🗓️</div><div class="home-card-body"><h3>Revisión Semanal</h3><p>Cierre semanal, resumen mensual y balance anual en un solo flujo.</p></div></div>
+        <div class="home-card" role="listitem" tabindex="0" data-sec="sec-stats"><div class="home-card-icon">📈</div><div class="home-card-body"><h3>Estadísticas</h3><p>Métricas, rachas y gráficas offline construidas desde tus datos reales.</p></div></div>
+        <div class="home-card" role="listitem" tabindex="0" data-sec="sec-constitucion"><div class="home-card-icon">📚</div><div class="home-card-body"><h3>Núcleo Constitucional</h3><p>Accesos directos a las leyes, el juramento, Mi Norte y el manual de interpretación.</p></div></div>
+        <a class="home-card" role="listitem" href="#constitucion/sec-oath" data-switch-view="constitucion" data-switch-target="sec-oath"><div class="home-card-icon">✍️</div><div class="home-card-body"><h3>Juramento</h3><p>Abre el compromiso completo dentro del documento canónico.</p></div></a>
+        <a class="home-card" role="listitem" href="#constitucion/sec-norte" data-switch-view="constitucion" data-switch-target="sec-norte"><div class="home-card-icon">🧭</div><div class="home-card-body"><h3>Mi Norte</h3><p>Acceso directo a identidad, raíz, legado, verdad y seguridad interna.</p></div></a>
+    </div>
+</div>
+
+<!-- ==================== NÚCLEO CONSTITUCIONAL ==================== -->
+<div id="sec-constitucion" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Constitución Viva</span>
+        <span class="icon">📚</span>
+        <h1>Núcleo Constitucional</h1>
+        <p>El sistema operativo diario se consulta aquí; el canon completo vive en un documento aparte y visible.</p>
+    </div>
+    <div class="card">
+        <h2>Cómo está dividido el sistema</h2>
+        <div class="timeline">
+            <div class="t-step"><strong>Constitución de Yerikson Varela:</strong> leyes, prohibiciones, lo que sí hacer, frases maestras, juramento y manual de interpretación.</div>
+            <div class="t-step"><strong>Código de Yerikson Varela:</strong> lectura diaria, preguntas, checklist, revisión y estadísticas.</div>
+            <div class="t-step"><strong>Regla práctica:</strong> el canon orienta; el sistema operativo mide si realmente lo estás viviendo.</div>
+        </div>
+    </div>
+    <div class="link-card-grid">
+        <a class="link-card" href="#constitucion/sec-codigo" data-switch-view="constitucion" data-switch-target="sec-codigo"><span class="card-icon">⚖️</span><h3>Las 17 leyes</h3><p>Acceso directo al corazón del sistema: leyes de carácter y leyes de construcción.</p></a>
+        <a class="link-card" href="#constitucion/sec-prohibitions" data-switch-view="constitucion" data-switch-target="sec-prohibitions"><span class="card-icon">🚫</span><h3>Prohibiciones y deberes</h3><p>Lo que nunca negocias y lo que sí debes sostener como hombre.</p></a>
+        <a class="link-card" href="#constitucion/sec-frases" data-switch-view="constitucion" data-switch-target="sec-frases"><span class="card-icon">📜</span><h3>Frases Maestras</h3><p>Recordatorios cortos y contundentes cuando necesitas volver al eje.</p></a>
+        <a class="link-card" href="#constitucion/sec-oath" data-switch-view="constitucion" data-switch-target="sec-oath"><span class="card-icon">✍️</span><h3>Juramento</h3><p>El compromiso explícito, sin resumen ni reducción decorativa.</p></a>
+        <a class="link-card" href="#constitucion/sec-norte" data-switch-view="constitucion" data-switch-target="sec-norte"><span class="card-icon">🧭</span><h3>Mi Norte</h3><p>La capa identitaria: raíz, palabra, construcción, verdad, refugio y seguridad.</p></a>
+        <a class="link-card" href="#constitucion/sec-psicologia" data-switch-view="constitucion" data-switch-target="sec-psicologia"><span class="card-icon">🧠</span><h3>Psicología y Estrategia</h3><p>Trampas mentales, seguridad interna e interpretación aplicada del comportamiento.</p></a>
+        <a class="link-card" href="#constitucion/sec-filosofia" data-switch-view="constitucion" data-switch-target="sec-filosofia"><span class="card-icon">💎</span><h3>Filosofía Profunda</h3><p>El Constructor, el Hombre Seguro y el fondo conceptual del sistema.</p></a>
+        <a class="link-card" href="#constitucion/sec-guias" data-switch-view="constitucion" data-switch-target="sec-guias"><span class="card-icon">📘</span><h3>Guías de Vida</h3><p>Aplicación contextual: soltero, pareja, vida social, mensajes, regalos y cartas.</p></a>
+    </div>
+</div>
+<!-- ==================== LEER CÓDIGO DIARIO ==================== -->
+<div id="sec-lectura" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">30–60 segundos</span>
+        <span class="icon">🌅</span>
+        <h1>Leer Código Diario</h1>
+        <p>La lectura breve para entrar al día con claridad, dignidad y disciplina</p>
+    </div>
+
+    <div class="card">
+        <h2>Lectura Central</h2>
+        <span class="card-sub">Lee esto cada mañana antes de empezar el ruido del día</span>
+        <div class="val-item"><span class="val-icon">01</span><span class="val-text"><strong>Hoy primero cumplo con mi deber y después con mi comodidad.</strong></span></div>
+        <div class="val-item"><span class="val-icon">02</span><span class="val-text"><strong>Mi palabra pesa. Si digo algo, lo sostengo.</strong></span></div>
+        <div class="val-item"><span class="val-icon">03</span><span class="val-text"><strong>Si puedo estar ahí en persona, no me escondo detrás de una pantalla.</strong></span></div>
+        <div class="val-item"><span class="val-icon">04</span><span class="val-text"><strong>No confundo paciencia con miedo. Cuando debo actuar, actúo con calma.</strong></span></div>
+        <div class="val-item"><span class="val-icon">05</span><span class="val-text"><strong>Presencia vale más que perfección. Mejor real y presente que impecable y ausente.</strong></span></div>
+        <div class="val-item"><span class="val-icon">06</span><span class="val-text"><strong>Escucho más de lo que hablo y leo más de lo que me dicen.</strong></span></div>
+        <div class="val-item"><span class="val-icon">07</span><span class="val-text"><strong>No construyo historias completas a partir de un visto ni de un silencio corto.</strong></span></div>
+        <div class="val-item"><span class="val-icon">08</span><span class="val-text"><strong>Construyo valor real, pero no lo escondo cuando toca mostrarlo.</strong></span></div>
+        <div class="val-item"><span class="val-icon">09</span><span class="val-text"><strong>Mi presencia limpia, mi voz firme y mis acciones hablan por mí.</strong></span></div>
+        <div class="val-item"><span class="val-icon">10</span><span class="val-text"><strong>Hoy cierro el día con verdad, no con excusas.</strong></span></div>
+    </div>
+
+    <div class="card">
+        <h2>Compromiso de Hoy</h2>
+        <div class="rule-box"><p>Hoy voy a moverme con calma.<br>Hoy voy a respetar mi palabra.<br>Hoy voy a elegir presencia sobre pantalla cuando pueda.<br>Hoy no voy a disfrazar de paciencia lo que en realidad sea miedo.</p></div>
+        <div class="rule-box"><p>Mi disciplina me da estructura. Mi fuego me da motor. Mi presencia me da verdad. Eso es lo que elijo hoy.</p></div>
+        <div class="rule-box"><p>Hoy voy a construir algo que valga la pena.<br>Hoy no voy a entregar nada sin alma.<br>Hoy mi trabajo va a reflejar quién soy.</p></div>
+        <div class="rule-box"><p>Hoy no voy a inventar narrativas sin pruebas.<br>Hoy no voy a competir donde no hay competencia.<br>Hoy mi paz no depende de la respuesta de nadie.</p></div>
+    </div>
+</div>
+<!-- ==================== PREGUNTAS ==================== -->
+<div id="sec-preguntas" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Autocontrol</span>
+        <span class="icon">❓</span>
+        <h1>Preguntas</h1>
+        <p>Preguntas útiles antes de actuar, responder o cerrar el día</p>
+    </div>
+
+    <div class="card">
+        <h2>Antes de Empezar el Día</h2>
+        <span class="card-sub">Preguntas para entrar con dirección, no en automático</span>
+        <div class="val-item"><span class="val-icon">🌄</span><span class="val-text"><strong>¿Qué debo cumplir sí o sí hoy?</strong></span></div>
+        <div class="val-item"><span class="val-icon">🧭</span><span class="val-text"><strong>¿Qué acción concreta me acerca a mi propósito?</strong></span></div>
+        <div class="val-item"><span class="val-icon">⌛</span><span class="val-text"><strong>¿Dónde se puede perder mi tiempo si no estoy atento?</strong></span></div>
+        <div class="val-item"><span class="val-icon">🧼</span><span class="val-text"><strong>¿Estoy saliendo con presencia limpia, orden y calma?</strong></span></div>
+        <div class="val-item"><span class="val-icon">🤝</span><span class="val-text"><strong>¿Cómo puedo tratar mejor a alguien hoy?</strong></span></div>
+    </div>
+
+    <div class="card">
+        <h2>Antes de Escribir o Responder</h2>
+        <span class="card-sub">Para no convertir el impulso en un error digital</span>
+        <div class="val-item"><span class="val-icon">📱</span><span class="val-text"><strong>¿Estoy escribiendo desde calma o desde impulso?</strong></span></div>
+        <div class="val-item"><span class="val-icon">🎯</span><span class="val-text"><strong>¿Este mensaje aporta algo o solo mete ruido?</strong></span></div>
+        <div class="val-item"><span class="val-icon">🫱</span><span class="val-text"><strong>¿Esto se hablaría mejor en persona?</strong></span></div>
+        <div class="val-item"><span class="val-icon">🛡️</span><span class="val-text"><strong>¿Estoy protegiendo mi dignidad o buscando validación?</strong></span></div>
+        <div class="val-item"><span class="val-icon">👂</span><span class="val-text"><strong>¿Estoy escuchando al otro o solo buscando imponerme?</strong></span></div>
+    </div>
+
+    <div class="card">
+        <h2>Antes de Dormir</h2>
+        <span class="card-sub">Para cerrar con verdad y dejar una mejora clara</span>
+        <div class="val-item"><span class="val-icon">💭</span><span class="val-text"><strong>¿Fui honesto hoy en todo lo que dije?</strong></span></div>
+        <div class="val-item"><span class="val-icon">📋</span><span class="val-text"><strong>¿Cumplí mi palabra en lo que prometí?</strong></span></div>
+        <div class="val-item"><span class="val-icon">🕰️</span><span class="val-text"><strong>¿Cómo traté a quienes me rodean hoy?</strong></span></div>
+        <div class="val-item"><span class="val-icon">🔥</span><span class="val-text"><strong>¿Actué con disciplina o cedí al impulso?</strong></span></div>
+        <div class="val-item"><span class="val-icon">🌱</span><span class="val-text"><strong>¿Qué puedo hacer mejor mañana?</strong></span></div>
+    </div>
+</div>
+<!-- ==================== CHECKLIST DIARIO ==================== -->
+<div id="sec-checklist" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Registro Diario</span>
+        <span class="icon">📋</span>
+        <h1>Checklist Diario</h1>
+        <p>Cada noche registra cumplimiento real, notas personales y patrón del día</p>
+    </div>
+
+    <div class="check-shell">
+        <div>
+            <div class="card">
+                <h2>Checklist de Honor</h2>
+                <span class="card-sub">Fecha actual: <span id="dailyDateLabel">Hoy</span></span>
+                <p>Toca cada ítem que cumpliste hoy. Sé honesto contigo mismo.</p>
+                <div class="checklist" id="checklist">
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Me levanté a la hora sin posponer</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Trabajé mi jornada completa con honor</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Me bañé y presenté limpio antes de ver a alguien</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Cumplí mi tiempo de estudio o programación</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Lo que construí hoy tiene calidad y propósito</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">No entregué nada sin alma ni por despachar</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Fui puntual en todo compromiso</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Escuché más de lo que hablé</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Viví cada momento como único</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Fui paciente y no forcé nada</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Elegí presencia sobre pantalla cuando pude</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">No confundí paciencia con miedo a actuar</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">No inventé narrativas ni alimenté celos sin fundamento</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Mi paz no dependió de la validación de otra persona</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Fui directo con elegancia cuando fue necesario</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Fui honesto en cada palabra</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Agradecí todo lo que recibí</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Controlé mis emociones con firmeza</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Demostré con hechos lo que siento</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Comí bien y me hidraté</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Mantuve mi espacio ordenado</span></div>
+                    <div class="check-item" role="checkbox" tabindex="0" aria-checked="false"><div class="check-box">✓</div><span class="check-label">Me acosté a buena hora</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Notas Personales del Día</h2>
+                <span class="card-sub">Se guardan automáticamente en este dispositivo</span>
+                <div class="note-grid">
+                    <div>
+                        <label class="field-label" for="dailyGood">Qué hice bien hoy</label>
+                        <textarea class="note-input" id="dailyGood" placeholder="Ejemplo: fui puntual, respondí con calma, cerré una tarea difícil."></textarea>
+                    </div>
+                    <div>
+                        <label class="field-label" for="dailyFail">En qué fallé hoy</label>
+                        <textarea class="note-input" id="dailyFail" placeholder="Ejemplo: perdí tiempo, hablé por impulso, postergué algo clave."></textarea>
+                    </div>
+                    <div class="note-full">
+                        <label class="field-label" for="dailyObservation">Observación del día</label>
+                        <textarea class="note-input" id="dailyObservation" placeholder="Patrón importante, aprendizaje o contexto que no quieres olvidar mañana."></textarea>
+                    </div>
+                </div>
+                <div class="save-row">
+                    <span class="save-status" id="dailySaveStatus">Sin cambios recientes.</span>
+                    <button class="action-btn" id="saveDailyBtn" type="button">Guardar nota del día</button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="card progress-card">
+                <h2>Resumen de Disciplina</h2>
+                <div class="progress-ring-wrap">
+                    <div class="progress-ring">
+                        <svg viewBox="0 0 180 180" aria-hidden="true">
+                            <circle class="progress-track" cx="90" cy="90" r="62"></circle>
+                            <circle class="progress-value" id="progressCircle" cx="90" cy="90" r="62" stroke-dasharray="389.6" stroke-dashoffset="389.6"></circle>
+                        </svg>
+                        <div class="progress-copy">
+                            <strong id="dailyPercentValue">0%</strong>
+                            <span id="dailyCountValue">0 / 22 cumplidas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mini-metrics">
+                    <div class="mini-metric">
+                        <span class="mini-metric-label">Racha actual</span>
+                        <span class="mini-metric-value" id="dailyStreakValue">0</span>
+                    </div>
+                    <div class="mini-metric">
+                        <span class="mini-metric-label">Promedio semanal</span>
+                        <span class="mini-metric-value" id="dailyWeekValue">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Cómo usarlo bien</h2>
+                <div class="timeline">
+                    <div class="t-step"><strong>Noche:</strong> marca el checklist cuando el día ya cerró de verdad.</div>
+                    <div class="t-step"><strong>Verdad:</strong> no marques por intención, solo por cumplimiento real.</div>
+                    <div class="t-step"><strong>Notas:</strong> deja por escrito el patrón clave del día, no solo lo obvio.</div>
+                    <div class="t-step"><strong>Continuidad:</strong> mañana vuelve a la lectura diaria y repite el ciclo.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ==================== REVISIÓN SEMANAL ==================== -->
+<div id="sec-semanal" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Cierres periódicos</span>
+        <span class="icon">🗓️</span>
+        <h1>Revisión Semanal</h1>
+        <p>Aquí quedan la revisión semanal, el resumen mensual y el balance anual</p>
+    </div>
+
+    <div class="card">
+        <h2>Panel de Revisión</h2>
+        <span class="card-sub">Todo se guarda en localStorage en este dispositivo</span>
+        <div class="review-tabs" role="tablist" aria-label="Paneles de revisión">
+            <button class="review-tab active" type="button" data-review="week">Semana</button>
+            <button class="review-tab" type="button" data-review="month">Mes</button>
+            <button class="review-tab" type="button" data-review="year">Año</button>
+        </div>
+
+        <div class="review-view active" id="review-week">
+            <div class="review-period">Periodo actual: <strong id="weekPeriodLabel">Semana actual</strong></div>
+            <div class="review-question"><strong>1. ¿Cumplí mis compromisos laborales esta semana?</strong><textarea id="weeklyAnswer0" placeholder="Respuesta breve, honesta y concreta."></textarea></div>
+            <div class="review-question"><strong>2. ¿Avancé en mis proyectos personales?</strong><textarea id="weeklyAnswer1" placeholder="Qué sí avanzó, qué se frenó y por qué."></textarea></div>
+            <div class="review-question"><strong>3. ¿Traté bien a todas las personas que me rodearon?</strong><textarea id="weeklyAnswer2" placeholder="Hechos, no discurso."></textarea></div>
+            <div class="review-question"><strong>4. ¿Fui constante con la persona que me importa?</strong><textarea id="weeklyAnswer3" placeholder="Cómo se vio esa constancia en acciones."></textarea></div>
+            <div class="review-question"><strong>5. ¿Mantuve mi disciplina de aseo, orden y puntualidad?</strong><textarea id="weeklyAnswer4" placeholder="Qué sostuviste y qué se descuidó."></textarea></div>
+            <div class="review-question"><strong>6. ¿En qué fallé y cómo lo corrijo la próxima semana?</strong><textarea id="weeklyAnswer5" placeholder="Ajuste concreto, sin ambigüedad."></textarea></div>
+            <div class="review-question"><strong>7. ¿Estoy más cerca de mis metas que hace 7 días?</strong><textarea id="weeklyAnswer6" placeholder="Avance real o autoengaño."></textarea></div>
+            <div class="review-question"><strong>8. ¿Inventé narrativas o actué basado en hechos reales?</strong><textarea id="weeklyAnswer7" placeholder="Separa lo que viste de lo que tu mente completó sola."></textarea></div>
+            <div class="review-question"><strong>9. ¿Mi paz dependió de mí o de la validación de otros?</strong><textarea id="weeklyAnswer8" placeholder="Detecta si tu calma estuvo sostenida o prestada."></textarea></div>
+            <div class="review-question"><strong>Nota o reflexión semanal</strong><textarea id="weeklyReflection" placeholder="Patrón importante, aprendizaje o decisión para la próxima semana."></textarea></div>
+            <div class="save-row">
+                <span class="save-status" id="weeklySaveStatus">Sin cambios recientes.</span>
+                <button class="action-btn" id="saveWeeklyBtn" type="button">Guardar revisión semanal</button>
+            </div>
+        </div>
+
+        <div class="review-view" id="review-month">
+            <div class="review-period">Periodo actual: <strong id="monthPeriodLabel">Mes actual</strong></div>
+            <div class="review-question"><strong>Qué consolidé este mes</strong><textarea id="monthlyWins" placeholder="Hábitos, relaciones o proyectos que sí se sostuvieron."></textarea></div>
+            <div class="review-question"><strong>Qué patrón me atrasó</strong><textarea id="monthlyFaults" placeholder="Lo que se repitió y te quitó orden, tiempo o dignidad."></textarea></div>
+            <div class="review-question"><strong>Qué debo corregir el próximo mes</strong><textarea id="monthlyCorrection" placeholder="Ajuste concreto y medible."></textarea></div>
+            <div class="review-question"><strong>Cuál es mi foco del próximo mes</strong><textarea id="monthlyFocus" placeholder="La prioridad principal que merece tu energía."></textarea></div>
+            <div class="save-row">
+                <span class="save-status" id="monthlySaveStatus">Sin cambios recientes.</span>
+                <button class="action-btn" id="saveMonthlyBtn" type="button">Guardar resumen mensual</button>
+            </div>
+        </div>
+
+        <div class="review-view" id="review-year">
+            <div class="review-period">Periodo actual: <strong id="yearPeriodLabel">Año actual</strong></div>
+            <div class="review-question"><strong>Qué tipo de hombre fui este año</strong><textarea id="yearlyIdentity" placeholder="Descripción honesta de tu estándar real, no del ideal."></textarea></div>
+            <div class="review-question"><strong>Qué logros sostuve con disciplina</strong><textarea id="yearlyAchievements" placeholder="Resultados nacidos de repetición, orden y cumplimiento."></textarea></div>
+            <div class="review-question"><strong>Qué errores no repetiré</strong><textarea id="yearlyLessons" placeholder="Lecciones concretas que deben quedar claras."></textarea></div>
+            <div class="review-question"><strong>Qué legado quiero construir el próximo año</strong><textarea id="yearlyCommitment" placeholder="Dirección principal, estándar y compromiso mayor."></textarea></div>
+            <div class="save-row">
+                <span class="save-status" id="yearlySaveStatus">Sin cambios recientes.</span>
+                <button class="action-btn" id="saveYearlyBtn" type="button">Guardar balance anual</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Cómo Revisar Bien</h2>
+        <div class="timeline">
+            <div class="t-step"><strong>No escribas para sonar bien.</strong> Escribe para ver lo que de verdad pasó.</div>
+            <div class="t-step"><strong>Busca patrones.</strong> No te quedes en la anécdota del día malo o del día bueno.</div>
+            <div class="t-step"><strong>Cierra con ajuste.</strong> Toda revisión seria termina en una corrección concreta.</div>
+        </div>
+    </div>
+</div>
+<!-- ==================== ESTADÍSTICAS ==================== -->
+<div id="sec-stats" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Datos Reales</span>
+        <span class="icon">📈</span>
+        <h1>Estadísticas</h1>
+        <p>Métricas y gráficas calculadas desde tus registros guardados en localStorage</p>
+    </div>
+
+    <div class="card">
+        <h2>Resumen de Disciplina</h2>
+        <span class="card-sub">La racha cuenta días consecutivos con 80% o más de cumplimiento</span>
+        <div class="stats-grid">
+            <div class="stat-card"><span class="stat-label">Cumplimiento de hoy</span><span class="stat-value" id="metricToday">0%</span><p class="stat-help">Porcentaje del checklist del día actual.</p></div>
+            <div class="stat-card"><span class="stat-label">Racha activa</span><span class="stat-value" id="metricStreak">0</span><p class="stat-help">Días consecutivos con estándar sólido.</p></div>
+            <div class="stat-card"><span class="stat-label">Promedio semanal</span><span class="stat-value" id="metricWeek">0%</span><p class="stat-help">Promedio de la semana actual.</p></div>
+            <div class="stat-card"><span class="stat-label">Promedio mensual</span><span class="stat-value" id="metricMonth">0%</span><p class="stat-help">Promedio del mes actual.</p></div>
+            <div class="stat-card"><span class="stat-label">Promedio anual</span><span class="stat-value" id="metricYear">0%</span><p class="stat-help">Promedio del año actual.</p></div>
+            <div class="stat-card"><span class="stat-label">Mejor semana</span><span class="stat-value" id="metricBestWeek">Sin datos</span><p class="stat-help">Semana con mejor promedio registrado.</p></div>
+            <div class="stat-card"><span class="stat-label">Mejor mes</span><span class="stat-value" id="metricBestMonth">Sin datos</span><p class="stat-help">Mes con mejor promedio registrado.</p></div>
+            <div class="stat-card"><span class="stat-label">Días registrados</span><span class="stat-value" id="metricDays">0</span><p class="stat-help">Cantidad total de días con checklist guardado.</p></div>
+            <div class="stat-card"><span class="stat-label">Notas escritas</span><span class="stat-value" id="metricNotes">0</span><p class="stat-help">Bloques de texto no vacíos entre notas y revisiones.</p></div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h2>Barras Semanales</h2>
+            <p class="chart-meta">Últimas 8 semanas registradas</p>
+            <div class="chart-box" id="weeklyChart"></div>
+        </div>
+
+        <div class="chart-card">
+            <h2>Línea de Progreso Mensual</h2>
+            <p class="chart-meta">Evolución diaria del mes actual</p>
+            <div class="chart-box" id="monthlyChart"></div>
+        </div>
+
+        <div class="chart-card">
+            <h2>Resumen Anual por Meses</h2>
+            <p class="chart-meta">Promedio mensual del año actual</p>
+            <div class="chart-box" id="yearlyChart"></div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="counter-bar" id="counterBar"><div class="counter-row"><span class="counter-pill"><span class="ct-label">Checklist</span><strong id="ctNum">0 / 22</strong></span><span class="counter-pill"><span class="ct-label">Cumplimiento</span><strong id="ctPercent">0%</strong></span><span class="counter-pill"><span class="ct-label">Racha</span><strong id="ctStreak">0</strong></span></div><button class="reset-btn" id="resetBtn" type="button">Reiniciar</button></div>
+<script>
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'honor_dashboard_v2';
+  var LEGACY_PREFIX = 'honor_checks_';
+  var STREAK_THRESHOLD = 80;
+  var AUTO_DELAY = 450;
+
+  var cover = document.getElementById('cover');
+  var page = document.getElementById('page');
+  var btnBack = document.getElementById('btnBack');
+  var sections = Array.from(document.querySelectorAll('.section'));
+  var counterBar = document.getElementById('counterBar');
+  var homeCards = Array.from(document.querySelectorAll('.home-card[data-sec]'));
+  var checkItems = Array.from(document.querySelectorAll('#checklist .check-item'));
+  var reviewTabs = Array.from(document.querySelectorAll('.review-tab'));
+  var guideButtons = Array.from(document.querySelectorAll('.guide-link'));
+  var CHECK_TOTAL = checkItems.length;
+  var saveTimers = {};
+  var opened = false;
+
+  var els = {
+    checklist: document.getElementById('checklist'),
+    resetBtn: document.getElementById('resetBtn'),
+    dailyDateLabel: document.getElementById('dailyDateLabel'),
+    dailyGood: document.getElementById('dailyGood'),
+    dailyFail: document.getElementById('dailyFail'),
+    dailyObservation: document.getElementById('dailyObservation'),
+    dailySaveStatus: document.getElementById('dailySaveStatus'),
+    saveDailyBtn: document.getElementById('saveDailyBtn'),
+    progressCircle: document.getElementById('progressCircle'),
+    dailyPercentValue: document.getElementById('dailyPercentValue'),
+    dailyCountValue: document.getElementById('dailyCountValue'),
+    dailyStreakValue: document.getElementById('dailyStreakValue'),
+    dailyWeekValue: document.getElementById('dailyWeekValue'),
+    ctNum: document.getElementById('ctNum'),
+    ctPercent: document.getElementById('ctPercent'),
+    ctStreak: document.getElementById('ctStreak'),
+    homeTodayPercent: document.getElementById('homeTodayPercent'),
+    homeStreak: document.getElementById('homeStreak'),
+    homeWeekAvg: document.getElementById('homeWeekAvg'),
+    homeNotesCount: document.getElementById('homeNotesCount'),
+    weekPeriodLabel: document.getElementById('weekPeriodLabel'),
+    monthPeriodLabel: document.getElementById('monthPeriodLabel'),
+    yearPeriodLabel: document.getElementById('yearPeriodLabel'),
+    weeklyReflection: document.getElementById('weeklyReflection'),
+    weeklySaveStatus: document.getElementById('weeklySaveStatus'),
+    saveWeeklyBtn: document.getElementById('saveWeeklyBtn'),
+    monthlyWins: document.getElementById('monthlyWins'),
+    monthlyFaults: document.getElementById('monthlyFaults'),
+    monthlyCorrection: document.getElementById('monthlyCorrection'),
+    monthlyFocus: document.getElementById('monthlyFocus'),
+    monthlySaveStatus: document.getElementById('monthlySaveStatus'),
+    saveMonthlyBtn: document.getElementById('saveMonthlyBtn'),
+    yearlyIdentity: document.getElementById('yearlyIdentity'),
+    yearlyAchievements: document.getElementById('yearlyAchievements'),
+    yearlyLessons: document.getElementById('yearlyLessons'),
+    yearlyCommitment: document.getElementById('yearlyCommitment'),
+    yearlySaveStatus: document.getElementById('yearlySaveStatus'),
+    saveYearlyBtn: document.getElementById('saveYearlyBtn'),
+    metricToday: document.getElementById('metricToday'),
+    metricStreak: document.getElementById('metricStreak'),
+    metricWeek: document.getElementById('metricWeek'),
+    metricMonth: document.getElementById('metricMonth'),
+    metricYear: document.getElementById('metricYear'),
+    metricBestWeek: document.getElementById('metricBestWeek'),
+    metricBestMonth: document.getElementById('metricBestMonth'),
+    metricDays: document.getElementById('metricDays'),
+    metricNotes: document.getElementById('metricNotes'),
+    weeklyChart: document.getElementById('weeklyChart'),
+    monthlyChart: document.getElementById('monthlyChart'),
+    yearlyChart: document.getElementById('yearlyChart'),
+    guidePanelsHost: document.getElementById('guidePanelsHost'),
+    legacyGuidesMarker: document.getElementById('legacyGuidesMarker')
+  };
+
+  var weeklyAnswers = Array.from({ length: 9 }, function (_, index) {
+    return document.getElementById('weeklyAnswer' + index);
+  });
+
+  function pad(num) {
+    return String(num).padStart(2, '0');
+  }
+
+  function safeJSON(raw) {
+    try { return JSON.parse(raw); } catch (error) { return null; }
+  }
+
+  function readStoredState() {
+    try { return safeJSON(localStorage.getItem(STORAGE_KEY)); } catch (error) { return null; }
+  }
+
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) {}
+  }
+
+  function dateKey(date) {
+    return [date.getFullYear(), pad(date.getMonth() + 1), pad(date.getDate())].join('-');
+  }
+
+  function parseDateKey(key) {
+    var parts = (key || '').split('-');
+    var year = Number(parts[0] || 0);
+    var month = Number(parts[1] || 1) - 1;
+    var day = Number(parts[2] || 1);
+    return new Date(year, month, day);
+  }
+
+  function getToday() {
+    return new Date();
+  }
+
+  function getTodayKey() {
+    return dateKey(getToday());
+  }
+
+  function monthKey(date) {
+    return dateKey(date).slice(0, 7);
+  }
+
+  function yearKey(date) {
+    return String(date.getFullYear());
+  }
+
+  function weekInfo(date) {
+    var target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    var day = target.getDay() || 7;
+    target.setDate(target.getDate() + 4 - day);
+    var yearStart = new Date(target.getFullYear(), 0, 1);
+    var week = Math.ceil((((target - yearStart) / 86400000) + 1) / 7);
+    var monday = new Date(target);
+    monday.setDate(target.getDate() - ((target.getDay() || 7) - 1));
+    var sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    return { key: target.getFullYear() + '-W' + pad(week), monday: monday, sunday: sunday };
+  }
+
+  function formatLongDate(date) {
+    return date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function formatWeekLabel(info) {
+    return info.monday.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) + ' - ' + info.sunday.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function formatMonthLabel(key) {
+    var date = parseDateKey(key + '-01');
+    return date.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+  }
+
+  function countDone(checks) {
+    return (checks || []).reduce(function (sum, value) { return sum + (value ? 1 : 0); }, 0);
+  }
+
+  function calcPercent(checks) {
+    return CHECK_TOTAL ? Math.round((countDone(checks) / CHECK_TOTAL) * 100) : 0;
+  }
+
+  function cleanText(value) {
+    return String(value || '').trim();
+  }
+
+  function hasText(value) {
+    return cleanText(value).length > 0;
+  }
+
+  function stamp() {
+    return new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function setStatus(node, text, isSaved) {
+    if (!node) return;
+    node.textContent = text;
+    node.classList.toggle('saved', !!isSaved);
+  }
+
+  function markDirty(node, text) {
+    setStatus(node, text || 'Cambios sin guardar.', false);
+  }
+
+  function scheduleSave(name, fn, statusNode, dirtyText) {
+    markDirty(statusNode, dirtyText);
+    clearTimeout(saveTimers[name]);
+    saveTimers[name] = setTimeout(fn, AUTO_DELAY);
+  }
+
+  function defaultRecord(key) {
+    var date = parseDateKey(key);
+    return {
+      checks: Array.from({ length: CHECK_TOTAL }, function () { return 0; }),
+      notes: { good: '', fail: '', observation: '' },
+      percent: 0,
+      week: weekInfo(date).key,
+      month: monthKey(date),
+      year: yearKey(date),
+      updatedAt: ''
+    };
+  }
+
+  function normalizeRecord(record, key) {
+    var base = defaultRecord(key);
+    (record && Array.isArray(record.checks) ? record.checks : []).slice(0, CHECK_TOTAL).forEach(function (value, index) {
+      base.checks[index] = value ? 1 : 0;
+    });
+    if (record && record.notes) {
+      base.notes.good = cleanText(record.notes.good);
+      base.notes.fail = cleanText(record.notes.fail);
+      base.notes.observation = cleanText(record.notes.observation);
+    }
+    base.percent = calcPercent(base.checks);
+    base.updatedAt = record && record.updatedAt ? String(record.updatedAt) : '';
+    return base;
+  }
+
+  function normalizeState(raw) {
+    var next = { version: 2, records: {}, reviews: { weeks: {}, months: {}, years: {} } };
+    var source = raw && typeof raw === 'object' ? raw : {};
+    var records = source.records && typeof source.records === 'object' ? source.records : {};
+    Object.keys(records).forEach(function (key) {
+      next.records[key] = normalizeRecord(records[key], key);
+    });
+    ['weeks', 'months', 'years'].forEach(function (bucket) {
+      var sourceBucket = source.reviews && source.reviews[bucket] && typeof source.reviews[bucket] === 'object' ? source.reviews[bucket] : {};
+      Object.keys(sourceBucket).forEach(function (key) {
+        next.reviews[bucket][key] = sourceBucket[key];
+      });
+    });
+    return next;
+  }
+
+  function migrateLegacy() {
+    var migrated = false;
+    try {
+      for (var index = 0; index < localStorage.length; index += 1) {
+        var key = localStorage.key(index);
+        if (!key || key.indexOf(LEGACY_PREFIX) !== 0) continue;
+        var date = key.slice(LEGACY_PREFIX.length);
+        var legacy = safeJSON(localStorage.getItem(key));
+        if (!Array.isArray(legacy)) continue;
+        if (!state.records[date] || !hasRecordContent(normalizeRecord(state.records[date], date))) {
+          state.records[date] = normalizeRecord({ checks: legacy }, date);
+          migrated = true;
+        }
+      }
+    } catch (error) {}
+    if (migrated) saveState();
+  }
+
+  function getDailyRecord() {
+    var key = getTodayKey();
+    return state.records[key] ? normalizeRecord(state.records[key], key) : defaultRecord(key);
+  }
+
+  function hasRecordContent(record) {
+    return !!record && (
+      countDone(record.checks) > 0 ||
+      hasText(record.notes && record.notes.good) ||
+      hasText(record.notes && record.notes.fail) ||
+      hasText(record.notes && record.notes.observation)
+    );
+  }
+
+  var state = normalizeState(readStoredState());
+
+  /* NAVIGATION */
+  var showSec = window.__monolithShowSec = function showSec(id) {
+    var target = document.getElementById(id) || document.getElementById('sec-home');
+    sections.forEach(function (section) { section.classList.remove('active'); });
+    target.classList.add('active');
+    btnBack.classList.toggle('visible', target.id !== 'sec-home');
+    counterBar.classList.toggle('on', target.id === 'sec-checklist');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function bindNavigation() {
+    btnBack.addEventListener('click', function () { showSec('sec-home'); });
+    homeCards.forEach(function (card) {
+      function openCard() {
+        var sectionId = card.getAttribute('data-sec');
+        if (sectionId) showSec(sectionId);
+      }
+      card.addEventListener('click', openCard);
+      card.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openCard();
+        }
+      });
+    });
+  }
+
+  function bindCover() {
+    function enterApp() {
+      if (opened) return;
+      opened = true;
+      cover.classList.add('out');
+      cover.setAttribute('aria-hidden', 'true');
+      setTimeout(function () {
+        cover.style.display = 'none';
+        page.style.display = 'block';
+        page.removeAttribute('aria-hidden');
+        showSec('sec-home');
+      }, 1200);
+    }
+
+    cover.addEventListener('click', enterApp);
+    cover.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        enterApp();
+      }
+    });
+  }
+
+  /* DAILY */
+  function applyCheckState(item, done) {
+    item.classList.toggle('done', !!done);
+    item.setAttribute('aria-checked', done ? 'true' : 'false');
+  }
+
+  function applyRecordToChecklist(record) {
+    checkItems.forEach(function (item, index) {
+      applyCheckState(item, !!record.checks[index]);
+    });
+  }
+
+  function updateDailyMeters(record, stats) {
+    var done = countDone(record.checks);
+    var percent = calcPercent(record.checks);
+    var circumference = 389.6;
+    var offset = circumference - (circumference * percent / 100);
+    els.progressCircle.style.strokeDashoffset = String(offset);
+    els.dailyPercentValue.textContent = percent + '%';
+    els.dailyCountValue.textContent = done + ' / ' + CHECK_TOTAL + ' cumplidas';
+    els.ctNum.textContent = done + ' / ' + CHECK_TOTAL;
+    els.ctPercent.textContent = percent + '%';
+    els.dailyStreakValue.textContent = String(stats ? stats.streak : 0);
+    els.dailyWeekValue.textContent = (stats ? stats.currentWeekAverage : 0) + '%';
+    els.ctStreak.textContent = String(stats ? stats.streak : 0);
+  }
+
+  function readDailyFromDom() {
+    return normalizeRecord({
+      checks: checkItems.map(function (item) { return item.classList.contains('done') ? 1 : 0; }),
+      notes: {
+        good: els.dailyGood.value,
+        fail: els.dailyFail.value,
+        observation: els.dailyObservation.value
+      },
+      updatedAt: new Date().toISOString()
+    }, getTodayKey());
+  }
+
+  function fillDaily() {
+    var record = getDailyRecord();
+    els.dailyDateLabel.textContent = formatLongDate(parseDateKey(getTodayKey()));
+    applyRecordToChecklist(record);
+    els.dailyGood.value = record.notes.good;
+    els.dailyFail.value = record.notes.fail;
+    els.dailyObservation.value = record.notes.observation;
+    setStatus(els.dailySaveStatus, record.updatedAt ? 'Último guardado: ' + new Date(record.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : 'Sin cambios recientes.', !!record.updatedAt);
+    updateDailyMeters(record, collectStats());
+  }
+
+  function saveDaily(message) {
+    var key = getTodayKey();
+    var record = readDailyFromDom();
+    if (hasRecordContent(record)) {
+      state.records[key] = record;
+    } else {
+      delete state.records[key];
+    }
+    saveState();
+    setStatus(els.dailySaveStatus, message || ('Guardado ' + stamp()), true);
+    renderSummary();
+  }
+
+  function bindDaily() {
+    function toggleItem(item) {
+      applyCheckState(item, !item.classList.contains('done'));
+      saveDaily('Checklist actualizado ' + stamp());
+    }
+
+    els.checklist.addEventListener('click', function (event) {
+      var item = event.target.closest('.check-item');
+      if (item) toggleItem(item);
+    });
+
+    els.checklist.addEventListener('keydown', function (event) {
+      var item = event.target.closest('.check-item');
+      if (item && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        toggleItem(item);
+      }
+    });
+
+    [els.dailyGood, els.dailyFail, els.dailyObservation].forEach(function (field) {
+      field.addEventListener('input', function () {
+        scheduleSave('daily', function () {
+          saveDaily('Nota del día guardada ' + stamp());
+        }, els.dailySaveStatus, 'Guardando nota del día...');
+      });
+    });
+
+    els.saveDailyBtn.addEventListener('click', function () {
+      saveDaily('Nota del día guardada ' + stamp());
+    });
+
+    els.resetBtn.addEventListener('click', function () {
+      checkItems.forEach(function (item) { applyCheckState(item, false); });
+      saveDaily('Checklist reiniciado ' + stamp());
+    });
+  }
+
+  /* REVIEWS */
+  function currentPeriods() {
+    var today = getToday();
+    return {
+      week: weekInfo(today),
+      month: monthKey(today),
+      year: yearKey(today)
+    };
+  }
+
+  function hasAnyText(values) {
+    return values.some(function (value) { return hasText(value); });
+  }
+
+  function normalizeWeekReview(review) {
+    return {
+      answers: weeklyAnswers.map(function (_, index) {
+        return cleanText(review && review.answers && review.answers[index]);
+      }),
+      note: cleanText(review && review.note),
+      updatedAt: review && review.updatedAt ? String(review.updatedAt) : ''
+    };
+  }
+
+  function normalizeMonthReview(review) {
+    return {
+      wins: cleanText(review && review.wins),
+      faults: cleanText(review && review.faults),
+      correction: cleanText(review && review.correction),
+      focus: cleanText(review && review.focus),
+      updatedAt: review && review.updatedAt ? String(review.updatedAt) : ''
+    };
+  }
+
+  function normalizeYearReview(review) {
+    return {
+      identity: cleanText(review && review.identity),
+      achievements: cleanText(review && review.achievements),
+      lessons: cleanText(review && review.lessons),
+      commitment: cleanText(review && review.commitment),
+      updatedAt: review && review.updatedAt ? String(review.updatedAt) : ''
+    };
+  }
+
+  function showReviewTab(name) {
+    reviewTabs.forEach(function (tab) {
+      tab.classList.toggle('active', tab.getAttribute('data-review') === name);
+    });
+    ['week', 'month', 'year'].forEach(function (key) {
+      var view = document.getElementById('review-' + key);
+      if (view) view.classList.toggle('active', key === name);
+    });
+  }
+
+  function fillReviews() {
+    var periods = currentPeriods();
+    var weekReview = normalizeWeekReview(state.reviews.weeks[periods.week.key]);
+    var monthReview = normalizeMonthReview(state.reviews.months[periods.month]);
+    var yearReview = normalizeYearReview(state.reviews.years[periods.year]);
+
+    els.weekPeriodLabel.textContent = formatWeekLabel(periods.week);
+    els.monthPeriodLabel.textContent = formatMonthLabel(periods.month);
+    els.yearPeriodLabel.textContent = periods.year;
+
+    weeklyAnswers.forEach(function (field, index) {
+      field.value = weekReview.answers[index];
+    });
+    els.weeklyReflection.value = weekReview.note;
+    els.monthlyWins.value = monthReview.wins;
+    els.monthlyFaults.value = monthReview.faults;
+    els.monthlyCorrection.value = monthReview.correction;
+    els.monthlyFocus.value = monthReview.focus;
+    els.yearlyIdentity.value = yearReview.identity;
+    els.yearlyAchievements.value = yearReview.achievements;
+    els.yearlyLessons.value = yearReview.lessons;
+    els.yearlyCommitment.value = yearReview.commitment;
+
+    setStatus(els.weeklySaveStatus, weekReview.updatedAt ? 'Último guardado: ' + new Date(weekReview.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : 'Sin cambios recientes.', !!weekReview.updatedAt);
+    setStatus(els.monthlySaveStatus, monthReview.updatedAt ? 'Último guardado: ' + new Date(monthReview.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : 'Sin cambios recientes.', !!monthReview.updatedAt);
+    setStatus(els.yearlySaveStatus, yearReview.updatedAt ? 'Último guardado: ' + new Date(yearReview.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : 'Sin cambios recientes.', !!yearReview.updatedAt);
+  }
+
+  function saveWeekly(message) {
+    var key = currentPeriods().week.key;
+    var review = normalizeWeekReview({
+      answers: weeklyAnswers.map(function (field) { return field.value; }),
+      note: els.weeklyReflection.value,
+      updatedAt: new Date().toISOString()
+    });
+    if (hasAnyText(review.answers.concat([review.note]))) {
+      state.reviews.weeks[key] = review;
+    } else {
+      delete state.reviews.weeks[key];
+    }
+    saveState();
+    setStatus(els.weeklySaveStatus, message || ('Revisión semanal guardada ' + stamp()), true);
+    renderSummary();
+  }
+
+  function saveMonthly(message) {
+    var key = currentPeriods().month;
+    var review = normalizeMonthReview({
+      wins: els.monthlyWins.value,
+      faults: els.monthlyFaults.value,
+      correction: els.monthlyCorrection.value,
+      focus: els.monthlyFocus.value,
+      updatedAt: new Date().toISOString()
+    });
+    if (hasAnyText([review.wins, review.faults, review.correction, review.focus])) {
+      state.reviews.months[key] = review;
+    } else {
+      delete state.reviews.months[key];
+    }
+    saveState();
+    setStatus(els.monthlySaveStatus, message || ('Resumen mensual guardado ' + stamp()), true);
+    renderSummary();
+  }
+
+  function saveYearly(message) {
+    var key = currentPeriods().year;
+    var review = normalizeYearReview({
+      identity: els.yearlyIdentity.value,
+      achievements: els.yearlyAchievements.value,
+      lessons: els.yearlyLessons.value,
+      commitment: els.yearlyCommitment.value,
+      updatedAt: new Date().toISOString()
+    });
+    if (hasAnyText([review.identity, review.achievements, review.lessons, review.commitment])) {
+      state.reviews.years[key] = review;
+    } else {
+      delete state.reviews.years[key];
+    }
+    saveState();
+    setStatus(els.yearlySaveStatus, message || ('Balance anual guardado ' + stamp()), true);
+    renderSummary();
+  }
+
+  function bindReviews() {
+    reviewTabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        showReviewTab(tab.getAttribute('data-review'));
+      });
+    });
+
+    weeklyAnswers.concat([els.weeklyReflection]).forEach(function (field) {
+      field.addEventListener('input', function () {
+        scheduleSave('weekly', function () {
+          saveWeekly('Revisión semanal guardada ' + stamp());
+        }, els.weeklySaveStatus, 'Guardando revisión semanal...');
+      });
+    });
+
+    [els.monthlyWins, els.monthlyFaults, els.monthlyCorrection, els.monthlyFocus].forEach(function (field) {
+      field.addEventListener('input', function () {
+        scheduleSave('monthly', function () {
+          saveMonthly('Resumen mensual guardado ' + stamp());
+        }, els.monthlySaveStatus, 'Guardando resumen mensual...');
+      });
+    });
+
+    [els.yearlyIdentity, els.yearlyAchievements, els.yearlyLessons, els.yearlyCommitment].forEach(function (field) {
+      field.addEventListener('input', function () {
+        scheduleSave('yearly', function () {
+          saveYearly('Balance anual guardado ' + stamp());
+        }, els.yearlySaveStatus, 'Guardando balance anual...');
+      });
+    });
+
+    els.saveWeeklyBtn.addEventListener('click', function () {
+      saveWeekly('Revisión semanal guardada ' + stamp());
+    });
+
+    els.saveMonthlyBtn.addEventListener('click', function () {
+      saveMonthly('Resumen mensual guardado ' + stamp());
+    });
+
+    els.saveYearlyBtn.addEventListener('click', function () {
+      saveYearly('Balance anual guardado ' + stamp());
+    });
+  }
+
+  /* STATS */
+  function countFilled(values) {
+    return values.reduce(function (sum, value) {
+      return sum + (hasText(value) ? 1 : 0);
+    }, 0);
+  }
+
+  function averageBucket(bucket) {
+    return bucket && bucket.count ? Math.round(bucket.sum / bucket.count) : 0;
+  }
+
+  function renderEmptyChart(node, text) {
+    node.innerHTML = '<div class="empty-chart"><p>' + text + '</p></div>';
+  }
+
+  function chartY(value, top, height) {
+    return top + height - (value / 100) * height;
+  }
+
+  function collectStats() {
+    var periods = currentPeriods();
+    var records = Object.keys(state.records).sort().map(function (key) {
+      return { key: key, record: normalizeRecord(state.records[key], key) };
+    }).filter(function (entry) {
+      return hasRecordContent(entry.record);
+    });
+
+    var weekMap = {};
+    var monthMap = {};
+    var yearMap = {};
+    var notesCount = 0;
+
+    records.forEach(function (entry) {
+      var record = entry.record;
+      weekMap[record.week] = weekMap[record.week] || { sum: 0, count: 0 };
+      monthMap[record.month] = monthMap[record.month] || { sum: 0, count: 0 };
+      yearMap[record.year] = yearMap[record.year] || { sum: 0, count: 0 };
+      weekMap[record.week].sum += record.percent;
+      weekMap[record.week].count += 1;
+      monthMap[record.month].sum += record.percent;
+      monthMap[record.month].count += 1;
+      yearMap[record.year].sum += record.percent;
+      yearMap[record.year].count += 1;
+      notesCount += countFilled([record.notes.good, record.notes.fail, record.notes.observation]);
+    });
+
+    Object.keys(state.reviews.weeks).forEach(function (key) {
+      var review = normalizeWeekReview(state.reviews.weeks[key]);
+      notesCount += countFilled(review.answers.concat([review.note]));
+    });
+    Object.keys(state.reviews.months).forEach(function (key) {
+      var review = normalizeMonthReview(state.reviews.months[key]);
+      notesCount += countFilled([review.wins, review.faults, review.correction, review.focus]);
+    });
+    Object.keys(state.reviews.years).forEach(function (key) {
+      var review = normalizeYearReview(state.reviews.years[key]);
+      notesCount += countFilled([review.identity, review.achievements, review.lessons, review.commitment]);
+    });
+
+    var MAX_STREAK_DAYS = 3650; // límite defensivo: ~10 años
+    var streak = 0;
+    var cursor = getToday();
+    while (streak < MAX_STREAK_DAYS) {
+      var key = dateKey(cursor);
+      if (!state.records[key]) break;
+      var record = normalizeRecord(state.records[key], key);
+      if (!hasRecordContent(record) || record.percent < STREAK_THRESHOLD) break;
+      streak += 1;
+      cursor.setDate(cursor.getDate() - 1);
+    }
+
+    var bestWeekKey = '';
+    var bestMonthKey = '';
+    var bestWeekValue = -1;
+    var bestMonthValue = -1;
+
+    Object.keys(weekMap).forEach(function (key) {
+      var value = averageBucket(weekMap[key]);
+      if (value > bestWeekValue) {
+        bestWeekValue = value;
+        bestWeekKey = key;
+      }
+    });
+
+    Object.keys(monthMap).forEach(function (key) {
+      var value = averageBucket(monthMap[key]);
+      if (value > bestMonthValue) {
+        bestMonthValue = value;
+        bestMonthKey = key;
+      }
+    });
+
+    return {
+      todayRecord: getDailyRecord(),
+      todayPercent: getDailyRecord().percent,
+      streak: streak,
+      currentWeekAverage: averageBucket(weekMap[periods.week.key]),
+      currentMonthAverage: averageBucket(monthMap[periods.month]),
+      currentYearAverage: averageBucket(yearMap[periods.year]),
+      bestWeekText: bestWeekKey ? ('Sem ' + Number(bestWeekKey.split('W')[1]) + ' · ' + bestWeekValue + '%') : 'Sin datos',
+      bestMonthText: bestMonthKey ? (formatMonthLabel(bestMonthKey) + ' · ' + bestMonthValue + '%') : 'Sin datos',
+      totalDays: records.length,
+      notesCount: notesCount,
+      weekMap: weekMap,
+      monthMap: monthMap
+    };
+  }
+
+  function renderWeeklyChart(stats) {
+    var keys = Object.keys(stats.weekMap).sort().slice(-8);
+    if (!keys.length) {
+      renderEmptyChart(els.weeklyChart, 'Todavía no hay semanas registradas.');
+      return;
+    }
+
+    var width = 560;
+    var height = 250;
+    var left = 38;
+    var right = 14;
+    var top = 16;
+    var bottom = 34;
+    var plotWidth = width - left - right;
+    var plotHeight = height - top - bottom;
+    var slot = plotWidth / keys.length;
+    var barWidth = Math.min(42, slot * 0.58);
+    var svg = [];
+
+    [0, 25, 50, 75, 100].forEach(function (mark) {
+      var y = chartY(mark, top, plotHeight);
+      svg.push('<line x1="' + left + '" y1="' + y + '" x2="' + (width - right) + '" y2="' + y + '" stroke="rgba(255,255,255,.08)" />');
+      svg.push('<text x="' + (left - 8) + '" y="' + (y + 4) + '" text-anchor="end" fill="#666" font-size="10">' + mark + '</text>');
+    });
+
+    keys.forEach(function (key, index) {
+      var value = averageBucket(stats.weekMap[key]);
+      var x = left + slot * index + ((slot - barWidth) / 2);
+      var y = chartY(value, top, plotHeight);
+      var barHeight = top + plotHeight - y;
+      svg.push('<rect x="' + x + '" y="' + y + '" width="' + barWidth + '" height="' + barHeight + '" rx="8" fill="rgba(201,168,76,.72)" />');
+      svg.push('<text x="' + (x + barWidth / 2) + '" y="' + (y - 8) + '" text-anchor="middle" fill="#e5c97b" font-size="11">' + value + '%</text>');
+      svg.push('<text x="' + (x + barWidth / 2) + '" y="' + (height - 10) + '" text-anchor="middle" fill="#8a8a8a" font-size="10">S' + Number(key.split('W')[1]) + '</text>');
+    });
+
+    els.weeklyChart.innerHTML = '<svg viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="Promedio semanal">' + svg.join('') + '</svg>';
+  }
+
+  function renderMonthlyChart() {
+    var today = getToday();
+    var year = today.getFullYear();
+    var month = today.getMonth();
+    var totalDays = new Date(year, month + 1, 0).getDate();
+    var width = 560;
+    var height = 250;
+    var left = 28;
+    var right = 18;
+    var top = 18;
+    var bottom = 34;
+    var plotWidth = width - left - right;
+    var plotHeight = height - top - bottom;
+    var points = [];
+    var circles = [];
+    var hasData = false;
+    var monthPrefix = year + '-' + pad(month + 1);
+    var svg = [];
+
+    [0, 25, 50, 75, 100].forEach(function (mark) {
+      var y = chartY(mark, top, plotHeight);
+      svg.push('<line x1="' + left + '" y1="' + y + '" x2="' + (width - right) + '" y2="' + y + '" stroke="rgba(255,255,255,.08)" />');
+    });
+
+    for (var day = 1; day <= totalDays; day += 1) {
+      var key = monthPrefix + '-' + pad(day);
+      if (!state.records[key]) continue;
+      var record = normalizeRecord(state.records[key], key);
+      if (!hasRecordContent(record)) continue;
+      hasData = true;
+      var x = totalDays === 1 ? left + (plotWidth / 2) : left + ((day - 1) / (totalDays - 1)) * plotWidth;
+      var y = chartY(record.percent, top, plotHeight);
+      points.push(x + ',' + y);
+      circles.push('<circle cx="' + x + '" cy="' + y + '" r="4" fill="#e5c97b" />');
+    }
+
+    if (!hasData) {
+      renderEmptyChart(els.monthlyChart, 'Todavía no hay días guardados en este mes.');
+      return;
+    }
+
+    if (points.length > 1) {
+      svg.push('<polyline fill="none" stroke="rgba(201,168,76,.9)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="' + points.join(' ') + '" />');
+    }
+    svg.push(circles.join(''));
+    [1, Math.ceil(totalDays / 2), totalDays].forEach(function (day) {
+      var x = totalDays === 1 ? left + (plotWidth / 2) : left + ((day - 1) / (totalDays - 1)) * plotWidth;
+      svg.push('<text x="' + x + '" y="' + (height - 10) + '" text-anchor="middle" fill="#8a8a8a" font-size="10">' + day + '</text>');
+    });
+
+    els.monthlyChart.innerHTML = '<svg viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="Progreso mensual">' + svg.join('') + '</svg>';
+  }
+
+  function renderYearlyChart(stats) {
+    var year = yearKey(getToday());
+    var labels = ['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+    var values = labels.map(function (_, index) {
+      return averageBucket(stats.monthMap[year + '-' + pad(index + 1)]);
+    });
+    var hasData = labels.some(function (_, index) {
+      return !!stats.monthMap[year + '-' + pad(index + 1)];
+    });
+    if (!hasData) {
+      renderEmptyChart(els.yearlyChart, 'Todavía no hay meses completos registrados este año.');
+      return;
+    }
+
+    var width = 560;
+    var height = 250;
+    var left = 22;
+    var right = 14;
+    var top = 16;
+    var bottom = 34;
+    var plotWidth = width - left - right;
+    var plotHeight = height - top - bottom;
+    var slot = plotWidth / 12;
+    var barWidth = Math.min(26, slot * 0.52);
+    var svg = [];
+
+    [0, 25, 50, 75, 100].forEach(function (mark) {
+      var y = chartY(mark, top, plotHeight);
+      svg.push('<line x1="' + left + '" y1="' + y + '" x2="' + (width - right) + '" y2="' + y + '" stroke="rgba(255,255,255,.08)" />');
+    });
+
+    values.forEach(function (value, index) {
+      var x = left + slot * index + ((slot - barWidth) / 2);
+      var y = chartY(value, top, plotHeight);
+      var barHeight = top + plotHeight - y;
+      svg.push('<rect x="' + x + '" y="' + y + '" width="' + barWidth + '" height="' + barHeight + '" rx="7" fill="rgba(201,168,76,' + (value ? '.72' : '.12') + ')" />');
+      svg.push('<text x="' + (x + barWidth / 2) + '" y="' + (height - 10) + '" text-anchor="middle" fill="#8a8a8a" font-size="10">' + labels[index] + '</text>');
+    });
+
+    els.yearlyChart.innerHTML = '<svg viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="Resumen anual">' + svg.join('') + '</svg>';
+  }
+
+  function renderSummary() {
+    var stats = collectStats();
+    els.homeTodayPercent.textContent = stats.todayPercent + '%';
+    els.homeStreak.textContent = String(stats.streak);
+    els.homeWeekAvg.textContent = stats.currentWeekAverage + '%';
+    els.homeNotesCount.textContent = String(stats.notesCount);
+
+    els.metricToday.textContent = stats.todayPercent + '%';
+    els.metricStreak.textContent = String(stats.streak);
+    els.metricWeek.textContent = stats.currentWeekAverage + '%';
+    els.metricMonth.textContent = stats.currentMonthAverage + '%';
+    els.metricYear.textContent = stats.currentYearAverage + '%';
+    els.metricBestWeek.textContent = stats.bestWeekText;
+    els.metricBestMonth.textContent = stats.bestMonthText;
+    els.metricDays.textContent = String(stats.totalDays);
+    els.metricNotes.textContent = String(stats.notesCount);
+
+    updateDailyMeters(stats.todayRecord, stats);
+    renderWeeklyChart(stats);
+    renderMonthlyChart();
+    renderYearlyChart(stats);
+  }
+  function init() {
+    migrateLegacy();
+    bindCover();
+    bindNavigation();
+    bindDaily();
+    bindReviews();
+    fillDaily();
+    fillReviews();
+    renderSummary();
+  }
+  init();
+}());
+</script>
+<script>
+(function () {
+  'use strict';
+
+  var cover = document.getElementById('cover');
+  var page = document.getElementById('page');
+
+  if (cover) {
+    cover.setAttribute('aria-hidden', 'true');
+    cover.style.display = 'none';
+  }
+
+  if (page) {
+    page.style.display = 'block';
+    page.removeAttribute('aria-hidden');
+  }
+
+  function openTarget(targetId) {
+    if (window.__monolithShowSec) {
+      window.__monolithShowSec(targetId || 'sec-home');
+    }
+  }
+
+  window.monolithNavigate = openTarget;
+
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest('a[data-switch-view]');
+    if (!link) return;
+
+    event.preventDefault();
+    parent.postMessage({
+      type: 'monolith-switch',
+      view: link.getAttribute('data-switch-view'),
+      target: link.getAttribute('data-switch-target') || ''
+    }, '*');
+  });
+
+  window.addEventListener('message', function (event) {
+    var data = event.data || {};
+    if (data.type === 'monolith-open' && data.view === 'codigo') {
+      openTarget(data.target || 'sec-home');
+    }
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      openTarget('sec-home');
+    }, { once: true });
+  } else {
+    openTarget('sec-home');
+  }
+})();
+</script>
+    </template>
+
+    <template id="template-constitucion">
+<style>
+/* FONT FALLBACKS FOR OFFLINE */
+        @font-face{font-family:'Playfair Display';font-display:swap;src:local('Playfair Display'),local('Georgia'),local('Times New Roman')}
+        @font-face{font-family:'Inter';font-display:swap;src:local('Inter'),local('Segoe UI'),local('Arial')}
+        @font-face{font-family:'JetBrains Mono';font-display:swap;src:local('JetBrains Mono'),local('Consolas'),local('Courier New')}
+
+        :root{
+            --bg:#050505;--bg2:#0a0a0a;--bg3:#0f0f0f;
+            --gold:#C9A84C;--gold-l:#E5C97B;--gold-d:#9A7A30;--gold-m:rgba(201,168,76,.12);--gold-b:rgba(201,168,76,.2);--gold-g:rgba(201,168,76,.08);
+            --red:#8B0000;--red-m:rgba(139,0,0,.1);
+            --text:#D4D4D4;--text-m:#808080;--text-d:#555;
+            --white:#F0F0F0;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}
+        html::-webkit-scrollbar{display:none;width:0;height:0}
+        body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(201,168,76,.06),transparent 24%),var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-tap-highlight-color:transparent;scrollbar-width:none;-ms-overflow-style:none}
+        body::-webkit-scrollbar{display:none;width:0;height:0}
+        button,input,textarea{font:inherit}
+        textarea{resize:vertical}
+
+        /* COVER */
+        #cover{position:fixed;inset:0;background:var(--bg);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;text-align:center;padding:30px}
+        #cover.out{animation:cOut 1.2s ease forwards}
+        @keyframes cOut{to{opacity:0;transform:scale(1.05)}}
+
+        .c-line{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-d),transparent);margin:20px auto}
+        .c-symbol{font-size:3em;margin-bottom:20px;opacity:.6;animation:cPulse 3s ease infinite}
+        @keyframes cPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.8;transform:scale(1.05)}}
+        .c-title{font-family:'Playfair Display',serif;font-size:2em;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+        .c-sub{font-size:.85em;color:var(--text-m);letter-spacing:4px;text-transform:uppercase}
+        .c-author{margin-top:30px;font-family:'Playfair Display',serif;font-style:italic;color:var(--gold-d);font-size:.9em}
+        .c-hint{margin-top:30px;font-size:.75em;color:var(--text-d);animation:hBlink 2.5s ease infinite;letter-spacing:2px;text-transform:uppercase}
+        @keyframes hBlink{0%,100%{opacity:.3}50%{opacity:.8}}
+
+        /* FOCUS */
+        :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+        .home-card:focus-visible,.reset-btn:focus-visible{outline-color:var(--gold-l);border-radius:0}
+        .check-item:focus-visible{outline:2px solid var(--gold);outline-offset:1px;border-radius:6px}
+        #cover:focus-visible{outline:2px solid var(--gold-d);outline-offset:6px}
+
+        /* REDUCED MOTION */
+        @media(prefers-reduced-motion:reduce){
+            *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+            html{scroll-behavior:auto}
+        }
+
+        /* APP BAR */
+        .app-bar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,.08);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+        .app-bar-title{font-family:'Playfair Display',serif;font-size:1.1em;color:var(--gold);letter-spacing:1px;display:flex;align-items:center;gap:8px}
+        .btn-back{background:transparent;border:1px solid var(--gold-b);color:var(--gold-l);padding:8px 14px;border-radius:8px;font-size:.85em;cursor:pointer;font-family:'Inter',sans-serif;display:none;align-items:center;gap:6px;transition:all .25s;letter-spacing:.25px}
+        .btn-back:hover{background:var(--gold-m)}
+        .btn-back.visible{display:flex}
+
+        /* PAGE */
+        #page{display:block;min-height:100vh;padding-top:0}
         .section{display:none;max-width:1040px;margin:0 auto;padding:30px 18px 80px;animation:fadeUp .4s ease}
         .section.active{display:block}
         @keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
@@ -310,11 +2264,8 @@
         @media(min-width:720px){.category-grid,.chapter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(min-width:980px){.chapter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
         @media(min-width:1040px){.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-
-    </style>
-</head>
-<body>
-<header class="app-bar"><div class="app-bar-title"><span>🏛️</span> Constitución de Yerikson Varela</div><a class="btn-back visible" href="Codigo de Yerikson.html" aria-label="Abrir Código de Yerikson Varela"><span>←</span> Código</a></header>
+</style>
+<header class="app-bar" style="display:none!important" aria-hidden="true"><div class="app-bar-title"><span>🏛️</span> Constitución de Yerikson Varela</div><button class="btn-back visible" type="button" data-target="sec-home" aria-label="Volver al inicio constitucional"><span>←</span> Inicio</button></header>
 <div id="page">
 
 <div id="sec-home" class="section home-section active">
@@ -326,7 +2277,7 @@
         <div class="hero-quote">“No soy solo una persona trabajadora y creativa. Soy una persona que entiende la construcción como una cuestión de verdad, dignidad, utilidad y honor.”</div>
         <p class="doc-note">Este archivo contiene la lectura canónica, filosófica e identitaria del sistema. Aquí se conserva el cuerpo completo del documento; el archivo operativo queda reservado para práctica diaria, seguimiento y métricas.</p>
         <p class="hero-copy">La lectura ya no cae sobre una masa continua de bloques. Primero aparece el mapa general, luego cada familia abre sus propios subbloques y finalmente el texto completo conserva su peso sin perder orientación.</p>
-        <div class="doc-sign">Archivo canónico · YAVL / Yerikson Varela</div>
+        <div class="doc-sign">Yerikson Varela · YAVL</div>
         <div class="hero-actions">
             <button class="action-btn" type="button" data-target="cat-nucleo">Abrir Núcleo Constitucional</button>
             <button class="subtle-btn" type="button" data-target="sec-oath">Ir al Juramento</button>
@@ -1809,7 +3760,7 @@
     return parentSection ? (sectionToGroup[parentSection.id] || 'home') : 'home';
   }
 
-  function navigateToTarget(targetId, updateHash) {
+  var navigateToTarget = window.__monolithNavigateToTarget = function navigateToTarget(targetId, updateHash) {
     var target = document.getElementById(targetId);
     var hashId = targetId || 'sec-home';
     if (!target) {
@@ -1877,5 +3828,424 @@
   window.addEventListener('hashchange', syncViewFromHash);
 }());
 </script>
+<script>
+(function () {
+  'use strict';
+
+  function openTarget(targetId) {
+    if (window.__monolithNavigateToTarget) {
+      window.__monolithNavigateToTarget(targetId || 'sec-home', false);
+    }
+  }
+
+  window.monolithNavigate = openTarget;
+
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest('a[data-switch-view]');
+    if (!link) return;
+
+    event.preventDefault();
+    parent.postMessage({
+      type: 'monolith-switch',
+      view: link.getAttribute('data-switch-view'),
+      target: link.getAttribute('data-switch-target') || ''
+    }, '*');
+  });
+
+  window.addEventListener('message', function (event) {
+    var data = event.data || {};
+    if (data.type === 'monolith-open' && data.view === 'constitucion') {
+      openTarget(data.target || 'sec-home');
+    }
+  });
+})();
+</script>
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            var panels = {
+                codigo: document.getElementById('panel-codigo'),
+                constitucion: document.getElementById('panel-constitucion')
+            };
+
+            var buttons = Array.from(document.querySelectorAll('.view-tab'));
+            var templates = {
+                codigo: document.getElementById('template-codigo'),
+                constitucion: document.getElementById('template-constitucion')
+            };
+
+            var lastTarget = {
+                codigo: 'sec-home',
+                constitucion: 'sec-home'
+            };
+
+            var activeView = 'codigo';
+
+            // ── Helpers ──────────────────────────────────────────────
+
+            function normalizeView(view) {
+                return view === 'constitucion' ? 'constitucion' : 'codigo';
+            }
+
+            function normalizeHash(rawHash) {
+                var cleaned = String(rawHash || '').replace(/^#/, '').trim();
+                if (!cleaned) return { view: 'codigo', target: '' };
+                var slashIndex = cleaned.indexOf('/');
+                if (slashIndex < 0) return { view: normalizeView(cleaned), target: '' };
+                return {
+                    view: normalizeView(cleaned.slice(0, slashIndex)),
+                    target: cleaned.slice(slashIndex + 1)
+                };
+            }
+
+            function updateHash(view, target) {
+                var next = '#' + normalizeView(view) + (target ? '/' + target : '');
+                if (window.location.hash !== next) history.replaceState(null, '', next);
+            }
+
+            // ── Carga de templates con ejecución de scripts ──────────
+
+            // REGLA TÉCNICA: Los scripts dentro de #template-codigo y #template-constitucion
+            // deben ser siempre IIFEs (funciones autocontenidas e inmediatamente invocadas).
+            // No usar document.currentScript dentro de ellos.
+            // No depender de orden de ejecución externo.
+            // No usar dependencias externas. Esta restricción es obligatoria para que
+            // la clonación e inyección manual de scripts funcione correctamente.
+            function loadTemplate(view) {
+                var viewContent = document.getElementById('view-' + view);
+                var tpl = templates[view];
+                if (!viewContent || !tpl) return;
+
+                // Clonar el DocumentFragment para mantener scripts ejecutables
+                var frag = document.importNode(tpl.content, true);
+
+                // Extraer scripts antes de insertar para re-ejecutarlos
+                var scripts = Array.from(frag.querySelectorAll('script'));
+                scripts.forEach(function (s) { s.parentNode.removeChild(s); });
+
+                viewContent.appendChild(frag);
+
+                // Re-ejecutar scripts en orden
+                scripts.forEach(function (orig) {
+                    var s = document.createElement('script');
+                    if (orig.src) {
+                        s.src = orig.src;
+                    } else {
+                        s.textContent = orig.textContent;
+                    }
+                    viewContent.appendChild(s);
+                });
+
+                initViewEvents(view);
+            }
+
+            function initViewEvents(view) {
+                var viewContent = document.getElementById('view-' + view);
+                if (!viewContent) return;
+                viewContent.addEventListener('click', function (e) {
+                    var btn = e.target.closest('[data-target]');
+                    if (btn) {
+                        e.preventDefault();
+                        var sectionId = btn.getAttribute('data-target');
+                        openSection(view, sectionId);
+                        updateHash(view, sectionId);
+                    }
+                });
+            }
+
+            // ── Secciones ─────────────────────────────────────────────
+
+            function openSection(view, sectionId) {
+                var viewContent = document.getElementById('view-' + view);
+                if (!viewContent) return;
+                viewContent.querySelectorAll('.section').forEach(function (sec) {
+                    sec.classList.remove('active');
+                    sec.style.display = 'none';
+                });
+                var target = viewContent.querySelector('#' + sectionId);
+                if (target) {
+                    target.classList.add('active');
+                    target.style.display = 'block';
+                    lastTarget[view] = sectionId;
+                }
+                var cover = viewContent.querySelector('#cover');
+                if (cover && sectionId !== 'sec-home') {
+                    cover.classList.add('out');
+                    setTimeout(function () { cover.style.display = 'none'; }, 1200);
+                }
+            }
+
+            // ── Vistas ────────────────────────────────────────────────
+
+            function activateView(view, options) {
+                var safeView = normalizeView(view);
+                var target = options && options.target ? options.target : '';
+                var shouldUpdateHash = !options || options.updateHash !== false;
+                activeView = safeView;
+                Object.keys(panels).forEach(function (key) {
+                    panels[key].classList.toggle('active', key === safeView);
+                });
+                buttons.forEach(function (button) {
+                    button.setAttribute('aria-selected', button.getAttribute('data-view') === safeView ? 'true' : 'false');
+                });
+                if (target) openSection(safeView, target);
+                if (shouldUpdateHash) updateHash(safeView, target);
+            }
+
+            function routeFromHash() {
+                var route = normalizeHash(window.location.hash);
+                activateView(route.view, { target: route.target, updateHash: false });
+            }
+
+            // ── Bind tab buttons ──────────────────────────────────────
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    activateView(button.getAttribute('data-view'), { updateHash: true });
+                });
+            });
+
+            // ── Cargar ambas vistas ───────────────────────────────────
+
+            ['codigo', 'constitucion'].forEach(loadTemplate);
+
+            window.addEventListener('hashchange', routeFromHash);
+            routeFromHash();
+
+            // ══════════════════════════════════════════════════════════
+            // BÚSQUEDA AVANZADA
+            // ══════════════════════════════════════════════════════════
+
+            var searchOverlay = document.getElementById('searchOverlay');
+            var searchTrigger = document.getElementById('searchTrigger');
+            var searchInput   = document.getElementById('searchInput');
+            var searchClear   = document.getElementById('searchClear');
+            var searchMeta    = document.getElementById('searchMeta');
+            var searchResults = document.getElementById('searchResults');
+
+            // Índice de bloques buscables
+            // Se construye después de cargar los templates
+            var searchIndex = [];
+
+            // Etiquetas de secciones legibles
+            var SECTION_LABELS = {
+                // Vista Código
+                'sec-home':         { view: 'codigo',       label: 'Código · Inicio' },
+                'sec-constitucion': { view: 'codigo',       label: 'Código · Acceso Constitución' },
+                'sec-lectura':      { view: 'codigo',       label: 'Código · Lectura Diaria' },
+                'sec-preguntas':    { view: 'codigo',       label: 'Código · Preguntas de Reflexión' },
+                'sec-checklist':    { view: 'codigo',       label: 'Código · Checklist Diario' },
+                'sec-semanal':      { view: 'codigo',       label: 'Código · Revisión Semanal' },
+                'sec-stats':        { view: 'codigo',       label: 'Código · Estadísticas' },
+                // Vista Constitución
+                'sec-codigo':       { view: 'constitucion', label: 'Constitución · Código de Honor' },
+                'sec-prohibitions': { view: 'constitucion', label: 'Constitución · Prohibiciones' },
+                'sec-si':           { view: 'constitucion', label: 'Constitución · Lo que sí hacer' },
+                'sec-frases':       { view: 'constitucion', label: 'Constitución · Frases Maestras' },
+                'sec-oath':         { view: 'constitucion', label: 'Constitución · Juramento' },
+                'sec-norte':        { view: 'constitucion', label: 'Constitución · Mi Norte' },
+                'sec-psicologia':   { view: 'constitucion', label: 'Constitución · Psicología y Estrategia' },
+                'sec-filosofia':    { view: 'constitucion', label: 'Constitución · Filosofía Profunda' },
+                'sec-perfil':       { view: 'constitucion', label: 'Constitución · Perfil Maestro' },
+                'sec-guias':        { view: 'constitucion', label: 'Constitución · Guías de Vida' }
+            };
+
+            function buildSearchIndex() {
+                searchIndex = [];
+                ['codigo', 'constitucion'].forEach(function (view) {
+                    var viewContent = document.getElementById('view-' + view);
+                    if (!viewContent) return;
+                    viewContent.querySelectorAll('.section').forEach(function (sec) {
+                        var secId   = sec.id;
+                        var meta    = SECTION_LABELS[secId] || { view: view, label: view + ' · ' + secId };
+                        var blocks  = [];
+
+                        // H1-H4 como bloques individuales
+                        sec.querySelectorAll('h1,h2,h3,h4').forEach(function (h) {
+                            var txt = h.textContent.trim();
+                            if (txt) blocks.push({ title: txt, snippet: '', el: h, secId: secId, meta: meta });
+                        });
+
+                        // Párrafos, li, td con texto sustancial
+                        sec.querySelectorAll('p,li,td,blockquote,.check-text,.law-text,.prohib-text,.frase-text,.val-text,.rule-text,.oath-text').forEach(function (el) {
+                            var txt = el.textContent.trim();
+                            if (txt.length > 15) {
+                                blocks.push({ title: '', snippet: txt, el: el, secId: secId, meta: meta });
+                            }
+                        });
+
+                        searchIndex.push.apply(searchIndex, blocks);
+                    });
+                });
+            }
+
+            // Normalizar texto para comparación
+            function normalize(str) {
+                return String(str || '')
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            function highlight(text, query) {
+                if (!query) return escapeHtml(text);
+                var nText  = normalize(text);
+                var nQuery = normalize(query);
+                var result = '';
+                var i = 0;
+                while (i < text.length) {
+                    var idx = nText.indexOf(nQuery, i);
+                    if (idx < 0) {
+                        result += escapeHtml(text.slice(i));
+                        break;
+                    }
+                    result += escapeHtml(text.slice(i, idx));
+                    result += '<mark>' + escapeHtml(text.slice(idx, idx + nQuery.length)) + '</mark>';
+                    i = idx + nQuery.length;
+                }
+                return result;
+            }
+
+            function escapeHtml(str) {
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            function doSearch(query) {
+                var q = query.trim();
+                searchClear.classList.toggle('visible', q.length > 0);
+
+                if (!q) {
+                    searchMeta.textContent = '';
+                    searchResults.innerHTML = '';
+                    return;
+                }
+
+                if (searchIndex.length === 0) buildSearchIndex();
+
+                var nq = normalize(q);
+                // Sistema apunta a Chrome/Firefox/Safari modernos — ES6+ es soportado
+                var seen = new Set();
+                var matches = [];
+
+                searchIndex.forEach(function (block) {
+                    var hay = normalize(block.title + ' ' + block.snippet);
+                    if (hay.indexOf(nq) < 0) return;
+
+                    // Deduplicar por sección + título
+                    var key = block.secId + '|' + block.title;
+                    if (!block.title && block.snippet) key = block.secId + '|' + block.snippet.slice(0, 60);
+                    if (seen.has(key)) return;
+                    seen.add(key);
+                    matches.push(block);
+                });
+
+                var total = matches.length;
+
+                if (total === 0) {
+                    searchMeta.textContent = 'Sin resultados para "' + escapeHtml(q) + '"';
+                    searchResults.innerHTML = '<div class="search-empty"><div class="search-empty-icon">◌</div>No se encontró nada para esta búsqueda.</div>';
+                    return;
+                }
+
+                searchMeta.textContent = total + ' resultado' + (total !== 1 ? 's' : '') + ' para "' + q + '"';
+
+                // Limitar a 30 para no saturar
+                var shown = matches.slice(0, 30);
+                searchResults.innerHTML = shown.map(function (block) {
+                    var tag     = escapeHtml(block.meta.label);
+                    var title   = block.title ? highlight(block.title, q) : '';
+                    var snippet = block.snippet ? highlight(
+                        block.snippet.length > 160 ? block.snippet.slice(0, 160) + '…' : block.snippet,
+                        q
+                    ) : '';
+                    return '<button class="search-result-item" data-view="' + block.meta.view + '" data-sec="' + escapeHtml(block.secId) + '">' +
+                        '<div class="result-tag">' + tag + '</div>' +
+                        (title   ? '<div class="result-title">'   + title   + '</div>' : '') +
+                        (snippet ? '<div class="result-snippet">' + snippet + '</div>' : '') +
+                    '</button>';
+                }).join('');
+
+                // Bind result clicks
+                searchResults.querySelectorAll('.search-result-item').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var targetView = btn.getAttribute('data-view');
+                        var targetSec  = btn.getAttribute('data-sec');
+                        closeSearch();
+                        activateView(targetView, { target: targetSec, updateHash: true });
+                        setTimeout(function () {
+                            var el = document.querySelector('#view-' + targetView + ' #' + targetSec);
+                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 80);
+                    });
+                });
+            }
+
+            function openSearch() {
+                searchOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                setTimeout(function () { searchInput.focus(); }, 50);
+            }
+
+            function closeSearch() {
+                searchOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+                searchInput.value = '';
+                searchClear.classList.remove('visible');
+                searchMeta.textContent = '';
+                searchResults.innerHTML = '';
+            }
+
+            // Bind search UI
+            if (searchTrigger) {
+                searchTrigger.addEventListener('click', openSearch);
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function () { doSearch(searchInput.value); });
+                searchInput.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') closeSearch();
+                    if (e.key === 'Enter') doSearch(searchInput.value);
+                });
+            }
+
+            if (searchClear) {
+                searchClear.addEventListener('click', function () {
+                    searchInput.value = '';
+                    doSearch('');
+                    searchInput.focus();
+                });
+            }
+
+            if (searchOverlay) {
+                searchOverlay.addEventListener('click', function (e) {
+                    if (e.target === searchOverlay) closeSearch();
+                });
+            }
+
+            document.addEventListener('keydown', function (e) {
+                if ((e.key === 'k' && (e.ctrlKey || e.metaKey)) || e.key === '/') {
+                    if (document.activeElement && ['INPUT','TEXTAREA'].indexOf(document.activeElement.tagName) >= 0) return;
+                    e.preventDefault();
+                    openSearch();
+                }
+                if (e.key === 'Escape' && searchOverlay && searchOverlay.classList.contains('open')) {
+                    closeSearch();
+                }
+            });
+
+            // Construir índice al inicio para que la primera búsqueda sea rápida
+            setTimeout(buildSearchIndex, 400);
+
+        })();
+    </script>
 </body>
 </html>
