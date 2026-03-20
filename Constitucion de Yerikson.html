@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constitución de Yerikson Varela — Archivo Canónico</title>
+    <link rel="icon" href="data:,">
+    <style>
+/* FONT FALLBACKS FOR OFFLINE */
+        @font-face{font-family:'Playfair Display';font-display:swap;src:local('Playfair Display'),local('Georgia'),local('Times New Roman')}
+        @font-face{font-family:'Inter';font-display:swap;src:local('Inter'),local('Segoe UI'),local('Arial')}
+        @font-face{font-family:'JetBrains Mono';font-display:swap;src:local('JetBrains Mono'),local('Consolas'),local('Courier New')}
+
+        :root{
+            --bg:#050505;--bg2:#0a0a0a;--bg3:#0f0f0f;
+            --gold:#C9A84C;--gold-l:#E5C97B;--gold-d:#9A7A30;--gold-m:rgba(201,168,76,.12);--gold-b:rgba(201,168,76,.2);--gold-g:rgba(201,168,76,.08);
+            --red:#8B0000;--red-m:rgba(139,0,0,.1);
+            --text:#D4D4D4;--text-m:#808080;--text-d:#555;
+            --white:#F0F0F0;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(201,168,76,.06),transparent 24%),var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+        button,input,textarea{font:inherit}
+        textarea{resize:vertical}
+
+        /* COVER */
+        #cover{position:fixed;inset:0;background:var(--bg);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;text-align:center;padding:30px}
+        #cover.out{animation:cOut 1.2s ease forwards}
+        @keyframes cOut{to{opacity:0;transform:scale(1.05)}}
+
+        .c-line{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-d),transparent);margin:20px auto}
+        .c-symbol{font-size:3em;margin-bottom:20px;opacity:.6;animation:cPulse 3s ease infinite}
+        @keyframes cPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.8;transform:scale(1.05)}}
+        .c-title{font-family:'Playfair Display',serif;font-size:2em;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+        .c-sub{font-size:.85em;color:var(--text-m);letter-spacing:4px;text-transform:uppercase}
+        .c-author{margin-top:30px;font-family:'Playfair Display',serif;font-style:italic;color:var(--gold-d);font-size:.9em}
+        .c-hint{margin-top:30px;font-size:.75em;color:var(--text-d);animation:hBlink 2.5s ease infinite;letter-spacing:2px;text-transform:uppercase}
+        @keyframes hBlink{0%,100%{opacity:.3}50%{opacity:.8}}
+
+        /* FOCUS */
+        :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+        .home-card:focus-visible,.reset-btn:focus-visible{outline-color:var(--gold-l);border-radius:0}
+        .check-item:focus-visible{outline:2px solid var(--gold);outline-offset:1px;border-radius:6px}
+        #cover:focus-visible{outline:2px solid var(--gold-d);outline-offset:6px}
+
+        /* REDUCED MOTION */
+        @media(prefers-reduced-motion:reduce){
+            *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+            html{scroll-behavior:auto}
+        }
+
+        /* APP BAR */
+        .app-bar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,.08);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+        .app-bar-title{font-family:'Playfair Display',serif;font-size:1.1em;color:var(--gold);letter-spacing:1px;display:flex;align-items:center;gap:8px}
+        .btn-back{background:transparent;border:1px solid var(--gold-b);color:var(--gold-l);padding:8px 14px;border-radius:8px;font-size:.85em;cursor:pointer;font-family:'Inter',sans-serif;display:none;align-items:center;gap:6px;transition:all .25s;letter-spacing:.25px}
+        .btn-back:hover{background:var(--gold-m)}
+        .btn-back.visible{display:flex}
+
+        /* PAGE */
+        #page{display:block;min-height:100vh;padding-top:56px}
+        .section{display:none;max-width:1040px;margin:0 auto;padding:30px 18px 80px;animation:fadeUp .4s ease}
+        .section.active{display:block}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+
+        /* HOME DASHBOARD */
+        .home-section{padding-top:20px}
+        .home-header{text-align:center;margin-bottom:42px;padding-bottom:28px;border-bottom:1px solid rgba(201,168,76,.08)}
+        .home-header .icon{font-size:2.5em;margin-bottom:12px;display:block;opacity:.5}
+        .home-header h1{font-family:'Playfair Display',serif;font-size:1.8em;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+        .home-header p{color:var(--text-m);font-size:.9em;font-style:italic}
+
+        .home-grid{display:grid;grid-template-columns:1fr;gap:14px}
+        @media(min-width:500px){.home-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(min-width:900px){.home-grid{grid-template-columns:repeat(3,1fr)}}
+
+        .home-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:20px 18px;cursor:pointer;transition:all .3s;display:flex;align-items:flex-start;gap:14px}
+        .home-card:hover{border-color:var(--gold-b);transform:translateY(-2px)}
+        .home-card:active{transform:translateY(0)}
+        .home-card.featured{background:linear-gradient(160deg,var(--bg2),rgba(201,168,76,.05))}
+        .home-card-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--gold-m),rgba(201,168,76,.02));border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:1.5em;flex-shrink:0}
+        .home-card-body{flex:1}
+        .home-card-body h3{font-family:'Playfair Display',serif;font-size:1em;color:var(--gold-l);margin-bottom:4px}
+        .home-card-body p{font-size:.8em;color:var(--text-m);line-height:1.5}
+        .home-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+        .home-stat{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:18px 16px}
+        .home-stat-label{display:block;font-size:.72em;letter-spacing:1px;text-transform:uppercase;color:var(--text-d);margin-bottom:6px}
+        .home-stat-value{font-family:'JetBrains Mono',monospace;font-size:1.45em;color:var(--gold-l)}
+
+        /* HEADERS */
+        .s-head{text-align:center;margin-bottom:46px;padding-bottom:28px;border-bottom:1px solid rgba(201,168,76,.08)}
+        .s-head .icon{font-size:2em;margin-bottom:10px;display:block;opacity:.5}
+        .s-head h1{font-family:'Playfair Display',serif;font-size:1.7em;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+        .s-head p{color:var(--text-m);font-size:.85em;font-style:italic}
+
+        /* CARDS */
+        .card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:26px;margin-bottom:20px;position:relative;overflow:hidden;transition:border-color .3s}
+        .card:hover{border-color:var(--gold-b)}
+        .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
+        .card h2{font-family:'Playfair Display',serif;font-size:1.18em;color:var(--gold-l);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+        .card h2 .num{width:28px;height:28px;border-radius:50%;background:var(--gold-m);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7em;color:var(--gold);flex-shrink:0}
+        .card h3{font-size:.95em;color:var(--gold);margin:16px 0 8px}
+        .card p{font-size:.88em;color:var(--text);line-height:1.85;margin-bottom:8px}
+
+        .rule-box{background:var(--bg3);border-left:3px solid var(--gold-d);border-radius:0 10px 10px 0;padding:14px 16px;margin:14px 0}
+        .rule-box p{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold-l);font-size:.92em;line-height:1.8}
+
+        .table-wrap{overflow-x:auto;margin:14px 0}
+        table{width:100%;border-collapse:collapse;font-size:.84em}
+        th{text-align:left;padding:10px 12px;background:rgba(201,168,76,.06);color:var(--gold);font-weight:600;letter-spacing:.5px;text-transform:uppercase;font-size:.75em;border-bottom:1px solid var(--gold-m)}
+        td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--text);vertical-align:top}
+        tr:hover td{background:rgba(201,168,76,.02)}
+
+        .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+        .do-col,.dont-col{border-radius:10px;padding:14px;font-size:.84em}
+        .do-col{background:rgba(46,125,50,.06);border:1px solid rgba(46,125,50,.12)}
+        .do-col h4{color:#4CAF50;margin-bottom:8px;font-size:.85em}
+        .dont-col{background:var(--red-m);border:1px solid rgba(139,0,0,.15)}
+        .dont-col h4{color:#FF5252;margin-bottom:8px;font-size:.85em}
+        .do-col li,.dont-col li{margin:4px 0;list-style:none;line-height:1.7;color:var(--text)}
+        .do-col li::before{content:'✅ '}
+        .dont-col li::before{content:'❌ '}
+
+        .val-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+        .val-item:last-child{border:none}
+        .val-icon{font-size:1.3em;min-width:30px;text-align:center}
+        .val-text{font-size:.86em;color:var(--text);line-height:1.8}
+        .val-text strong{color:var(--gold-l)}
+
+        .card-lead{font-family:'Playfair Display',serif;font-size:1.1em;color:var(--gold);display:block;margin-bottom:4px}
+        .card-sub{font-size:.79em;color:var(--text-m);font-style:italic;display:block;margin-bottom:10px;letter-spacing:.2px}
+        .section-kicker{display:inline-block;margin-bottom:10px;padding:5px 12px;border:1px solid rgba(201,168,76,.14);border-radius:999px;background:rgba(201,168,76,.05);font-size:.68em;letter-spacing:2px;text-transform:uppercase;color:var(--gold-l)}
+        .note-grid,.stats-grid,.chart-grid,.guide-index,.review-tabs,.check-shell{display:grid;gap:16px}
+        .check-shell{grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);align-items:start}
+        .note-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+        .note-full{grid-column:1/-1}
+        .field-label{display:block;font-size:.78em;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+        .note-input{width:100%;min-height:120px;padding:14px 16px;border-radius:12px;border:1px solid rgba(201,168,76,.12);background:rgba(255,255,255,.02);color:var(--text);line-height:1.7}
+        .note-input::placeholder{color:var(--text-d)}
+        .save-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
+        .save-status{font-size:.8em;color:var(--text-d)}
+        .save-status.saved{color:#7cd2ac}
+        .action-btn{background:var(--gold-m);border:1px solid var(--gold-b);color:var(--gold-l);padding:10px 18px;border-radius:999px;cursor:pointer;min-height:42px;font-weight:500;letter-spacing:.3px;transition:all .25s}
+        .action-btn:hover{border-color:var(--gold-b);background:rgba(201,168,76,.16);transform:translateY(-1px)}
+        .progress-card{display:grid;gap:14px}
+        .progress-ring-wrap{display:grid;place-items:center;padding-top:4px}
+        .progress-ring{width:180px;height:180px;position:relative}
+        .progress-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+        .progress-ring circle{fill:none;stroke-width:12}
+        .progress-track{stroke:rgba(255,255,255,.06)}
+        .progress-value{stroke:var(--gold);stroke-linecap:round;transition:stroke-dashoffset .3s ease}
+        .progress-copy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+        .progress-copy strong{font-family:'JetBrains Mono',monospace;font-size:1.9em;color:var(--gold-l)}
+        .progress-copy span{font-size:.82em;color:var(--text-m)}
+        .mini-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+        .mini-metric{background:var(--bg3);border:1px solid rgba(201,168,76,.08);border-radius:12px;padding:14px}
+        .mini-metric-label{display:block;font-size:.72em;color:var(--text-d);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+        .mini-metric-value{font-family:'JetBrains Mono',monospace;font-size:1.2em;color:var(--gold-l)}
+        .review-tabs{grid-template-columns:repeat(3,minmax(0,1fr));margin:16px 0}
+        .review-tab{padding:11px 14px;border-radius:999px;border:1px solid rgba(201,168,76,.12);background:transparent;color:var(--text-m);cursor:pointer}
+        .review-tab.active{background:var(--gold-m);color:var(--gold-l);border-color:var(--gold-b)}
+        .review-view{display:none}
+        .review-view.active{display:block}
+        .review-period{font-size:.84em;color:var(--text-m);margin-bottom:16px}
+        .review-question{background:var(--bg3);border:1px solid rgba(201,168,76,.08);border-radius:12px;padding:16px;margin-bottom:12px}
+        .review-question strong{display:block;color:var(--gold-l);margin-bottom:10px;font-size:.92em}
+        .review-question textarea{width:100%;min-height:86px;padding:12px 14px;border-radius:10px;border:1px solid rgba(201,168,76,.12);background:rgba(255,255,255,.02);color:var(--text)}
+        .stats-grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+        .stat-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:18px}
+        .stat-label{display:block;font-size:.74em;color:var(--text-d);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+        .stat-value{display:block;font-family:'JetBrains Mono',monospace;font-size:1.35em;color:var(--gold-l);line-height:1.35}
+        .stat-help{font-size:.78em;color:var(--text-d);margin-top:8px;line-height:1.5}
+        .chart-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+        .chart-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:22px;position:relative;overflow:hidden}
+        .chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
+        .chart-box{margin-top:16px;min-height:250px}
+        .chart-box svg{width:100%;height:auto;display:block}
+        .chart-meta{font-size:.78em;color:var(--text-d)}
+        .empty-chart{min-height:220px;display:grid;place-items:center;text-align:center;border:1px dashed rgba(201,168,76,.12);border-radius:12px;background:rgba(201,168,76,.02);padding:18px;color:var(--text-m)}
+        .guide-index{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:18px 0}
+        .guide-link{background:var(--bg3);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .25s}
+        .guide-link:hover,.guide-link.active{border-color:var(--gold-b);transform:translateY(-2px)}
+        .guide-link.active{background:linear-gradient(160deg,var(--bg3),rgba(201,168,76,.05))}
+        .guide-link h3{margin:0 0 6px;font-family:'Playfair Display',serif;color:var(--gold-l);font-size:1em}
+        .guide-link p{margin:0;font-size:.8em;color:var(--text-m);line-height:1.6}
+        .guide-panel{display:none}
+        .guide-panel.active{display:block}
+        .guide-laws{display:grid;gap:12px;margin-top:18px}
+        .law-detail{border:1px solid rgba(201,168,76,.08);border-radius:12px;background:var(--bg3);overflow:hidden}
+        .law-detail summary{cursor:pointer;padding:16px 18px;list-style:none;font-family:'Playfair Display',serif;color:var(--gold-l);display:flex;align-items:center;gap:12px}
+        .law-detail summary::-webkit-details-marker{display:none}
+        .law-num-badge{width:28px;height:28px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--gold-b);background:var(--gold-m);font-family:'JetBrains Mono',monospace;font-size:.72em;color:var(--gold)}
+        .law-body{padding:0 18px 18px}
+        .panel-intro{margin-bottom:18px}
+        .panel-actions{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+        .subtle-btn{background:transparent;border:1px solid rgba(201,168,76,.12);color:var(--gold-l);padding:9px 16px;border-radius:999px;cursor:pointer;min-height:42px;font-weight:500;letter-spacing:.3px;transition:all .25s}
+        .subtle-btn:hover{border-color:var(--gold-b);background:var(--gold-m);transform:translateY(-1px)}
+        .counter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+        .counter-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(201,168,76,.1);background:rgba(201,168,76,.04)}
+        .counter-pill strong{font-family:'JetBrains Mono',monospace;color:var(--gold-l)}
+
+        /* IDENTITY GRID */
+        .identity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+        .identity-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:22px 20px;transition:border-color .3s;position:relative;overflow:hidden}
+        .identity-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
+        .identity-card:hover{border-color:var(--gold-b)}
+        .card-icon{font-size:1.6em;display:block;margin-bottom:10px;opacity:.75}
+        .card-title{font-family:'Playfair Display',serif;font-size:1em;color:var(--gold-l);margin-bottom:8px;letter-spacing:.5px}
+        .card-copy{font-size:.84em;color:var(--text);line-height:1.75}
+
+        .timeline{margin:16px 0;padding-left:20px;border-left:2px solid rgba(201,168,76,.1)}
+        .t-step{padding:12px 0 12px 16px;position:relative;font-size:.86em;color:var(--text);line-height:1.8}
+        .t-step::before{content:'';position:absolute;left:-25px;top:18px;width:8px;height:8px;border-radius:50%;background:var(--gold-m);border:2px solid var(--gold-d)}
+        .t-step strong{color:var(--gold-l)}
+
+        .checklist{margin:16px 0}
+        .check-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.02);cursor:pointer;transition:background .2s;border-radius:6px;padding-left:8px}
+        .check-item:hover{background:rgba(201,168,76,.03)}
+        .check-box{width:22px;height:22px;border:2px solid var(--gold-b);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .3s;font-size:.7em;color:transparent}
+        .check-item.done .check-box{background:var(--gold-d);border-color:var(--gold);color:var(--bg)}
+        .check-label{font-size:.86em;color:var(--text);transition:color .3s}
+        .check-item.done .check-label{color:var(--text-m);text-decoration:line-through}
+
+        .oath{text-align:center;padding:30px;background:linear-gradient(160deg,var(--bg2),rgba(201,168,76,.03));border:1px solid var(--gold-b);border-radius:16px;margin:20px 0}
+        .oath p{font-family:'Playfair Display',serif;font-size:.95em;line-height:2.2;color:var(--gold-l)}
+        .oath .sign{margin-top:20px;font-family:'Playfair Display',serif;font-style:italic;font-size:1.1em;color:var(--gold)}
+
+        .badge{display:inline-block;font-size:.65em;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-left:8px;vertical-align:middle}
+        .badge-s{background:rgba(100,180,255,.1);color:rgba(100,180,255,.8);border:1px solid rgba(100,180,255,.15)}
+        .badge-r{background:rgba(255,100,150,.1);color:rgba(255,100,150,.8);border:1px solid rgba(255,100,150,.15)}
+
+        .counter-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(5,5,5,.95);backdrop-filter:blur(12px);border-top:1px solid rgba(201,168,76,.06);padding:12px 20px;display:none;justify-content:center;align-items:center;gap:15px;z-index:50;font-size:.8em}
+        .counter-bar.on{display:flex}
+        .counter-bar .ct{font-family:'JetBrains Mono',monospace;color:var(--gold);font-weight:600}
+        .counter-bar .ct-label{color:var(--text-m)}
+        .reset-btn{background:var(--gold-m);border:1px solid var(--gold-b);color:var(--gold);padding:6px 14px;border-radius:20px;font-size:.78em;cursor:pointer;font-family:'Inter',sans-serif}
+
+        .sep{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-d),transparent);margin:30px auto}
+
+        /* SECTION DIVIDERS */
+        .section-divider{display:flex;align-items:center;gap:12px;margin:30px 0 20px;padding:16px 0;border-top:1px solid rgba(201,168,76,.1);border-bottom:1px solid rgba(201,168,76,.1)}
+        .section-divider-icon{font-size:1.4em;opacity:.7}
+        .section-divider-text{font-family:'Playfair Display',serif;font-size:1.1em;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
+
+        @media(max-width:600px){
+            .c-title{font-size:1.5em;letter-spacing:2px}
+            .s-head h1{font-size:1.3em}
+            .home-header h1{font-size:1.4em}
+            .card{padding:20px}
+            .do-dont{grid-template-columns:1fr}
+            .section{padding:20px 14px 80px}
+            .identity-grid{grid-template-columns:1fr 1fr}
+            .app-bar{padding:10px 12px}
+            .app-bar-title{font-size:.95em}
+            .home-grid{grid-template-columns:1fr}
+            .home-card{padding:16px 14px}
+            .home-card-icon{width:42px;height:42px;font-size:1.3em}
+            .category-shell{padding:22px 18px}
+            .category-shell-head{flex-direction:column}
+            .category-shell-icon{width:50px;height:50px;font-size:1.5em}
+            .section-divider{padding:12px 0;margin:24px 0 16px}
+            .section-divider-text{font-size:.95em}
+            .note-grid,.check-shell,.review-tabs,.mini-metrics{grid-template-columns:1fr}
+            .home-stat{padding:14px}
+        }
+
+        .home-section{padding-top:18px}
+        .home-card{text-decoration:none;color:inherit}
+        .doc-note{font-size:.85em;color:var(--text-m);max-width:760px;margin:10px auto 0;text-align:center}
+        .doc-sign{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:16px auto 0;padding:6px 12px;border-radius:999px;border:1px solid rgba(201,168,76,.12);background:rgba(201,168,76,.04);font-size:.72em;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold-l)}
+        .hero-quote{max-width:760px;margin:18px auto 0;padding:16px 18px;border-left:3px solid var(--gold-d);background:var(--bg3);border-radius:0 12px 12px 0;font-family:'Playfair Display',serif;color:var(--gold-l);font-style:italic}
+        .hero-shell{max-width:840px;margin:0 auto}
+        .hero-copy{max-width:760px;margin:14px auto 0;color:var(--text-m);font-size:.92em;line-height:1.8}
+        .hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px;margin-bottom:6px}
+        .btn-back,.action-btn,.subtle-btn,.section-cta{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+        .action-btn,.subtle-btn,.section-cta,.chapter-link{font:inherit}
+        .section,.guide-panel{scroll-margin-top:96px}
+        .section-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:30px}
+        .section-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:18px;padding:22px;position:relative;overflow:hidden;display:grid;gap:14px}
+        .section-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
+        .section-card.featured{background:linear-gradient(160deg,var(--bg2),rgba(201,168,76,.05))}
+        .section-card-head{display:flex;align-items:flex-start;gap:14px}
+        .section-card-icon{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,var(--gold-m),rgba(201,168,76,.02));border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:1.5em;flex-shrink:0}
+        .section-card h3{font-family:'Playfair Display',serif;font-size:1.12em;color:var(--gold-l);margin:0 0 8px}
+        .section-card p{margin:0;font-size:.84em;color:var(--text-m);line-height:1.7}
+        .section-card-footer{display:flex;justify-content:flex-start;margin-top:4px}
+        .section-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1px solid rgba(201,168,76,.14);background:rgba(201,168,76,.05);color:var(--gold-l);text-decoration:none;font-size:.82em;letter-spacing:.3px;transition:all .25s;min-height:42px;font-weight:500}
+        .section-cta:hover{border-color:var(--gold-b);background:var(--gold-m);transform:translateY(-1px)}
+        .category-grid{grid-template-columns:1fr}
+        .category-card{padding:24px}
+        .category-list{display:flex;flex-wrap:wrap;gap:8px}
+        .category-chip{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid rgba(201,168,76,.1);background:rgba(201,168,76,.04);font-size:.72em;letter-spacing:.3px;color:var(--text-m)}
+        .category-section{padding-top:18px;padding-bottom:10px}
+        .category-shell{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--bg2),rgba(201,168,76,.04));border:1px solid rgba(201,168,76,.1);border-radius:22px;padding:28px}
+        .category-shell::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
+        .category-shell-head{display:flex;align-items:flex-start;gap:16px}
+        .category-shell-icon{width:56px;height:56px;border-radius:16px;border:1px solid var(--gold-b);background:linear-gradient(135deg,var(--gold-m),rgba(201,168,76,.02));display:flex;align-items:center;justify-content:center;font-size:1.7em;flex-shrink:0}
+        .category-shell h2{font-family:'Playfair Display',serif;font-size:1.55em;color:var(--gold);margin:0 0 10px;letter-spacing:1px}
+        .category-shell p{margin:0;color:var(--text-m);font-size:.91em;line-height:1.9}
+        .chapter-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:20px}
+        .chapter-link{display:grid;gap:7px;padding:20px;border-radius:16px;border:1px solid rgba(201,168,76,.08);background:var(--bg3);text-decoration:none;color:inherit;transition:all .25s}
+        .chapter-link:hover{border-color:var(--gold-b);transform:translateY(-1px);background:linear-gradient(160deg,var(--bg3),rgba(201,168,76,.04))}
+        .chapter-link small{font-size:.68em;letter-spacing:1.4px;text-transform:uppercase;color:var(--text-d)}
+        .chapter-link strong{font-family:'Playfair Display',serif;font-size:1em;color:var(--gold-l);font-weight:400}
+        .chapter-link span{font-size:.8em;color:var(--text-m);line-height:1.65}
+        .inline-map{margin-bottom:18px}
+        .inline-map .chapter-grid{margin-top:14px}
+        @media(min-width:720px){.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(min-width:1040px){.section-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+        @media(min-width:720px){.category-grid,.chapter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(min-width:980px){.chapter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+        @media(min-width:1040px){.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+    </style>
+</head>
+<body>
+<header class="app-bar"><div class="app-bar-title"><span>🏛️</span> Constitución de Yerikson Varela</div><a class="btn-back visible" href="Codigo de Yerikson.html" aria-label="Abrir Código de Yerikson Varela"><span>←</span> Código</a></header>
+<div id="page">
+
+<div id="sec-home" class="section home-section active">
+    <div class="home-header hero-shell">
+        <span class="section-kicker">Constitución de Yerikson Varela</span>
+        <span class="icon">🏛️</span>
+        <h1>Yerikson Varela</h1>
+        <p>El Código del Constructor</p>
+        <div class="hero-quote">“No soy solo una persona trabajadora y creativa. Soy una persona que entiende la construcción como una cuestión de verdad, dignidad, utilidad y honor.”</div>
+        <p class="doc-note">Este archivo contiene la lectura canónica, filosófica e identitaria del sistema. Aquí se conserva el cuerpo completo del documento; el archivo operativo queda reservado para práctica diaria, seguimiento y métricas.</p>
+        <p class="hero-copy">La lectura ya no cae sobre una masa continua de bloques. Primero aparece el mapa general, luego cada familia abre sus propios subbloques y finalmente el texto completo conserva su peso sin perder orientación.</p>
+        <div class="doc-sign">Archivo canónico · YAVL / Yerikson Varela</div>
+        <div class="hero-actions">
+            <button class="action-btn" type="button" data-target="cat-nucleo">Abrir Núcleo Constitucional</button>
+            <button class="subtle-btn" type="button" data-target="sec-oath">Ir al Juramento</button>
+            <button class="subtle-btn" type="button" data-target="sec-norte">Ver Mi Norte</button>
+        </div>
+        <div class="section-grid category-grid" role="list" aria-label="Categorías maestras de la Constitución">
+            <article class="section-card category-card featured" role="listitem">
+                <div class="section-card-head">
+                    <div class="section-card-icon">⚖️</div>
+                    <div>
+                        <h3>Núcleo Constitucional</h3>
+                        <p>El corazón del sistema: leyes, prohibiciones, acciones correctas, frases y juramento.</p>
+                    </div>
+                </div>
+                <div class="category-list">
+                    <span class="category-chip">Código de Yerikson Varela</span>
+                    <span class="category-chip">Prohibiciones</span>
+                    <span class="category-chip">Lo que sí hacer</span>
+                    <span class="category-chip">Frases Maestras</span>
+                    <span class="category-chip">Juramento</span>
+                </div>
+                <div class="section-card-footer"><button class="section-cta" type="button" data-target="cat-nucleo">Ver núcleo</button></div>
+            </article>
+
+            <article class="section-card category-card" role="listitem">
+                <div class="section-card-head">
+                    <div class="section-card-icon">🧭</div>
+                    <div>
+                        <h3>Identidad y Dirección</h3>
+                        <p>La parte que define quién eres, qué no debes traicionar y hacia dónde apunta tu vida.</p>
+                    </div>
+                </div>
+                <div class="category-list">
+                    <span class="category-chip">Mi Norte</span>
+                    <span class="category-chip">Perfil Maestro</span>
+                </div>
+                <div class="section-card-footer"><button class="section-cta" type="button" data-target="cat-identidad">Explorar identidad</button></div>
+            </article>
+
+            <article class="section-card category-card" role="listitem">
+                <div class="section-card-head">
+                    <div class="section-card-icon">🧠</div>
+                    <div>
+                        <h3>Lectura y Criterio</h3>
+                        <p>Psicología, estrategia y filosofía para interpretar la realidad sin deformarla.</p>
+                    </div>
+                </div>
+                <div class="category-list">
+                    <span class="category-chip">Psicología y Estrategia</span>
+                    <span class="category-chip">El Hombre Seguro</span>
+                    <span class="category-chip">El Constructor</span>
+                </div>
+                <div class="section-card-footer"><button class="section-cta" type="button" data-target="cat-criterio">Leer bloque</button></div>
+            </article>
+
+            <article class="section-card category-card" role="listitem">
+                <div class="section-card-head">
+                    <div class="section-card-icon">📘</div>
+                    <div>
+                        <h3>Aplicación Contextual</h3>
+                        <p>Guías de vida separadas por contexto para no mezclar criterio relacional con lectura filosófica.</p>
+                    </div>
+                </div>
+                <div class="category-list">
+                    <span class="category-chip">Soltero</span>
+                    <span class="category-chip">En Pareja</span>
+                    <span class="category-chip">Social</span>
+                    <span class="category-chip">Mensajes</span>
+                    <span class="category-chip">Regalos</span>
+                    <span class="category-chip">Cartas</span>
+                </div>
+                <div class="section-card-footer"><button class="section-cta" type="button" data-target="cat-aplicacion">Abrir categoría</button></div>
+            </article>
+        </div>
+    </div>
+</div>
+
+<div id="cat-nucleo" class="section category-section">
+    <div class="category-shell">
+        <span class="section-kicker">Categoría Maestra</span>
+        <div class="category-shell-head">
+            <div class="category-shell-icon">⚖️</div>
+            <div>
+                <h2>Núcleo Constitucional</h2>
+                <p>Este es el centro del documento. Aquí viven las leyes, los límites, las acciones correctas, las frases y el juramento que sostienen todo lo demás.</p>
+            </div>
+        </div>
+        <div class="panel-actions"><button class="subtle-btn" type="button" data-target="sec-home">Volver al mapa</button></div>
+        <div class="chapter-grid" role="list" aria-label="Bloques del núcleo constitucional">
+            <a class="chapter-link" href="#sec-codigo" role="listitem"><small>Código de Yerikson Varela</small><strong>Leyes de Carácter y de Construcción</strong><span>El corazón normativo del sistema y la parte que no debe perder protagonismo.</span></a>
+            <a class="chapter-link" href="#sec-prohibitions" role="listitem"><small>Límites</small><strong>Prohibiciones</strong><span>Lo que un hombre de honor no negocia, aunque le convenga a corto plazo.</span></a>
+            <a class="chapter-link" href="#sec-si" role="listitem"><small>Acción Correcta</small><strong>Lo que sí hacer</strong><span>Conductas que construyen presencia, forma, trabajo y trato real.</span></a>
+            <a class="chapter-link" href="#sec-frases" role="listitem"><small>Memoria</small><strong>Frases Maestras</strong><span>Recordatorios breves para volver al eje cuando el día se desordena.</span></a>
+            <a class="chapter-link" href="#sec-oath" role="listitem"><small>Compromiso</small><strong>Juramento</strong><span>La forma explícita de asumir el código como camino y no como decoración.</span></a>
+        </div>
+    </div>
+</div>
+
+<div id="sec-codigo" class="section">
+    <div class="s-head"><span class="section-kicker">Núcleo Constitucional</span><span class="icon">⚖️</span><h1>Código de Yerikson Varela</h1><p>Las leyes no son decoración. Son la parte del sistema que debe seguir siendo verdad aunque mañana no abras una pantalla.</p></div>
+    <div class="card"><h2>Lectura del Núcleo</h2><span class="card-sub">Primero la ley. Después la práctica. Luego la interpretación.</span><p>Esta sección reúne el corazón del documento: las leyes de carácter y las leyes de construcción. Todo lo demás existe para aplicarlas, medirlas, recordarlas o profundizarlas.</p></div>
+    <div id="laws-character" class="section-divider"><span class="section-divider-icon">⚔️</span><span class="section-divider-text">Leyes de Carácter</span></div>
+<!-- LAS 10 LEYES -->
+    <div class="card">
+        <h2>Las 12 Leyes del Honor</h2>
+        <span class="card-sub">Principios inquebrantables para cada día</span>
+    </div>
+
+    <div class="card"><h2><span class="num">1</span>Puntualidad Absoluta</h2><span class="card-sub">"El dominio del tiempo es el dominio de uno mismo"</span><p>Si quedas a una hora, llegas 10 minutos antes. Siempre. Sin excusas. Llegar tarde es decirle al otro que su tiempo no vale. Si vas a retrasarte, avisas antes de la hora, nunca después.</p><div class="rule-box"><p>"Mi puntualidad es la primera muestra de respeto. Si no respeto el tiempo del otro, no merezco su presencia."</p></div></div>
+
+    <div class="card"><h2><span class="num">2</span>Cuidado Personal</h2><span class="card-sub">"Presentarse limpio y ordenado es honrar a quien te recibe"</span><p>Cada vez que te presentes ante alguien importante, hazlo limpio, arreglado y presentable. No se trata de ropa cara sino de respeto. Baño, ropa limpia, uñas cortadas, cabello ordenado. Sin negociación.</p><div class="rule-box"><p>"Me arreglo porque valoro a quien tengo enfrente. No es vanidad, es disciplina."</p></div></div>
+
+    <div class="card"><h2><span class="num">3</span>Consideración Constante</h2><span class="card-sub">"Antes de actuar, piensa en cómo afecta al otro"</span><p>Anticipa las necesidades de los demás. No esperes a que te pidan ayuda. No esperes a que te digan qué les molesta. Observa, piensa, actúa. La consideración silenciosa vale más que mil palabras.</p><div class="rule-box"><p>"No necesito que me pidan las cosas. Me anticipo porque me importa."</p></div></div>
+
+    <div class="card"><h2><span class="num">4</span>Leer el Ambiente</h2><span class="card-sub">"Los ojos hablan más que las palabras"</span><p>Aprende a percibir el estado emocional de quienes te rodean sin que te lo digan. Si alguien está callado, distingue si está cansado, molesto o tranquilo. Esta habilidad es la forma más alta de inteligencia emocional.</p><div class="rule-box"><p>"Escucho lo que no se dice. Observo lo que no se muestra. Entiendo lo que no se explica."</p></div></div>
+
+    <div class="card"><h2><span class="num">5</span>Cada Momento es Único</h2><span class="card-sub">"Este instante no se repetirá jamás"</span><p>Cada conversación, cada encuentro, cada rato compartido es irrepetible. No mires el teléfono cuando alguien te habla. No pienses en lo que viene después. Vive el ahora con intensidad total.</p><div class="rule-box"><p>"Este momento no volverá. Lo vivo con todo lo que tengo."</p></div></div>
+
+    <div class="card"><h2><span class="num">6</span>Paciencia Inquebrantable</h2><span class="card-sub">"La resistencia silenciosa forja el carácter"</span><p>No te apresures. No te frustres. No te rindas. Las cosas buenas toman tiempo. Si hoy no se dio, mañana será otro día. La paciencia no es esperar sin hacer nada, es seguir construyendo mientras el momento llega.</p><div class="rule-box"><p>"La paciencia no es debilidad. Es la fuerza de quien sabe que su momento llegará."</p></div></div>
+
+    <div class="card"><h2><span class="num">7</span>Honestidad Total</h2><span class="card-sub">"La verdad es el cimiento de todo lo que construyas"</span><p>Sé siempre honesto. Ni mentiras pequeñas ni grandes. No aparentes ser algo que no eres. Si prometiste algo, cúmplelo. Si te equivocaste, admítelo. Tu palabra es tu honor.</p><div class="rule-box"><p>"Prefiero una verdad incómoda que una mentira cómoda. Mi palabra vale oro."</p></div></div>
+
+    <div class="card"><h2><span class="num">8</span>Gratitud Permanente</h2><span class="card-sub">"Nada es obligación de nadie. Todo es un regalo"</span><p>Agradece cada gesto, cada comida, cada momento compartido. No des nada por hecho. La persona que cocina para ti, que te escucha, que te abre su puerta no tiene que hacerlo. Valora cada acto con palabras y acciones.</p><div class="rule-box"><p>"Todo lo que recibo es un regalo que no merezco pero que valoro con el alma."</p></div></div>
+
+    <div class="card"><h2><span class="num">9</span>Autocontrol Total</h2><span class="card-sub">"La verdadera fuerza se mide en la calma, no en el grito"</span><p>Controla tus emociones. No explotes. No hagas escenas. No levantes la voz. Si sientes celos, respira y piensa antes de actuar. Si algo te molesta, procésalo internamente antes de expresarlo. La calma es poder.</p><div class="rule-box"><p>"Mi fuerza no se mide por cuánto grito, sino por cuánto me controlo cuando quiero gritar."</p></div></div>
+
+    <div class="card"><h2><span class="num">10</span>Acciones Sobre Palabras</h2><span class="card-sub">"El amor, el respeto y el compromiso se demuestran haciendo"</span><p>Cualquiera dice cosas bonitas. La diferencia está en quien las respalda con hechos. No digas "me importas" si no lo demuestras. No digas "te apoyo" si no estás presente. Las palabras sin acciones son ruido vacío.</p><div class="rule-box"><p>"Cualquiera habla. Yo demuestro. Mis acciones son mi idioma."</p></div></div>
+
+    <div class="card"><h2><span class="num">11</span>Presencia Sobre Pantalla</h2><span class="card-sub">"Si puedes estar ahí, estar ahí vale más que cualquier mensaje"</span><p>Las relaciones se construyen mirándose a los ojos, compartiendo tiempo, sosteniendo silencios y apareciendo cuando importa. La pantalla sirve, pero nunca debe reemplazar lo presencial cuando lo presencial es posible.</p><div class="rule-box"><p>"No me escondo detrás de una pantalla. Si puedo estar ahí, estoy ahí."</p></div></div>
+
+    <div class="card"><h2><span class="num">12</span>Coraje con Calma</h2><span class="card-sub">"La valentía limpia no hace drama, pero tampoco se esconde"</span><p>El miedo no desaparece solo porque esperes más. Hay momentos en los que la calma debe caminar junto al coraje. No se trata de actuar por impulso, sino de dar el paso cuando ya existe claridad suficiente.</p><div class="rule-box"><p>"La valentía no es ausencia de miedo. Es actuar con calma cuando ya no hay excusa digna para seguir postergando."</p></div></div>
+    <div id="laws-build" class="section-divider"><span class="section-divider-icon">🏛️</span><span class="section-divider-text">Leyes de Construcción</span></div>
+<div class="card">
+        <h2>Hacer y Construir</h2>
+        <p>Hacer puede ser cumplir una tarea. Construir es dejar algo mejor, más firme y más útil de como estaba antes. Hacer termina cuando acabas. Construir sigue hablando de ti incluso después.</p>
+        <div class="rule-box"><p>"No quiero solo terminar cosas. Quiero levantar cosas que valgan la pena."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>La Calidad como Respeto</h2>
+        <p>La calidad no es lujo ni adorno. Es respeto hacia quien va a usar lo que haces, hacia el tiempo invertido y hacia tu propio nombre. Cuando entregas algo descuidado, también entregas una versión descuidada de ti.</p>
+        <div class="rule-box"><p>"La calidad es respeto visible."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>La Responsabilidad de Saber Crear</h2>
+        <p>Si sabes construir, tienes una obligación mayor que quien solo consume. Tu capacidad no existe para alimentar ego, sino para resolver, sostener y abrir caminos. El talento sin servicio se vuelve estéril.</p>
+        <div class="rule-box"><p>"Si sé crear, tengo el deber de crear con responsabilidad."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>Silencio y Dignidad al Mostrar</h2>
+        <p>Construir en silencio fortalece el fondo. Pero mostrar con dignidad permite que la obra cumpla su función y encuentre a quien le sirve. Presumir es inflarte. Mostrar con honor es dejar que la verdad respire.</p>
+        <div class="rule-box"><p>"No hago ruido para parecer grande. Muestro lo verdadero para que no se pierda."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>La Obra como Espejo</h2>
+        <p>Todo lo que haces termina revelándote: tu nivel de paciencia, tu limpieza mental, tu seriedad, tu respeto por el detalle y tu forma de responder a la realidad. La obra no miente. Por eso también educa a su creador.</p>
+        <div class="rule-box"><p>"Mi obra termina diciendo quién soy, incluso cuando yo no hablo."</p></div>
+    </div>
+</div>
+<!-- ==================== PROHIBICIONES ==================== -->
+<div id="sec-prohibitions" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="icon">🚫</span>
+        <h1>Prohibiciones</h1>
+        <p>Reglas que un hombre de honor no negocia</p>
+    </div>
+
+    <div class="card">
+        <h2>Lo que no hacer</h2>
+        <span class="card-sub">Prohibiciones que un hombre de honor no negocia</span>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Mentir.</strong> Ni por conveniencia, ni por comodidad, ni para quedar bien. La mentira destruye la confianza de raíz.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Manipular.</strong> No uses información, emociones ni silencios como instrumentos de control.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Hablar de más.</strong> No todo lo que piensas debe decirse. No toda reunión necesita tu opinión.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Humillarte por atención.</strong> No cambies quién eres para que alguien te note. Eso no es conexión, es actuación.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Rogar amor o validación.</strong> Tu valor no depende de cuánto te aprueben. Quien tiene que verlo lo verá sin que lo supliques.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Competir por la atención de alguien contra personas que no saben que compites.</strong> Crear una rivalidad mental con quien solo ocupa su lugar natural es degradarte.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Sentir celos de un familiar o amigo que cumple su rol natural.</strong> No todo vínculo ajeno te desplaza. Cada relación tiene su lugar.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Construir narrativas de rechazo basadas en suposiciones sin pruebas.</strong> Lo que imaginas con miedo no se vuelve verdad por repetirlo mucho.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Dejar que tu paz dependa del tiempo de respuesta de otra persona.</strong> Si un silencio ajeno decide tu valor, aún no estás sosteniendo tu centro.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Confundir observación con vigilancia emocional.</strong> Observar aclara. Vigilar te obsesiona, te deforma y te vuelve esclavo de una narrativa.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Actuar por impulso.</strong> Las decisiones tomadas desde la rabia, el miedo o la euforia suelen salir caras.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Perder tiempo en vicios.</strong> Nada que te embote, te degrade o te haga perder el control tiene cabida aquí.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Prometer lo que no cumplirás.</strong> Cada promesa rota es una deuda de carácter que pagas con reputación.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Entregar algo sin alma por cumplir un plazo.</strong> La prisa puede explicar un límite, pero nunca justificar una obra vacía.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Inflar resultados para impresionar.</strong> Lo falso puede impresionar un rato, pero degrada el nombre de quien lo firma.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Copiar sin entender ni hacer propio.</strong> Repetir una forma sin fondo no es construir: es disfrazarte de alguien que no eres.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Construir solo para ti cuando puedes construir para otros.</strong> Si tienes la capacidad de abrir refugio, encerrarte por puro ego es una falta.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Traicionar tus principios.</strong> Ni por dinero, ni por presión social, ni por comodidad momentánea.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Descuidar cuerpo y mente.</strong> Lo que no cuidas se deteriora. Descanso, higiene, salud y claridad mental no son opcionales.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Responder con desesperación.</strong> Cuando sientas urgencia de reaccionar, espera. Casi siempre ese impulso es un error.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Buscar aprobación de cualquiera.</strong> No todo el mundo tiene autoridad moral para juzgarte. Elige a quiénes escuchas.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Caer en chismes.</strong> Si no lo dices frente a quien se trata, no lo digas. Punto.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Ser desordenado.</strong> El desorden en los espacios es desorden en la vida. No es comodidad, es negligencia.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Justificar la debilidad voluntaria.</strong> Hay situaciones difíciles. Pero si fallaste porque no quisiste esforzarte, eso no tiene excusa.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Abandonar el propósito.</strong> Los momentos de duda no son una señal para rendirse. Son una prueba del camino.</span></div>
+    </div>
+</div>
+<!-- ==================== LO QUE SÍ HACER ==================== -->
+<div id="sec-si" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="icon">✅</span>
+        <h1>Lo que sí hacer</h1>
+        <p>Acciones que construyen tu carácter</p>
+    </div>
+
+    <div class="card">
+        <h2>Compromisos diarios</h2>
+        <span class="card-sub">Un hombre de honor hace esto cada día</span>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Decir siempre la verdad.</strong> Aunque incomode. La honestidad es la base de toda credibilidad.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Cumplir la palabra dada.</strong> Si lo dices, lo haces. Sin excepciones.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Respetar el tiempo de los demás.</strong> Llegar antes. Avisar si hay cambios. Nunca hacer esperar sin causa.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Cuidar la presencia física.</strong> Limpio, ordenado y presentable. Siempre. No por vanidad, sino por respeto.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Actuar con disciplina.</strong> Hacer lo que toca aunque no se tenga ganas. El carácter se construye en los días grises.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Mantener el autocontrol.</strong> Calma bajo presión. Pensar antes de hablar. Nunca actuar desde el impulso.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Estudiar y crecer sin parar.</strong> Leer, aprender, mejorar. La ignorancia nunca es excusa.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Trabajar con propósito.</strong> No solo para ganar dinero, sino para construir algo que valga la pena.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Tratar cada proyecto como extensión de tu nombre.</strong> Lo que entregas también habla de tu carácter.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Exigirte calidad aunque nadie la revise.</strong> La dignidad no depende de auditoría externa.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Mostrar tu trabajo sin vergüenza pero sin arrogancia.</strong> La obra honesta merece luz, no espectáculo.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Construir con la intención de que otros se beneficien.</strong> La utilidad humana eleva el valor de cualquier esfuerzo.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Dejar la obra mejor de como la encontraste.</strong> Cada intervención tuya debe elevar, no empobrecer.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Construir seguridad basada en tu valor real, no en validación externa.</strong> Tu centro no puede depender de una respuesta, de una ausencia ni de una comparación.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Distinguir entre análisis real y tortura mental disfrazada de reflexión.</strong> Si pensar te da más ansiedad que claridad, no estás analizando: te estás hiriendo.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Aceptar que las personas tienen múltiples relaciones y roles que no te excluyen.</strong> El lugar de otros no borra el tuyo cuando tu presencia es limpia y real.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Responder al silencio con dignidad, no con ansiedad.</strong> No rellenes el vacío con miedo. Espera, observa y actúa solo desde calma.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Preguntarte si lo que sientes tiene pruebas o solo tiene miedo detrás.</strong> La honestidad contigo mismo empieza por separar hecho, interpretación y herida.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Escuchar más, hablar con intención.</strong> Cada palabra que dices debe tener peso. El silencio también comunica.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Respetar a todos.</strong> A los mayores, a los iguales, a quienes tienen menos. El respeto no es selectivo.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Mantener el orden.</strong> En tu cuarto, en tu mente, en tu agenda. El orden externo refleja el orden interno.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Actuar con calma.</strong> La serenidad es una herramienta, no una debilidad. Las mejores decisiones se toman en frío.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Honrar a la familia.</strong> Los que te criaron merecen gratitud, presencia y respeto. No lo des por hecho.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Proteger tu reputación.</strong> Lo que haces cuando nadie mira define quién eres realmente.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Resolver con hechos, no con palabras.</strong> Los problemas se enfrentan, no se evaden.</span></div>
+        <div class="val-item"><span class="val-icon">✔️</span><span class="val-text"><strong>Sostener la dignidad bajo presión.</strong> Cuando todo se complica, tu carácter es lo único que no puedes perder.</span></div>
+    </div>
+</div>
+<!-- ==================== FRASES MAESTRAS ==================== -->
+<div id="sec-frases" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="icon">📜</span>
+        <h1>Frases Maestras</h1>
+        <p>Las verdades que guían cada decisión</p>
+    </div>
+
+    <div class="card">
+        <h2>Frases para recordar</h2>
+        <span class="card-sub">Repítelas hasta que vivan en ti</span>
+        <div class="rule-box"><p>"La disciplina protege lo que el impulso destruye."</p></div>
+        <div class="rule-box"><p>"Mi palabra tiene peso. La cuido como cuido mi nombre."</p></div>
+        <div class="rule-box"><p>"La calma también es poder. El silencio también es carácter."</p></div>
+        <div class="rule-box"><p>"El respeto empieza conmigo. No puedo exigirlo afuera si no lo vivo adentro."</p></div>
+        <div class="rule-box"><p>"No negocio mis principios. Ni por conveniencia, ni por presión, ni por pertenencia."</p></div>
+        <div class="rule-box"><p>"Primero el deber, luego el placer. Siempre."</p></div>
+        <div class="rule-box"><p>"El carácter se demuestra en silencio, no en discurso."</p></div>
+        <div class="rule-box"><p>"La verdad no necesita adornos. Si requiere muchas explicaciones, algo falla."</p></div>
+        <div class="rule-box"><p>"No persigo. Construyo. Lo que vale la pena llega a lo que está bien construido."</p></div>
+        <div class="rule-box"><p>"La dignidad no se suplica. O la sostienes o la pierdes."</p></div>
+        <div class="rule-box"><p>"Actúa de forma que puedas mirarte al espejo sin explicaciones."</p></div>
+        <div class="rule-box"><p>"El hombre serio no hace teatro. Hace lo que dijo que haría."</p></div>
+        <div class="rule-box"><p>"Lo que construyo con mis manos lleva mi nombre aunque nadie lo firme."</p></div>
+        <div class="rule-box"><p>"No decoro la realidad. La respeto tal como es."</p></div>
+        <div class="rule-box"><p>"Mostrar mi obra no es presumir. Esconderla es desperdiciarla."</p></div>
+        <div class="rule-box"><p>"La calidad no es un lujo. Es la forma más básica de respeto hacia quien va a usar lo que hago."</p></div>
+        <div class="rule-box"><p>"Construyo catedrales, no carpas. Lo que levanto tiene que aguantar el tiempo."</p></div>
+        <div class="rule-box"><p>"Mi exigencia no es perfeccionismo. Es dignidad aplicada."</p></div>
+        <div class="rule-box"><p>"No compito por atención. Construyo valor. Lo que vale de verdad no necesita que los demás se aparten para ser visto."</p></div>
+        <div class="rule-box"><p>"Mi seguridad no depende de un mensaje. Depende de lo que sé que soy."</p></div>
+        <div class="rule-box"><p>"Los celos no protegen lo que amas. Lo ahogan."</p></div>
+        <div class="rule-box"><p>"Si construyo una narrativa sin pruebas, estoy escribiendo ficción, no analizando realidad."</p></div>
+        <div class="rule-box"><p>"El hombre seguro no necesita ser el único en la vida de alguien. Necesita saber que tiene su propio lugar."</p></div>
+        <div class="rule-box"><p>"La calma ante el silencio es la prueba más real de seguridad interna."</p></div>
+    </div>
+</div>
+<!-- ==================== JURAMENTO ==================== -->
+<div id="sec-oath" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="icon">✍️</span>
+        <h1>El Juramento</h1>
+        <p>Un compromiso contigo mismo</p>
+    </div>
+
+    <div class="card">
+        <h2>Principios Filosóficos</h2>
+        <div class="val-item"><span class="val-icon">☯️</span><span class="val-text"><strong>Armonía</strong> La relación con el mundo debe ser un espacio de paz y equilibrio. Evita conflictos innecesarios. El bienestar colectivo está por encima del ego.</span></div>
+        <div class="val-item"><span class="val-icon">💭</span><span class="val-text"><strong>Corazón a Corazón</strong> La conexión profunda con alguien trasciende las palabras. Aspira a entender sin que te expliquen.</span></div>
+        <div class="val-item"><span class="val-icon">🌸</span><span class="val-text"><strong>Vulnerabilidad con Confianza</strong> Permitirte ser vulnerable con quien amas no es debilidad. Es la forma más pura de confianza.</span></div>
+        <div class="val-item"><span class="val-icon">🧭</span><span class="val-text"><strong>El Camino</strong> La vida no es un destino sino un camino. La disciplina diaria es lo que construye el carácter.</span></div>
+    </div>
+
+    <div class="oath">
+        <p>Asumo este código no porque alguien me obligue,<br>sino porque quiero ser el mejor hombre que puedo ser.<br><br>Para la persona que amo,<br>para mi comunidad,<br>para mi familia,<br>y para mí mismo.<br><br>Este es mi camino.<br><br>Mi puntualidad es mi respeto.<br>Mi aseo es mi disciplina.<br>Mi paciencia es mi fortaleza.<br>Mi honestidad es mi escudo.<br>Mi gratitud es mi humildad.<br>Mis acciones son mi idioma.<br>Mi disciplina es mi estructura.<br>Mi fuego es mi motor.<br>Mi presencia es mi verdad.<br>No me escondo detrás de una pantalla.<br>No confundo paciencia con cobardía.<br>Cuando debo actuar, actúo.<br>Lo que construyo lleva mi nombre aunque nadie lo vea.<br>No decoro, no inflo, no finjo.<br>Mi obra es mi verdad.<br>Lo que hago tiene que servir de verdad o no lo hago.<br>Construyo para que otros puedan entrar.<br><br>Hoy y todos los días que vengan.</p>
+        <div class="sep"></div>
+        <div class="sign">Firmado con honor</div>
+    </div>
+
+    <div class="card">
+        <h2>Recordatorio Final</h2>
+        <div class="rule-box"><p>Este código no es solo para una relación. Es para tu vida entera. El hombre que sigue estas reglas se convierte en alguien que cualquier persona respeta y admira. No porque busque admiración, sino porque su disciplina habla por él.</p></div>
+    </div>
+</div>
+<!-- ==================== MI NORTE ==================== -->
+<div id="cat-identidad" class="section category-section">
+    <div class="category-shell">
+        <span class="section-kicker">Categoría Maestra</span>
+        <div class="category-shell-head">
+            <div class="category-shell-icon">🧭</div>
+            <div>
+                <h2>Identidad y Dirección</h2>
+                <p>Aquí no se repiten reglas ni tácticas. Aquí se conserva la parte que responde quién eres, qué no debes traicionar y hacia dónde debe apuntar tu vida.</p>
+            </div>
+        </div>
+        <div class="panel-actions"><button class="subtle-btn" type="button" data-target="sec-home">Volver al mapa</button></div>
+        <div class="chapter-grid" role="list" aria-label="Bloques de identidad y dirección">
+            <a class="chapter-link" href="#sec-norte" role="listitem"><small>Dirección</small><strong>Mi Norte</strong><span>Raíz, palabra, legado, dignidad, verdad, coraje, seguridad y refugio.</span></a>
+            <a class="chapter-link" href="#sec-perfil" role="listitem"><small>Identidad</small><strong>Perfil Maestro</strong><span>La definición estructural del tipo de constructor que eres y del criterio que no debes traicionar.</span></a>
+        </div>
+    </div>
+</div>
+
+<div id="sec-norte" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="icon">🧭</span>
+        <h1>Mi Norte</h1>
+        <p>Lo que soy, de dónde vengo y hacia dónde voy</p>
+    </div>
+
+    <div class="identity-grid">
+
+        <div class="identity-card">
+            <span class="card-icon">🌾</span>
+            <div class="card-title">Tierra</div>
+            <p class="card-copy">Vengo del campo y lo llevo puesto. La tierra enseña que sin esfuerzo no hay cosecha. No se negocia con ella. Se trabaja.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🛠️</span>
+            <div class="card-title">Trabajo</div>
+            <p class="card-copy">El trabajo honra. No importa si es con las manos o con la mente. Lo que construyo con disciplina vale más que lo que recibo sin esfuerzo.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">👨‍👩‍👦</span>
+            <div class="card-title">Familia</div>
+            <p class="card-copy">Mi familia es mi raíz. Sus sacrificios son la razón de mi enfoque. Lo que construya tiene que valer lo que ellos invirtieron en mí.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">📜</span>
+            <div class="card-title">Palabra</div>
+            <p class="card-copy">Mi palabra es un contrato. Si lo dije, lo cumplo. Si no puedo, lo digo antes. La reputación se construye promesa por promesa.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🧱</span>
+            <div class="card-title">Construcción</div>
+            <p class="card-copy">No busco resultados rápidos. Construyo despacio, con criterio. Lo que se construye bien, dura. Lo que se improvisa, se cae.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🛡️</span>
+            <div class="card-title">Dignidad</div>
+            <p class="card-copy">No vendo mi dignidad por aprobación, por comodidad ni por pertenencia. Es lo último que se negocia, porque una vez perdida, cuesta todo recuperarla.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">⏳</span>
+            <div class="card-title">Paciencia</div>
+            <p class="card-copy">El campo no da fruto en un día. Tampoco ningún proyecto serio. Espero con trabajo activo, no con cruce de brazos.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🌱</span>
+            <div class="card-title">Propósito</div>
+            <p class="card-copy">Cada cosa que hago tiene que tener un para qué. Trabajo con visión, no solo con emoción. El propósito da dirección cuando la energía flaquea.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🔥</span>
+            <div class="card-title">Disciplina</div>
+            <p class="card-copy">La disciplina no es castigo. Es la diferencia entre lo que deseo y lo que logro. Hago lo que debo aunque no tenga ganas. Eso me define.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🧭</span>
+            <div class="card-title">Legado</div>
+            <p class="card-copy">Quiero dejar algo real. Algo que otros puedan ver, tocar o usar. No busco ser recordado, busco haber hecho algo que valió la pena.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">⚖️</span>
+            <div class="card-title">Fusión</div>
+            <p class="card-copy">No quiero ser rígido ni desbordado. Quiero unir disciplina oriental, fuego latino y raíces propias en una sola forma de vivir: sobria, cálida, presente y firme.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🔎</span>
+            <div class="card-title">Verdad</div>
+            <p class="card-copy">Lo falso, lo inflado y lo vacío me repelen porque degradan el fondo de cualquier obra. Prefiero la realidad firme a la apariencia brillante.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🚪</span>
+            <div class="card-title">Coraje</div>
+            <p class="card-copy">No voy a esconderme detrás de la espera eterna. Cuando todo esté suficientemente claro, limpio y digno, daré el paso aunque el miedo sugiera dejarlo para mañana.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🛡️</span>
+            <div class="card-title">Seguridad</div>
+            <p class="card-copy">Mi valor no sube ni baja según me respondan. Lo que soy no cambia por un silencio, por una ausencia ni por la presencia de otros. Mi seguridad se construye por dentro, ladrillo por ladrillo, día por día.</p>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">⛪</span>
+            <div class="card-title">Refugio</div>
+            <p class="card-copy">Quiero construir algo donde otros puedan entrar, aprender, crecer o apoyarse. La obra más digna no solo brilla: también cobija.</p>
+        </div>
+
+    </div>
+</div>
+<!-- ==================== PSICOLOGÍA Y ESTRATEGIA ==================== -->
+<div id="cat-criterio" class="section category-section">
+    <div class="category-shell">
+        <span class="section-kicker">Categoría Maestra</span>
+        <div class="category-shell-head">
+            <div class="category-shell-icon">🧠</div>
+            <div>
+                <h2>Lectura y Criterio</h2>
+                <p>Esta familia reúne interpretación, estrategia y filosofía. No dicta reglas nuevas: enseña a leer la realidad, a vigilar tu mente y a entender mejor el fondo del carácter.</p>
+            </div>
+        </div>
+        <div class="panel-actions"><button class="subtle-btn" type="button" data-target="sec-home">Volver al mapa</button></div>
+        <div class="chapter-grid" role="list" aria-label="Bloques de lectura y criterio">
+            <a class="chapter-link" href="#sec-psicologia" role="listitem"><small>Interpretación</small><strong>Psicología y Estrategia</strong><span>Lectura de personas, trampas mentales, seguridad interna, principios e idiomas emocionales.</span></a>
+            <a class="chapter-link" href="#sec-filosofia" role="listitem"><small>Fondo</small><strong>Filosofía Profunda</strong><span>Paciencia, presencia, método, parálisis y la forma correcta de actuar con fondo.</span></a>
+            <a class="chapter-link" href="#filo-hombre" role="listitem"><small>Figura</small><strong>El Hombre Seguro</strong><span>Seguridad por dentro, celos, presencia sin posesión y prueba del espejo.</span></a>
+            <a class="chapter-link" href="#filo-constructor" role="listitem"><small>Figura</small><strong>El Constructor</strong><span>La obra, la calidad, la responsabilidad y la dignidad al mostrar lo construido.</span></a>
+        </div>
+    </div>
+</div>
+
+<div id="sec-psicologia" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Lectura y criterio</span>
+        <span class="icon">🧠</span>
+        <h1>Psicología y Estrategia</h1>
+        <p>No basta con controlarte: también debes leer personas, leer momentos y leerte a ti mismo.</p>
+    </div>
+
+    <div class="card inline-map">
+        <h2>Mapa de Lectura</h2>
+        <span class="card-sub">Entra por el subbloque que necesites sin perder el hilo general</span>
+        <div class="chapter-grid">
+            <a class="chapter-link" href="#psi-lectura"><small>Lectura</small><strong>Lectura de Personas</strong><span>Señales, ritmos y hechos que dicen más que las promesas.</span></a>
+            <a class="chapter-link" href="#psi-trampas"><small>Vigilancia</small><strong>Trampas Mentales</strong><span>Errores internos que parecen criterio, pero nacen del miedo.</span></a>
+            <a class="chapter-link" href="#psi-seguridad"><small>Centro</small><strong>Seguridad Interna</strong><span>Valor propio, paz ante el silencio y firmeza sin posesión.</span></a>
+            <a class="chapter-link" href="#psi-principios"><small>Estrategia</small><strong>Principios Estratégicos</strong><span>Cómo actuar con menos ruido y mejor lectura del momento.</span></a>
+            <a class="chapter-link" href="#psi-idiomas"><small>Calibración</small><strong>Idiomas Emocionales</strong><span>Cómo respetar la forma en que cada persona recibe mejor la verdad.</span></a>
+        </div>
+    </div>
+
+    <div id="psi-lectura" class="card">
+        <h2>Lectura de Personas</h2>
+        <span class="card-sub">Lo que alguien hace, evita o repite suele decir más que lo que promete.</span>
+        <div class="table-wrap"><table>
+            <tr><th>Señal</th><th>Qué puede significar</th><th>Lectura útil</th></tr>
+            <tr><td>Responde poco por teléfono pero te busca al verte</td><td>Su canal natural es presencial</td><td>No insistas por chat. Habla mejor cuando estén frente a frente.</td></tr>
+            <tr><td>Te cuenta cosas privadas sin que se las pidas</td><td>Hay confianza en crecimiento</td><td>Escucha con seriedad. No traiciones ese espacio con ligereza.</td></tr>
+            <tr><td>Cambia el tono cuando te tiene cerca</td><td>Tu presencia le mueve algo real</td><td>No lo arruines con sobreactuación. Mantén calma y claridad.</td></tr>
+            <tr><td>Te responde frío por mensaje pero cálido en persona</td><td>Lo digital no refleja toda su verdad</td><td>No construyas una novela a partir de la pantalla.</td></tr>
+            <tr><td>Recuerda detalles pequeños de ti</td><td>Está prestando atención de verdad</td><td>Responde con la misma calidad de atención, no con exceso.</td></tr>
+        </table></div>
+        <div class="rule-box"><p>"No leas solo palabras. Lee ritmos, repeticiones, silencios y hechos."</p></div>
+    </div>
+
+    <div id="psi-trampas" class="card">
+        <h2>Trampas Mentales</h2>
+        <span class="card-sub">Hay errores que parecen prudencia, pero en realidad son miedo disfrazado.</span>
+        <div class="val-item"><span class="val-icon">🕸️</span><span class="val-text"><strong>Sobreanálisis.</strong> Pensar demasiado una acción sencilla hasta volverla imposible.</span></div>
+        <div class="val-item"><span class="val-icon">🧱</span><span class="val-text"><strong>Perfeccionismo.</strong> Esperar el momento ideal como excusa para no exponerte nunca.</span></div>
+        <div class="val-item"><span class="val-icon">📱</span><span class="val-text"><strong>Dependencia del teléfono.</strong> Buscar claridad en una pantalla cuando la respuesta está en presentarte en persona.</span></div>
+        <div class="val-item"><span class="val-icon">⏳</span><span class="val-text"><strong>Espera pasiva.</strong> Llamar paciencia a quedarte quieto por miedo a actuar.</span></div>
+        <div class="val-item"><span class="val-icon">👁️</span><span class="val-text"><strong>El visto como ilusión.</strong> Un doble check no es una biografía, ni un juicio, ni una verdad completa.</span></div>
+        <div class="val-item"><span class="val-icon">🎭</span><span class="val-text"><strong>Autoengaño elegante.</strong> Decirte "estoy siendo estratégico" cuando en realidad estás evitando el riesgo.</span></div>
+        <div class="val-item"><span class="val-icon">👥</span><span class="val-text"><strong>La competencia fantasma.</strong> Crear un rival donde no existe. Sentir que alguien te roba atención cuando simplemente ocupa un rol distinto en la vida de esa persona. Cada quien tiene su lugar y el tuyo no depende de la ausencia de otros.</span></div>
+        <div class="val-item"><span class="val-icon">🩶</span><span class="val-text"><strong>Celos disfrazados de observación.</strong> Decir "estoy analizando" cuando en realidad alimentas inseguridad. El análisis te da calma; los celos te dejan ansiedad. Si pensar te empeora, no estabas analizando: te estabas torturando.</span></div>
+        <div class="val-item"><span class="val-icon">🧠</span><span class="val-text"><strong>La narrativa inventada.</strong> Construir una historia completa con información incompleta. Suponer rechazo, reemplazo o pérdida de lugar sin pruebas solo porque tu miedo llenó los huecos.</span></div>
+        <div class="val-item"><span class="val-icon">⚠️</span><span class="val-text"><strong>La urgencia artificial.</strong> Sentir que si no actúas ahora todo se pierde. Si mañana todo sigue igual, no era urgencia real: era ansiedad pidiendo protagonismo.</span></div>
+        <div class="val-item"><span class="val-icon">🎯</span><span class="val-text"><strong>El protagonismo como necesidad.</strong> Querer ser el centro de atención de alguien para sentirte valioso. La seguridad real no necesita que todos los demás se aparten.</span></div>
+        <div class="val-item"><span class="val-icon">⚖️</span><span class="val-text"><strong>La comparación destructiva.</strong> Medirte restándole valor a quienes rodean a la persona que te importa. Tu valor no crece empequeñeciendo el de otros.</span></div>
+        <div class="rule-box"><p>"Si una idea te inmoviliza, no te está protegiendo: te está encerrando."</p></div>
+    </div>
+
+    <div id="psi-seguridad" class="card">
+        <h2>Seguridad Interna</h2>
+        <span class="card-sub">La calma verdadera no nace de que te elijan. Nace de saber quién eres aunque nadie te esté validando hoy.</span>
+        <div class="rule-box"><p>"La seguridad no viene de que los demás te elijan. Viene de saber quién eres aunque nadie te elija. Si necesitas la validación constante de otra persona para sentirte valioso, cualquier silencio te destruye."</p></div>
+        <div class="val-item"><span class="val-icon">📩</span><span class="val-text"><strong>Tu valor no fluctúa con un visto.</strong> Lo que vales no sube cuando te responden rápido ni baja cuando tardan. Tu valor está en lo que construyes, en cómo tratas a los demás y en la disciplina con la que vives.</span></div>
+        <div class="val-item"><span class="val-icon">🪨</span><span class="val-text"><strong>Tu lugar no depende de la ausencia de otros.</strong> Si necesitas que todos desaparezcan para brillar, tu luz aún no es firme. El hombre seguro sostiene su lugar con o sin público.</span></div>
+        <div class="val-item"><span class="val-icon">⏳</span><span class="val-text"><strong>La paciencia del seguro vs la ansiedad del inseguro.</strong> El seguro espera con calma porque sabe lo que vale. El inseguro espera con ansiedad porque necesita confirmación. La diferencia no está en la espera, sino en lo que sientes dentro de ella.</span></div>
+        <div class="val-item"><span class="val-icon">🫱</span><span class="val-text"><strong>No confundas presencia con posesión.</strong> Querer estar presente en la vida de alguien es sano. Necesitar controlar quién más está presente es tóxico. Tu lugar se gana con valor, no se defiende con celos.</span></div>
+        <div class="val-item"><span class="val-icon">🌫️</span><span class="val-text"><strong>El silencio no es rechazo.</strong> Que alguien no escriba hoy no significa que ya no le importes. A veces el silencio es solo silencio, no un mensaje secreto contra ti.</span></div>
+        <div class="rule-box"><p>"La paz prestada por la validación se cae con el primer silencio."</p></div>
+    </div>
+
+    <div id="psi-principios" class="card">
+        <h2>Principios Estratégicos</h2>
+        <span class="card-sub">La estrategia sana no manipula: ordena tu energía para actuar mejor.</span>
+        <div class="table-wrap"><table>
+            <tr><th>Principio</th><th>Qué exige</th><th>Aplicación real</th></tr>
+            <tr><td>Acción mínima efectiva</td><td>Dejar de complicar lo simple</td><td>A veces el paso correcto es subir la cuesta y aparecer, no redactar otro mensaje.</td></tr>
+            <tr><td>Presencia sobre pantalla</td><td>Elegir el canal más humano</td><td>Si puedes estar ahí, estar ahí vale más que cualquier texto bien escrito.</td></tr>
+            <tr><td>Lectura inversa</td><td>Usar el canal que la otra persona sí abre</td><td>Si en persona es cálida y por chat no, deja de medir todo por mensajes.</td></tr>
+            <tr><td>No persecución</td><td>Dignidad sin pasividad</td><td>No ruegas atención, pero tampoco escondes tu valor en silencio eterno.</td></tr>
+            <tr><td>Calibración</td><td>Hablar el idioma emocional del otro</td><td>No todos necesitan lo mismo para sentirse escuchados, tranquilos o valorados.</td></tr>
+            <tr><td>El momento</td><td>Actuar sin teatro ni demora cobarde</td><td>El mejor momento no es perfecto: es suficientemente limpio, claro y real.</td></tr>
+        </table></div>
+        <div class="rule-box"><p>"La mejor estrategia no es la más compleja. Es la que te hace actuar mejor y a tiempo."</p></div>
+    </div>
+
+    <div id="psi-idiomas" class="card">
+        <h2>Idiomas Emocionales</h2>
+        <span class="card-sub">Adaptarte no es perderte. Es respetar cómo el otro recibe mejor la verdad.</span>
+        <div class="table-wrap"><table>
+            <tr><th>Tipo de persona</th><th>Qué valora</th><th>Cómo acercarte sin perder esencia</th></tr>
+            <tr><td>Reservada</td><td>Calma, espacio y seguridad</td><td>Habla claro, sin invadir. Demuestra constancia con serenidad.</td></tr>
+            <tr><td>Directa</td><td>Verdad sin rodeos</td><td>Di lo que sientes con respeto, sin discursos interminables.</td></tr>
+            <tr><td>Emocional</td><td>Tono, atención y presencia</td><td>No respondas como máquina. Mira, escucha y valida sin exagerar.</td></tr>
+            <tr><td>Práctica</td><td>Hechos, soluciones y orden</td><td>Menos promesas, más acciones concretas y seguimiento real.</td></tr>
+            <tr><td>Espontánea</td><td>Vida, calor y movimiento</td><td>No intentes controlar todo. Deja espacio a lo vivo y al momento.</td></tr>
+        </table></div>
+        <div class="rule-box"><p>"No todos aman igual, no todos expresan igual, no todos escuchan igual. El criterio está en notar eso a tiempo."</p></div>
+    </div>
+</div>
+<!-- ==================== FILOSOFÍA PROFUNDA ==================== -->
+<div id="sec-filosofia" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Fondo del carácter</span>
+        <span class="icon">💎</span>
+        <h1>Filosofía Profunda</h1>
+        <p>Reflexiones para no confundir método con rigidez, ni paciencia con miedo, ni preparación con fuga.</p>
+    </div>
+
+    <div class="card inline-map">
+        <h2>Mapa Filosófico</h2>
+        <span class="card-sub">Base conceptual primero; luego las dos figuras que organizan el criterio</span>
+        <div class="chapter-grid">
+            <a class="chapter-link" href="#filo-base"><small>Base</small><strong>Fondo Filosófico</strong><span>Paciencia, presencia, método, espontaneidad y coraje silencioso.</span></a>
+            <a class="chapter-link" href="#filo-hombre"><small>Figura</small><strong>El Hombre Seguro</strong><span>Seguridad interna, celos, rival imaginario y presencia sin posesión.</span></a>
+            <a class="chapter-link" href="#filo-constructor"><small>Figura</small><strong>El Constructor</strong><span>Calidad, responsabilidad y obra como espejo del carácter.</span></a>
+        </div>
+    </div>
+
+    <div id="filo-base" class="card">
+        <h2>Paciencia y Cobardía</h2>
+        <p>La paciencia prepara, observa y actúa cuando el momento lo pide. La cobardía, en cambio, se esconde detrás de frases nobles para no arriesgar nada. Desde fuera pueden parecer iguales. Por dentro son opuestas.</p>
+        <p>Si ya viste la puerta, si ya tienes claridad, si ya sabes lo que sientes y lo que quieres decir, seguir posponiendo no siempre es prudencia. A veces es miedo vestido de elegancia.</p>
+        <div class="rule-box"><p>"La paciencia espera con trabajo. La cobardía espera para no moverse."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>Construir y Mostrar</h2>
+        <p>Construir en silencio es noble. Pero esconderte para siempre también puede ser una forma de orgullo, temor o rigidez. De nada sirve levantar una catedral si nadie sabe que existe, nadie puede entrar y nadie recibe su refugio.</p>
+        <p>Mostrar no es presumir. Mostrar es permitir que lo real se vea: tu carácter, tu trabajo, tu interés, tu presencia. Lo importante es que lo mostrado esté respaldado por fondo.</p>
+        <div class="rule-box"><p>"No te vendas como algo que no eres. Pero tampoco escondas lo bueno que sí construiste."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>Preparación y Parálisis</h2>
+        <p>Prepararte es correcto. Te limpia, te ordena y te da fondo. Pero cuando la preparación se vuelve eterna, deja de ser disciplina y se convierte en una frontera cómoda para no sentir riesgo.</p>
+        <p>Llega un punto en el que ya no necesitas otra semana, otro discurso mental ni otro borrador. Necesitas dar el paso. No perfecto. No teatral. Solo real.</p>
+        <div class="rule-box"><p>"Prepararte sirve hasta que ya estás listo. Después de eso, seguir preparando es huida."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>Presencia como Lenguaje</h2>
+        <p>Tu cuerpo ahí, tu tiempo entregado, tus ojos atentos y tu calma al hablar comunican más que cualquier texto largo. La presencia bien usada no necesita adornos porque ya es una forma de verdad.</p>
+        <p>Por eso una visita breve, una subida a la casa, una conversación mirando a los ojos o una ayuda concreta pueden pesar más que muchos días de pantalla.</p>
+        <div class="rule-box"><p>"La presencia no explica tanto. Demuestra."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>Coraje Silencioso</h2>
+        <p>El coraje serio no hace drama. No golpea la mesa. No necesita ruido. Es la fuerza de tocar la puerta cuando todo dentro de ti quiere dejarlo para mañana. Es hablar con calma cuando sería más fácil seguir escondido.</p>
+        <p>El valor más alto no siempre se ve como intensidad. A veces se ve como una voz estable, una decisión limpia y un paso dado a tiempo.</p>
+        <div class="rule-box"><p>"El coraje más limpio no grita. Avanza."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>Método, Espontaneidad y Fusión</h2>
+        <p>El método te da estructura. El fuego te da motor. La espontaneidad te da vida. Si solo tienes método, te vuelves rígido. Si solo tienes fuego, te vuelves impulsivo. Si solo fluyes, te dispersas.</p>
+        <p>La madurez está en unir disciplina oriental, fuego latino y raíces propias sin actuar como copia de nadie. Tu forma correcta no es la más fría ni la más intensa. Es la más verdadera, limpia y sostenida.</p>
+        <div class="rule-box"><p>"Mi estructura me sostiene. Mi fuego me mueve. Mi verdad decide cuándo actuar."</p></div>
+    </div>
+
+    <div id="filo-hombre" class="section-divider">
+        <span class="section-divider-icon">🛡️</span>
+        <span class="section-divider-text">El Hombre Seguro</span>
+    </div>
+
+    <div class="card">
+        <h2>La Seguridad se Construye por Dentro</h2>
+        <p>Ninguna persona, ningún logro y ninguna validación externa puede darte una seguridad que no has construido internamente. Si dependes de que alguien te responda para estar en paz, tu paz no es tuya: es prestada.</p>
+        <div class="rule-box"><p>"La seguridad prestada por otros siempre vence sin avisar."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>Celos y Amor no son lo Mismo</h2>
+        <p>Los celos no son prueba de amor. Son prueba de inseguridad. El amor confía, observa con calma y da espacio. Los celos vigilan, controlan y ahogan. Confundir una cosa con la otra solo ensucia lo que dices sentir.</p>
+        <div class="rule-box"><p>"Los celos no cuidan lo valioso. Lo aprietan hasta dañarlo."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>El Rival que no Existe</h2>
+        <p>La mayoría de rivales que inventamos en la mente no saben que los consideramos rivales. Mientras tú sufres comparándote, el otro solo vive su vida. La competencia que más te deforma suele ser la que existe solo en tu cabeza.</p>
+        <div class="rule-box"><p>"El rival imaginario te desgasta más que cualquier rival real."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>Presencia sin Posesión</h2>
+        <p>Estar presente sin asfixiar, cuidar sin controlar y amar sin poseer es una de las formas más altas de madurez. La presencia limpia acompaña. La posesión invade. Lo primero construye vínculo. Lo segundo lo enferma.</p>
+        <div class="rule-box"><p>"Quien necesita controlar todo lo que rodea a alguien aún no sabe estar cerca de verdad."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>La Prueba del Espejo</h2>
+        <p>Antes de reaccionar ante algo que te molesta, párate frente al espejo y pregúntate si eso que sientes es real o inventado. Si tienes pruebas o solo suposiciones. Si actuar ahora te acerca a lo que quieres o solo descarga ansiedad.</p>
+        <div class="rule-box"><p>"Si no puedes responder con calma, todavía no estás listo para actuar."</p></div>
+    </div>
+
+    <div id="filo-constructor" class="section-divider">
+        <span class="section-divider-icon">🏛️</span>
+        <span class="section-divider-text">El Constructor</span>
+    </div>
+
+    <div class="card">
+        <h2>Hacer y Construir</h2>
+        <p>Hacer puede ser cumplir una tarea. Construir es dejar algo mejor, más firme y más útil de como estaba antes. Hacer termina cuando acabas. Construir sigue hablando de ti incluso después.</p>
+        <div class="rule-box"><p>"No quiero solo terminar cosas. Quiero levantar cosas que valgan la pena."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>La Calidad como Respeto</h2>
+        <p>La calidad no es lujo ni adorno. Es respeto hacia quien va a usar lo que haces, hacia el tiempo invertido y hacia tu propio nombre. Cuando entregas algo descuidado, también entregas una versión descuidada de ti.</p>
+        <div class="rule-box"><p>"La calidad es respeto visible."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>La Responsabilidad de Saber Crear</h2>
+        <p>Si sabes construir, tienes una obligación mayor que quien solo consume. Tu capacidad no existe para alimentar ego, sino para resolver, sostener y abrir caminos. El talento sin servicio se vuelve estéril.</p>
+        <div class="rule-box"><p>"Si sé crear, tengo el deber de crear con responsabilidad."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>Silencio y Dignidad al Mostrar</h2>
+        <p>Construir en silencio fortalece el fondo. Pero mostrar con dignidad permite que la obra cumpla su función y encuentre a quien le sirve. Presumir es inflarte. Mostrar con honor es dejar que la verdad respire.</p>
+        <div class="rule-box"><p>"No hago ruido para parecer grande. Muestro lo verdadero para que no se pierda."</p></div>
+    </div>
+
+    <div class="card">
+        <h2>La Obra como Espejo</h2>
+        <p>Todo lo que haces termina revelándote: tu nivel de paciencia, tu limpieza mental, tu seriedad, tu respeto por el detalle y tu forma de responder a la realidad. La obra no miente. Por eso también educa a su creador.</p>
+        <div class="rule-box"><p>"Mi obra termina diciendo quién soy, incluso cuando yo no hablo."</p></div>
+    </div>
+</div>
+<!-- ==================== PERFIL MAESTRO ==================== -->
+<div id="sec-perfil" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Quién Soy</span>
+        <span class="icon">🏛️</span>
+        <h1>Perfil Maestro</h1>
+        <p>No es biografía. Es claridad sobre el tipo de constructor que soy para no perder el norte.</p>
+    </div>
+
+    <div class="card">
+        <h2>Declaración de Identidad</h2>
+        <span class="card-sub">Estos rasgos no son adorno. Son el criterio con el que debo juzgar mi trabajo y mi conducta.</span>
+        <p>Cuando construyo, también me estoy revelando. Por eso este perfil no existe para inflarme, sino para recordarme qué no debo traicionar.</p>
+    </div>
+
+    <div class="identity-grid">
+        <div class="identity-card">
+            <span class="card-icon">🧭</span>
+            <div class="card-title">Propósito Moral</div>
+            <p class="card-copy">No construyo por llenar espacio ni por producir ruido. Cada obra tiene que servir, ayudar o resolver algo real. Crear también es una forma de deber.</p>
+            <div class="rule-box"><p>"Si no sirve de verdad, no merece llevar mi esfuerzo."</p></div>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">⚖️</span>
+            <div class="card-title">Verdad</div>
+            <p class="card-copy">Me incomoda lo falso, lo inflado y lo vacío porque no solo fallan técnicamente: fallan en dignidad. Busco realidad, lógica y utilidad, no apariencia.</p>
+            <div class="rule-box"><p>"No decoro la realidad. La respeto tal como es."</p></div>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🪞</span>
+            <div class="card-title">Justicia hacia la Obra</div>
+            <p class="card-copy">No quiero presumir. Quiero que lo verdadero no quede enterrado por timidez o exceso de silencio. Mostrar bien una obra honesta también es una forma de justicia.</p>
+            <div class="rule-box"><p>"Esconder una obra verdadera también puede ser una forma de desperdiciarla."</p></div>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🧱</span>
+            <div class="card-title">Nombre y Trabajo</div>
+            <p class="card-copy">Mis proyectos no son objetos sueltos. Son extensión de mi carácter, de mi historia y de mi forma de responder al mundo. Lo que hago también habla por mí.</p>
+            <div class="rule-box"><p>"Lo que construyo lleva mi nombre aunque nadie lo firme."</p></div>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">🔍</span>
+            <div class="card-title">Exigencia Interna</div>
+            <p class="card-copy">No me basta con que algo funcione. Tiene que quedar correcto, digno, coherente y limpio. Cada detalle habla del tipo de hombre que lo dejó así.</p>
+            <div class="rule-box"><p>"Mi exigencia no es capricho. Es dignidad aplicada al detalle."</p></div>
+        </div>
+
+        <div class="identity-card">
+            <span class="card-icon">⛪</span>
+            <div class="card-title">Refugio para Otros</div>
+            <p class="card-copy">No quiero construir solo para mí. Quiero dejar algo donde otros puedan entrar, aprender, crecer o apoyarse. La obra más noble siempre abre espacio humano.</p>
+            <div class="rule-box"><p>"No levanto carpas para un día. Quiero levantar refugios que sirvan a otros."</p></div>
+        </div>
+    </div>
+
+    <div class="oath">
+        <p>No soy solo una persona trabajadora y creativa.<br>Soy una persona que entiende la construcción como una cuestión de verdad, dignidad, utilidad y honor.</p>
+        <div class="sep"></div>
+        <div class="sign">Perfil Maestro</div>
+    </div>
+</div>
+<!-- ==================== GUÍAS DE VIDA ==================== -->
+<div id="cat-aplicacion" class="section category-section">
+    <div class="category-shell">
+        <span class="section-kicker">Categoría Maestra</span>
+        <div class="category-shell-head">
+            <div class="category-shell-icon">📘</div>
+            <div>
+                <h2>Aplicación Contextual</h2>
+                <p>La filosofía no se queda abstracta. Aquí se baja a contextos concretos, separados entre sí, para que el criterio relacional y práctico no quede mezclado en una sola masa.</p>
+            </div>
+        </div>
+        <div class="panel-actions"><button class="subtle-btn" type="button" data-target="sec-home">Volver al mapa</button></div>
+        <div class="chapter-grid" role="list" aria-label="Guías de vida por contexto">
+            <a class="chapter-link" href="#guide-soltero" data-guide-target="soltero" role="listitem"><small>Guía</small><strong>Soltero</strong><span>Construcción personal, presencia real, invitaciones y confesión con criterio.</span></a>
+            <a class="chapter-link" href="#guide-pareja" data-guide-target="pareja" role="listitem"><small>Guía</small><strong>En Pareja</strong><span>Trato diario, casa, familia, conflictos, lealtad y crecimiento conjunto.</span></a>
+            <a class="chapter-link" href="#guide-social" data-guide-target="social" role="listitem"><small>Guía</small><strong>Social</strong><span>Familia, amistades, trabajo y presencia pública sin perder forma ni carácter.</span></a>
+            <a class="chapter-link" href="#guide-mensajes" data-guide-target="mensajes" role="listitem"><small>Protocolo</small><strong>Mensajes</strong><span>Frecuencia, vistos, audios y criterio para no degradar la presencia.</span></a>
+            <a class="chapter-link" href="#guide-regalos" data-guide-target="regalos" role="listitem"><small>Protocolo</small><strong>Regalos Digitales</strong><span>Qué vale la pena crear, cuándo entregarlo y cómo no arruinar el gesto.</span></a>
+            <a class="chapter-link" href="#guide-cartas" data-guide-target="cartas" role="listitem"><small>Protocolo</small><strong>Cartas y Detalles</strong><span>Palabras, cartas y gestos pequeños que construyen vínculo en vez de ruido.</span></a>
+        </div>
+    </div>
+</div>
+
+<div id="sec-guias" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Aplicación contextual</span>
+        <span class="icon">📘</span>
+        <h1>Guías de Vida</h1>
+        <p>Cada contexto está separado como familia propia para que la aplicación práctica no se convierta en una masa continua.</p>
+    </div>
+
+    <div class="card">
+        <h2>Mapa de Categorías</h2>
+        <span class="card-sub">Cada tarjeta abre una guía distinta dentro de esta misma sección</span>
+        <div class="guide-index" role="tablist" aria-label="Categorías de guías de vida">
+            <button class="guide-link active" type="button" data-guide="soltero"><h3>Soltero</h3><p>Disciplina personal, presencia real, invitaciones y criterio para actuar.</p></button>
+            <button class="guide-link" type="button" data-guide="pareja"><h3>En Pareja</h3><p>Trato diario, presencia de calidad, familia, conflictos y comunicación directa.</p></button>
+            <button class="guide-link" type="button" data-guide="social"><h3>Social</h3><p>Familia, amistades, trabajo y presencia pública.</p></button>
+            <button class="guide-link" type="button" data-guide="mensajes"><h3>Protocolo de Mensajes</h3><p>Frecuencia, vistos, audios y criterio.</p></button>
+            <button class="guide-link" type="button" data-guide="regalos"><h3>Regalos Digitales</h3><p>Qué crear, cómo entregar y qué no hacer.</p></button>
+            <button class="guide-link" type="button" data-guide="cartas"><h3>Cartas y Detalles</h3><p>Cartas, detalles y palabras que construyen.</p></button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Base del Criterio</h2>
+        <span class="card-sub">Las 12 leyes se mantienen como fundamento, ahora con presencia, coraje y orden más claro</span>
+        <div class="guide-laws">
+            <details class="law-detail"><summary><span class="law-num-badge">1</span> Puntualidad absoluta</summary><div class="law-body"><p>El tiempo ajeno también es sagrado. Llegar antes es respeto.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">2</span> Cuidado personal</summary><div class="law-body"><p>Presentarte limpio y ordenado honra a quien te recibe y también a ti mismo.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">3</span> Consideración constante</summary><div class="law-body"><p>Observa, anticipa y actúa sin esperar a que te pidan todo.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">4</span> Leer el ambiente</summary><div class="law-body"><p>Los ojos hablan más que las palabras. Aprende a notar el clima emocional.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">5</span> Cada momento es único</summary><div class="law-body"><p>No desperdicies presencia real mirando otra pantalla.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">6</span> Paciencia inquebrantable</summary><div class="law-body"><p>La paciencia es seguir construyendo mientras esperas el momento.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">7</span> Honestidad total</summary><div class="law-body"><p>Tu palabra es tu honor. Ni mentiras pequeñas ni apariencias falsas.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">8</span> Gratitud permanente</summary><div class="law-body"><p>No des nada por hecho. Cada gesto recibido merece valor y memoria.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">9</span> Autocontrol total</summary><div class="law-body"><p>La fuerza real se mide en la calma, no en el grito.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">10</span> Acciones sobre palabras</summary><div class="law-body"><p>Lo que prometes, sientes o respetas debe verse en hechos.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">11</span> Presencia sobre pantalla</summary><div class="law-body"><p>Las relaciones se construyen mirándose a los ojos. Si puedes estar ahí, estar ahí vale más que cualquier pantalla.</p></div></details>
+            <details class="law-detail"><summary><span class="law-num-badge">12</span> Coraje con calma</summary><div class="law-body"><p>La valentía no es ruido. Es dar el paso correcto con serenidad cuando todo dentro de ti quiere postergarlo.</p></div></details>
+        </div>
+    </div>
+
+    <div id="guidePanelsHost"></div>
+
+    <div class="card" id="legacyGuidesMarker">
+        <h2>Contenido de Referencia</h2>
+        <span class="card-sub">Este bloque se reorganiza automáticamente en categorías al abrir el documento</span>
+    </div>
+
+    <!-- LAS 10 LEYES -->
+    <div class="card">
+        <h2>Las 12 Leyes del Honor</h2>
+        <span class="card-sub">Principios inquebrantables para cada día</span>
+    </div>
+
+    <div class="card"><h2><span class="num">1</span>Puntualidad Absoluta</h2><span class="card-sub">"El dominio del tiempo es el dominio de uno mismo"</span><p>Si quedas a una hora, llegas 10 minutos antes. Siempre. Sin excusas. Llegar tarde es decirle al otro que su tiempo no vale. Si vas a retrasarte, avisas antes de la hora, nunca después.</p><div class="rule-box"><p>"Mi puntualidad es la primera muestra de respeto. Si no respeto el tiempo del otro, no merezco su presencia."</p></div></div>
+
+    <div class="card"><h2><span class="num">2</span>Cuidado Personal</h2><span class="card-sub">"Presentarse limpio y ordenado es honrar a quien te recibe"</span><p>Cada vez que te presentes ante alguien importante, hazlo limpio, arreglado y presentable. No se trata de ropa cara sino de respeto. Baño, ropa limpia, uñas cortadas, cabello ordenado. Sin negociación.</p><div class="rule-box"><p>"Me arreglo porque valoro a quien tengo enfrente. No es vanidad, es disciplina."</p></div></div>
+
+    <div class="card"><h2><span class="num">3</span>Consideración Constante</h2><span class="card-sub">"Antes de actuar, piensa en cómo afecta al otro"</span><p>Anticipa las necesidades de los demás. No esperes a que te pidan ayuda. No esperes a que te digan qué les molesta. Observa, piensa, actúa. La consideración silenciosa vale más que mil palabras.</p><div class="rule-box"><p>"No necesito que me pidan las cosas. Me anticipo porque me importa."</p></div></div>
+
+    <div class="card"><h2><span class="num">4</span>Leer el Ambiente</h2><span class="card-sub">"Los ojos hablan más que las palabras"</span><p>Aprende a percibir el estado emocional de quienes te rodean sin que te lo digan. Si alguien está callado, distingue si está cansado, molesto o tranquilo. Esta habilidad es la forma más alta de inteligencia emocional.</p><div class="rule-box"><p>"Escucho lo que no se dice. Observo lo que no se muestra. Entiendo lo que no se explica."</p></div></div>
+
+    <div class="card"><h2><span class="num">5</span>Cada Momento es Único</h2><span class="card-sub">"Este instante no se repetirá jamás"</span><p>Cada conversación, cada encuentro, cada rato compartido es irrepetible. No mires el teléfono cuando alguien te habla. No pienses en lo que viene después. Vive el ahora con intensidad total.</p><div class="rule-box"><p>"Este momento no volverá. Lo vivo con todo lo que tengo."</p></div></div>
+
+    <div class="card"><h2><span class="num">6</span>Paciencia Inquebrantable</h2><span class="card-sub">"La resistencia silenciosa forja el carácter"</span><p>No te apresures. No te frustres. No te rindas. Las cosas buenas toman tiempo. Si hoy no se dio, mañana será otro día. La paciencia no es esperar sin hacer nada, es seguir construyendo mientras el momento llega.</p><div class="rule-box"><p>"La paciencia no es debilidad. Es la fuerza de quien sabe que su momento llegará."</p></div></div>
+
+    <div class="card"><h2><span class="num">7</span>Honestidad Total</h2><span class="card-sub">"La verdad es el cimiento de todo lo que construyas"</span><p>Sé siempre honesto. Ni mentiras pequeñas ni grandes. No aparentes ser algo que no eres. Si prometiste algo, cúmplelo. Si te equivocaste, admítelo. Tu palabra es tu honor.</p><div class="rule-box"><p>"Prefiero una verdad incómoda que una mentira cómoda. Mi palabra vale oro."</p></div></div>
+
+    <div class="card"><h2><span class="num">8</span>Gratitud Permanente</h2><span class="card-sub">"Nada es obligación de nadie. Todo es un regalo"</span><p>Agradece cada gesto, cada comida, cada momento compartido. No des nada por hecho. La persona que cocina para ti, que te escucha, que te abre su puerta no tiene que hacerlo. Valora cada acto con palabras y acciones.</p><div class="rule-box"><p>"Todo lo que recibo es un regalo que no merezco pero que valoro con el alma."</p></div></div>
+
+    <div class="card"><h2><span class="num">9</span>Autocontrol Total</h2><span class="card-sub">"La verdadera fuerza se mide en la calma, no en el grito"</span><p>Controla tus emociones. No explotes. No hagas escenas. No levantes la voz. Si sientes celos, respira y piensa antes de actuar. Si algo te molesta, procésalo internamente antes de expresarlo. La calma es poder.</p><div class="rule-box"><p>"Mi fuerza no se mide por cuánto grito, sino por cuánto me controlo cuando quiero gritar."</p></div></div>
+
+    <div class="card"><h2><span class="num">10</span>Acciones Sobre Palabras</h2><span class="card-sub">"El amor, el respeto y el compromiso se demuestran haciendo"</span><p>Cualquiera dice cosas bonitas. La diferencia está en quien las respalda con hechos. No digas "me importas" si no lo demuestras. No digas "te apoyo" si no estás presente. Las palabras sin acciones son ruido vacío.</p><div class="rule-box"><p>"Cualquiera habla. Yo demuestro. Mis acciones son mi idioma."</p></div></div>
+
+    <div class="card"><h2><span class="num">11</span>Presencia Sobre Pantalla</h2><span class="card-sub">"Si puedes estar ahí, estar ahí vale más que cualquier mensaje"</span><p>Las relaciones se construyen mirándose a los ojos, compartiendo tiempo, sosteniendo silencios y apareciendo cuando importa. La pantalla sirve, pero nunca debe reemplazar lo presencial cuando lo presencial es posible.</p><div class="rule-box"><p>"No me escondo detrás de una pantalla. Si puedo estar ahí, estoy ahí."</p></div></div>
+
+    <div class="card"><h2><span class="num">12</span>Coraje con Calma</h2><span class="card-sub">"La valentía limpia no hace drama, pero tampoco se esconde"</span><p>El miedo no desaparece solo porque esperes más. Hay momentos en los que la calma debe caminar junto al coraje. No se trata de actuar por impulso, sino de dar el paso cuando ya existe claridad suficiente.</p><div class="rule-box"><p>"La valentía no es ausencia de miedo. Es actuar con calma cuando ya no hay excusa digna para seguir postergando."</p></div></div>
+
+    <div class="sep"></div>
+
+    <!-- CÓDIGO DEL SOLTERO -->
+    <div class="section-divider">
+        <span class="section-divider-icon">🛡️</span>
+        <span class="section-divider-text">Código del Soltero</span>
+    </div>
+
+    <div class="card">
+        <h2>Código del Soltero</h2>
+        <span class="card-sub">Disciplina personal mientras construyes tu camino</span>
+    </div>
+
+    <div class="card"><h2>Tu Enfoque Principal</h2><p>Mientras estás soltero, tu prioridad eres tú: tu trabajo, tu crecimiento, tus proyectos, tu disciplina. No buscas desesperadamente a alguien, te preparas para cuando esa persona llegue.</p><div class="rule-box"><p>"No busco a alguien que me complete. Me construyo completo para que cuando alguien llegue, le sume valor, no le pida que me salve."</p></div></div>
+
+    <div class="card"><h2>Disciplina Personal Diaria</h2>
+        <div class="val-item"><span class="val-icon">⏰</span><span class="val-text"><strong>Levántate temprano.</strong> Sin posponer alarma. El día lo gana quien madruga.</span></div>
+        <div class="val-item"><span class="val-icon">🚿</span><span class="val-text"><strong>Aseo impecable siempre.</strong> No porque alguien te vaya a ver, sino por respeto propio.</span></div>
+        <div class="val-item"><span class="val-icon">💪</span><span class="val-text"><strong>Trabaja con todo.</strong> Tu sustento es tu honor. Sea campo, oficina o código.</span></div>
+        <div class="val-item"><span class="val-icon">📚</span><span class="val-text"><strong>Aprende algo cada día.</strong> Lee, investiga, practica. El conocimiento te hace valioso.</span></div>
+        <div class="val-item"><span class="val-icon">🏠</span><span class="val-text"><strong>Mantén tu espacio ordenado.</strong> Cama tendida, ropa guardada, casa limpia. Siempre.</span></div>
+        <div class="val-item"><span class="val-icon">🚫</span><span class="val-text"><strong>Cero vicios.</strong> Sin alcohol excesivo, sin drogas, sin hábitos destructivos.</span></div>
+        <div class="val-item"><span class="val-icon">💰</span><span class="val-text"><strong>Ahorra.</strong> Aunque sea poco. La estabilidad económica es libertad.</span></div>
+    </div>
+
+    <div class="card"><h2>Si hay Alguien que te Interesa</h2>
+        <div class="do-dont">
+            <div class="do-col"><h4>Haz esto</h4><ul>
+                <li>Acércate naturalmente, sin forzar</li>
+                <li>Sé constante en tu trato</li>
+                <li>Demuestra interés con acciones reales</li>
+                <li>Dale espacio, no agobies</li>
+                <li>Respeta su tiempo y sus decisiones</li>
+                <li>Mejora cada día como persona</li>
+                <li>Prepara el momento de confesarte con cuidado</li>
+            </ul></div>
+            <div class="dont-col"><h4>Nunca hagas esto</h4><ul>
+                <li>Coquetear con otras frente a esa persona</li>
+                <li>Ser inconsistente: un día la buscas, tres no</li>
+                <li>Presionar por definir la relación</li>
+                <li>Actuar como pareja sin serlo</li>
+                <li>Tener celos sin derecho</li>
+                <li>Hablar de otros intereses románticos frente a ella</li>
+                <li>Perder la dignidad rogando</li>
+            </ul></div>
+        </div>
+    </div>
+
+    <div class="card"><h2>Cómo Invitar a Salir</h2>
+        <h3>La fórmula correcta</h3>
+        <div class="rule-box"><p>"Día concreto + Hora concreta + Plan concreto + Pregunta abierta"</p></div>
+        <div class="do-dont">
+            <div class="do-col"><h4>Así sí</h4><ul>
+                <li>"El sábado quiero invitarte a caminar y comer un helado. ¿A las 3 te parece?"</li>
+                <li>"Este viernes me gustaría que saliéramos. ¿Estás libre a las 5?"</li>
+            </ul></div>
+            <div class="dont-col"><h4>Así nunca</h4><ul>
+                <li>"¿Quieres salir algún día?" (vago)</li>
+                <li>"¿Cuándo estás libre?" (le pasas la responsabilidad)</li>
+                <li>"Salgamos cuando puedas" (nunca va a pasar)</li>
+            </ul></div>
+        </div>
+
+        <h3>Si cancela la cita</h3>
+        <div class="table-wrap"><table>
+            <tr><th>Situación</th><th>Tu respuesta</th></tr>
+            <tr><td>Avisa con tiempo</td><td>"Tranquila, no hay problema. ¿Qué tal el próximo sábado?"</td></tr>
+            <tr><td>Cancela el mismo día</td><td>"No te preocupes. Espero que todo esté bien. Ya saldremos otro día"</td></tr>
+            <tr><td>No avisa y no aparece</td><td>Espera 30-40 min. Escribe: "¿Estás bien? Te estuve esperando"</td></tr>
+            <tr><td>Cancela 3 o más veces</td><td>"Noto que no se ha dado. Si no puedes o no quieres, dime con confianza"</td></tr>
+        </table></div>
+
+        <h3>El día de la cita</h3>
+        <div class="val-item"><span class="val-icon">📅</span><span class="val-text"><strong>Ese día es sagrado.</strong> No programes nada más.</span></div>
+        <div class="val-item"><span class="val-icon">💰</span><span class="val-text"><strong>Dinero preparado.</strong> Lo planeado más un extra por si acaso.</span></div>
+        <div class="val-item"><span class="val-icon">📱</span><span class="val-text"><strong>Teléfono en silencio.</strong> Solo emergencias reales.</span></div>
+        <div class="val-item"><span class="val-icon">👀</span><span class="val-text"><strong>100% presente.</strong> Ojos, mente y corazón con esa persona.</span></div>
+        <div class="val-item"><span class="val-icon">🏠</span><span class="val-text"><strong>Acompáñala de vuelta.</strong> Hasta su casa o donde sea seguro.</span></div>
+        <div class="val-item"><span class="val-icon">💬</span><span class="val-text"><strong>Mensaje al llegar.</strong> "Llegué bien. Gracias por hoy."</span></div>
+    </div>
+
+    <div class="card"><h2>La Confesión</h2><span class="card-sub">"El momento en que expresas lo que sientes con valentía y dignidad"</span>
+        <h3>Preparación</h3>
+        <div class="val-item"><span class="val-icon">📍</span><span class="val-text"><strong>Lugar tranquilo y privado.</strong> Que puedan hablar sin presión.</span></div>
+        <div class="val-item"><span class="val-icon">⏰</span><span class="val-text"><strong>Momento relajado.</strong> Después de un rato bonito juntos, no de golpe.</span></div>
+        <div class="val-item"><span class="val-icon">🎭</span><span class="val-text"><strong>Sé tú mismo.</strong> No ensayes frases de películas. Habla con tu corazón.</span></div>
+
+        <h3>Estructura de lo que dices</h3>
+        <div class="timeline">
+            <div class="t-step"><strong>Abre con vulnerabilidad:</strong> "Quiero decirte algo y me va a costar porque no soy bueno con las palabras"</div>
+            <div class="t-step"><strong>Menciona cosas reales:</strong> Momentos específicos que vivieron juntos, detalles que solo tú notaste</div>
+            <div class="t-step"><strong>Di lo que sientes:</strong> "Para mí no eres solo una amiga. Es algo más."</div>
+            <div class="t-step"><strong>No presiones:</strong> "No te pido que me respondas nada ahora. Solo necesitaba que lo supieras"</div>
+        </div>
+
+        <h3>Si la respuesta es no</h3>
+        <div class="rule-box"><p>Lo aceptas con dignidad. No ruegas, no insistes, no te enojas. Dices: "Lo entiendo. Gracias por escucharme." Y sigues adelante con la frente en alto.</p></div>
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- CÓDIGO EN PAREJA -->
+    <div class="section-divider">
+        <span class="section-divider-icon">🤝</span>
+        <span class="section-divider-text">Código en Pareja</span>
+    </div>
+
+    <div class="card">
+        <h2>Código en Pareja</h2>
+        <span class="card-sub">Reglas de honor cuando tienes a alguien a tu lado</span>
+    </div>
+
+    <div class="card"><h2>Principio Fundamental</h2><div class="rule-box"><p>"Tu pareja no es tuya. Es una persona libre que elige estar contigo cada día. Honra esa decisión con cada acción."</p></div></div>
+
+    <div class="card"><h2>Trato Diario con tu Pareja</h2>
+        <div class="val-item"><span class="val-icon">💬</span><span class="val-text"><strong>Comunícate.</strong> Pregúntale cómo le fue, escúchala de verdad, no por compromiso.</span></div>
+        <div class="val-item"><span class="val-icon">🙏</span><span class="val-text"><strong>Agradece todo.</strong> Cada comida, cada gesto, cada momento. Nunca lo des por hecho.</span></div>
+        <div class="val-item"><span class="val-icon">👁️</span><span class="val-text"><strong>Obsérvala.</strong> Nota cuando está cansada, triste o feliz sin que te lo diga.</span></div>
+        <div class="val-item"><span class="val-icon">📱</span><span class="val-text"><strong>Responde sus mensajes.</strong> No la dejes en visto sin razón. Respeta su tiempo.</span></div>
+        <div class="val-item"><span class="val-icon">🌹</span><span class="val-text"><strong>Detalles constantes.</strong> Los pequeños gestos frecuentes valen más que grandes gestos esporádicos.</span></div>
+        <div class="val-item"><span class="val-icon">🤐</span><span class="val-text"><strong>Nunca la ridiculices en público.</strong> Si tienes un desacuerdo, háblalo en privado.</span></div>
+        <div class="val-item"><span class="val-icon">🛡️</span><span class="val-text"><strong>Defiéndela.</strong> Si alguien la irrespeta frente a ti, la defiendes con firmeza y calma.</span></div>
+    </div>
+
+    <div class="card"><h2>En Casa de su Familia</h2>
+        <h3>Al llegar</h3>
+        <div class="table-wrap"><table>
+            <tr><th>Acción</th><th>Detalle</th></tr>
+            <tr><td>Tocar la puerta</td><td>Nunca entres sin que te abran aunque tengas confianza</td></tr>
+            <tr><td>Saludar a todos</td><td>Primero adultos, luego a tu pareja</td></tr>
+            <tr><td>Esperar invitación</td><td>No entres por tu cuenta</td></tr>
+            <tr><td>Preguntar si es buen momento</td><td>"¿No están ocupados?"</td></tr>
+        </table></div>
+
+        <h3>Mientras estás ahí</h3>
+        <div class="do-dont">
+            <div class="do-col"><h4>Haz esto</h4><ul>
+                <li>Siéntate donde te indiquen</li>
+                <li>Conversa con la familia</li>
+                <li>Ofrece ayuda sin que te lo pidan</li>
+                <li>Mantén volumen de voz moderado</li>
+                <li>Acepta comida con gratitud</li>
+                <li>Teléfono en silencio</li>
+            </ul></div>
+            <div class="dont-col"><h4>Nunca hagas esto</h4><ul>
+                <li>Ignorar a la familia por estar con tu pareja</li>
+                <li>Acostarte en muebles ajenos</li>
+                <li>Quedarte pegado al teléfono</li>
+                <li>Hablar vulgar</li>
+                <li>Critiques la comida</li>
+                <li>Quedarte hasta muy tarde</li>
+            </ul></div>
+        </div>
+
+        <h3>Al irte</h3>
+        <div class="val-item"><span class="val-icon">👋</span><span class="val-text"><strong>Despídete de todos.</strong> "Buenas noches, gracias por todo, que descansen."</span></div>
+        <div class="val-item"><span class="val-icon">💬</span><span class="val-text"><strong>Mensaje al llegar a casa.</strong> "Llegué bien, gracias por esta noche."</span></div>
+    </div>
+
+    <div class="card"><h2>Si tu Pareja te Visita</h2>
+        <h3>Tu espacio siempre debe estar</h3>
+        <div class="table-wrap"><table>
+            <tr><th>Área</th><th>Estado permanente</th></tr>
+            <tr><td>Tu cuarto</td><td>Cama tendida, ropa guardada, nada en el piso</td></tr>
+            <tr><td>Baño</td><td>Limpio, toallas ordenadas</td></tr>
+            <tr><td>Cocina</td><td>Platos lavados, mesa limpia</td></tr>
+            <tr><td>Entrada/sala</td><td>Ordenada, presentable</td></tr>
+        </table></div>
+
+        <h3>Cuando llegue</h3>
+        <div class="val-item"><span class="val-icon">🚪</span><span class="val-text"><strong>Recíbela en la puerta.</strong> Con una sonrisa genuina.</span></div>
+        <div class="val-item"><span class="val-icon">☕</span><span class="val-text"><strong>Ofrécele algo.</strong> "¿Quieres agua, café, jugo?"</span></div>
+        <div class="val-item"><span class="val-icon">👨‍👩‍👦</span><span class="val-text"><strong>Si hay familia, preséntala.</strong> Con orgullo y respeto.</span></div>
+        <div class="val-item"><span class="val-icon">🪑</span><span class="val-text"><strong>Hazla sentir cómoda.</strong> "Siéntate aquí, estás en tu casa."</span></div>
+    </div>
+
+    <div class="card"><h2>Manejo de Conflictos</h2>
+        <div class="do-dont">
+            <div class="do-col"><h4>Haz esto</h4><ul>
+                <li>Habla cuando estés calmado</li>
+                <li>Escucha su punto de vista completo</li>
+                <li>Usa "yo siento" en vez de "tú haces"</li>
+                <li>Busca soluciones, no culpables</li>
+                <li>Discúlpate si te equivocaste</li>
+                <li>Dale espacio si lo necesita</li>
+            </ul></div>
+            <div class="dont-col"><h4>Nunca hagas esto</h4><ul>
+                <li>Levantar la voz jamás</li>
+                <li>Insultar o usar palabras hirientes</li>
+                <li>Sacar problemas viejos ya resueltos</li>
+                <li>Dar el "tratamiento de silencio" como castigo</li>
+                <li>Hablar del problema con otros antes que con ella</li>
+                <li>Irte dando un portazo</li>
+            </ul></div>
+        </div>
+        <div class="rule-box"><p>"En una discusión, no se trata de ganar. Se trata de entendernos. Si gano pero la pierdo, no gané nada."</p></div>
+    </div>
+
+    <div class="card"><h2>Lealtad Absoluta</h2>
+        <div class="val-item"><span class="val-icon">🔒</span><span class="val-text"><strong>Fidelidad total.</strong> En acciones, en palabras, en pensamientos. Sin zonas grises.</span></div>
+        <div class="val-item"><span class="val-icon">📱</span><span class="val-text"><strong>Transparencia.</strong> Nada que no puedas mostrarle. Si tienes que esconder algo, no deberías hacerlo.</span></div>
+        <div class="val-item"><span class="val-icon">🗣️</span><span class="val-text"><strong>Habla bien de tu pareja siempre.</strong> Esté presente o no. Lo que dices de ella cuando no está dice quién eres tú.</span></div>
+        <div class="val-item"><span class="val-icon">🚫</span><span class="val-text"><strong>Cero coqueteo con otros.</strong> Ni en broma, ni en redes, ni por mensaje.</span></div>
+        <div class="rule-box"><p>"La lealtad no se negocia. Si no puedo ser leal, no merezco que alguien sea leal conmigo."</p></div>
+    </div>
+
+    <div class="card"><h2>Crecimiento Juntos</h2>
+        <div class="val-item"><span class="val-icon">📚</span><span class="val-text"><strong>Apóyala en sus metas.</strong> Sus sueños importan tanto como los tuyos.</span></div>
+        <div class="val-item"><span class="val-icon">🌱</span><span class="val-text"><strong>Crece con ella.</strong> Que ambos sean mejor versión cada mes.</span></div>
+        <div class="val-item"><span class="val-icon">🤝</span><span class="val-text"><strong>Construyan algo juntos.</strong> Proyectos, metas, planes. No solo "pasar el rato".</span></div>
+        <div class="val-item"><span class="val-icon">🧘</span><span class="val-text"><strong>Respeta su individualidad.</strong> Que tenga sus amigos, sus espacios, su vida propia.</span></div>
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- CÓDIGO SOCIAL -->
+    <div class="section-divider">
+        <span class="section-divider-icon">👥</span>
+        <span class="section-divider-text">Código Social</span>
+    </div>
+
+    <div class="card">
+        <h2>Código Social</h2>
+        <span class="card-sub">Cómo comportarte en cada entorno</span>
+    </div>
+
+    <div class="card"><h2>Con su Familia</h2>
+        <div class="table-wrap"><table>
+            <tr><th>Persona</th><th>Trato</th></tr>
+            <tr><td><strong>Su madre</strong></td><td>Salúdala siempre primero. "Señora" o como ella prefiera. Conversa genuinamente. Agradece todo.</td></tr>
+            <tr><td><strong>Su padre</strong></td><td>Saludo firme, mirando a los ojos. Habla de trabajo, muestra que eres responsable. Pide permiso.</td></tr>
+            <tr><td><strong>Hermanos</strong></td><td>Saluda sin excepción. Sé amable, inclúyelos.</td></tr>
+            <tr><td><strong>Niños de la casa</strong></td><td>Trátalos bien. Cómo tratas a los niños habla mucho de tu carácter.</td></tr>
+        </table></div>
+        <div class="rule-box"><p>"Su familia es sagrada. Cómo los trate define cómo mi pareja me ve."</p></div>
+    </div>
+
+    <div class="card"><h2>Con sus Amigos</h2>
+        <div class="do-dont">
+            <div class="do-col"><h4>Haz esto</h4><ul>
+                <li>Saluda con amabilidad a todos</li>
+                <li>Escucha más de lo que hablas</li>
+                <li>Sé servicial sin exagerar</li>
+                <li>Habla bien de tu pareja con naturalidad</li>
+                <li>Retírate a tiempo, da espacio</li>
+            </ul></div>
+            <div class="dont-col"><h4>Nunca hagas esto</h4><ul>
+                <li>Ser posesivo frente a ellos</li>
+                <li>Ignorar a sus amigos</li>
+                <li>Presumir o intentar impresionar</li>
+                <li>Contradecirla en público</li>
+                <li>Coquetear con sus amigas</li>
+            </ul></div>
+        </div>
+    </div>
+
+    <div class="card"><h2>Con tus Propios Amigos</h2>
+        <div class="val-item"><span class="val-icon">🗣️</span><span class="val-text"><strong>Nunca hables mal de tu pareja con tus amigos.</strong> Lo que pasa entre ustedes se resuelve entre ustedes.</span></div>
+        <div class="val-item"><span class="val-icon">🤝</span><span class="val-text"><strong>Si ella está presente, inclúyela.</strong> Que se sienta parte, no un adorno.</span></div>
+        <div class="val-item"><span class="val-icon">🚫</span><span class="val-text"><strong>No cambies tu comportamiento.</strong> Si hablas vulgar solo con tus amigos, eso también dice quién eres.</span></div>
+        <div class="val-item"><span class="val-icon">⚖️</span><span class="val-text"><strong>Equilibra tu tiempo.</strong> Ni abandones a tus amigos por ella, ni abandones a ella por tus amigos.</span></div>
+    </div>
+
+    <div class="card"><h2>En el Trabajo</h2>
+        <div class="val-item"><span class="val-icon">💪</span><span class="val-text"><strong>No te avergüences de tu trabajo.</strong> Sea campo, código o lo que sea. El trabajo honra.</span></div>
+        <div class="val-item"><span class="val-icon">😊</span><span class="val-text"><strong>Si te ven trabajar, saluda con una sonrisa.</strong> Breve, sin parar lo que haces.</span></div>
+        <div class="val-item"><span class="val-icon">🙏</span><span class="val-text"><strong>Si te ofrecen agua o comida, acepta con gratitud.</strong></span></div>
+        <div class="val-item"><span class="val-icon">🧹</span><span class="val-text"><strong>Deja tu área de trabajo ordenada.</strong> Tu disciplina se nota en cada detalle.</span></div>
+    </div>
+
+</div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var SECTION_GROUPS = {
+    home: ['sec-home'],
+    nucleo: ['cat-nucleo', 'sec-codigo', 'sec-prohibitions', 'sec-si', 'sec-frases', 'sec-oath'],
+    identidad: ['cat-identidad', 'sec-norte', 'sec-perfil'],
+    criterio: ['cat-criterio', 'sec-psicologia', 'sec-filosofia'],
+    aplicacion: ['cat-aplicacion', 'sec-guias']
+  };
+  var guideButtons = Array.from(document.querySelectorAll('.guide-link'));
+  var guideTargetLinks = Array.from(document.querySelectorAll('[data-guide-target]'));
+  var viewButtons = Array.from(document.querySelectorAll('[data-target]'));
+  var internalLinks = Array.from(document.querySelectorAll('a[href^="#"]'));
+  var sections = Array.from(document.querySelectorAll('.section'));
+  var els = { guidePanelsHost: document.getElementById('guidePanelsHost'), legacyGuidesMarker: document.getElementById('legacyGuidesMarker') };
+  var sectionToGroup = {};
+  Object.keys(SECTION_GROUPS).forEach(function (group) {
+    SECTION_GROUPS[group].forEach(function (id) {
+      sectionToGroup[id] = group;
+    });
+  });
+/* GUIDES */
+  function createGuidePanel(id, title, copy) {
+    var panel = document.createElement('div');
+    panel.className = 'guide-panel' + (id === 'soltero' ? ' active' : '');
+    panel.id = 'guide-' + id;
+    panel.innerHTML = '<div class="card panel-intro"><h2>' + title + '</h2><p>' + copy + '</p></div>';
+    return panel;
+  }
+
+  function hideGuideNode(node) {
+    node.hidden = true;
+    node.style.display = 'none';
+  }
+
+  function messagesPanelHtml() {
+    return `
+      <div class="card">
+        <h2>Reglas Fundamentales</h2>
+        <div class="val-item"><span class="val-icon">📌</span><span class="val-text"><strong>Responde el mismo día.</strong> Si no puedes responder bien, al menos confirma con brevedad y respeto.</span></div>
+        <div class="val-item"><span class="val-icon">🧊</span><span class="val-text"><strong>No escribas en caliente.</strong> Si estás alterado, guarda el teléfono y responde cuando recuperes criterio.</span></div>
+        <div class="val-item"><span class="val-icon">🎯</span><span class="val-text"><strong>Calidad sobre cantidad.</strong> Un mensaje útil y con intención vale más que veinte mensajes vacíos.</span></div>
+        <div class="val-item"><span class="val-icon">🚫</span><span class="val-text"><strong>No bombardees.</strong> Insistir sin respuesta no demuestra interés, demuestra presión.</span></div>
+        <div class="val-item"><span class="val-icon">🫱</span><span class="val-text"><strong>Lo importante va en persona.</strong> Los temas delicados o profundos no se resuelven por chat.</span></div>
+        <div class="val-item"><span class="val-icon">🛡️</span><span class="val-text"><strong>No reclames un visto.</strong> Tu paz no depende de la velocidad de una respuesta.</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Horario y Frecuencia</h2>
+        <div class="table-wrap"><table>
+          <tr><th>Momento</th><th>Uso correcto</th><th>Ejemplo</th></tr>
+          <tr><td>Mañana</td><td>Saludo breve, solo si ya existe esa costumbre</td><td>"Buenos días, que te vaya bien hoy"</td></tr>
+          <tr><td>Mediodía</td><td>Responder o retomar algo pendiente</td><td>"¿Cómo te fue en la mañana?"</td></tr>
+          <tr><td>Tarde</td><td>Mensaje breve después de tu jornada</td><td>"Ya salí, ¿cómo estás?"</td></tr>
+          <tr><td>Antes de vernos</td><td>Confirmar sin presionar</td><td>"¿Puedo subir a las 7?"</td></tr>
+          <tr><td>Noche</td><td>Cierre corto y cálido</td><td>"Descansa, gracias por hoy"</td></tr>
+        </table></div>
+        <div class="rule-box"><p>"Estar presente no es estar pegado al teléfono. La frecuencia sana deja espacio, respira y no asfixia."</p></div>
+      </div>
+
+      <div class="card">
+        <h2>Qué Construye y Qué Daña</h2>
+        <div class="do-dont">
+          <div class="do-col"><h4>Mensajes que sí construyen</h4><ul>
+            <li>Buenos días con intención real, no automático</li>
+            <li>Preguntas concretas sobre algo que te contó</li>
+            <li>Apoyo antes de un examen, cita o momento difícil</li>
+            <li>Agradecimiento específico por algo que hizo</li>
+            <li>Buenas noches breves y cálidas</li>
+          </ul></div>
+          <div class="dont-col"><h4>Mensajes prohibidos</h4><ul>
+            <li>"¿Por qué no me respondiste?"</li>
+            <li>Monosílabos vacíos como "K", "Ok", "Ah"</li>
+            <li>Indirectas pasivo-agresivas</li>
+            <li>Reclamos largos por texto</li>
+            <li>Publicar indirectas en estados o redes</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Vistos y Notas de Voz</h2>
+        <div class="table-wrap"><table>
+          <tr><th>Si no responde...</th><th>Tu acción</th></tr>
+          <tr><td>1 a 4 horas</td><td>No haces nada. Sigues con tu día.</td></tr>
+          <tr><td>Medio día</td><td>Tampoco haces nada. Cero ansiedad.</td></tr>
+          <tr><td>1 día</td><td>Solo un mensaje nuevo y natural, sin reclamar.</td></tr>
+          <tr><td>2 a 3 días</td><td>Algo ligero una vez más; luego sueltas y das espacio.</td></tr>
+          <tr><td>Más de 3 días</td><td>No insistes. La dignidad se protege.</td></tr>
+        </table></div>
+        <div class="do-dont">
+          <div class="do-col"><h4>Audios que sí</h4><ul>
+            <li>Cuando el tono importa</li>
+            <li>Cuando 1 minuto resuelve mejor que texto</li>
+            <li>Cuando ella también usa audios</li>
+          </ul></div>
+          <div class="dont-col"><h4>Audios que no</h4><ul>
+            <li>Audios de 5 minutos que nadie pidió</li>
+            <li>Reclamos grabados</li>
+            <li>Varios audios seguidos sin respuesta</li>
+          </ul></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function giftsPanelHtml() {
+    return `
+      <div class="card">
+        <h2>Tipos de Regalos Digitales</h2>
+        <div class="val-item"><span class="val-icon">📚</span><span class="val-text"><strong>Herramientas educativas.</strong> Guías, calculadoras, resúmenes o materiales útiles para su estudio o trabajo.</span></div>
+        <div class="val-item"><span class="val-icon">💌</span><span class="val-text"><strong>Documentos emocionales.</strong> Cartas digitales, poemas, páginas con recuerdos o detalles visuales.</span></div>
+        <div class="val-item"><span class="val-icon">🛠️</span><span class="val-text"><strong>Soluciones reales.</strong> Si escuchas un problema, puedes construir algo que de verdad lo resuelva.</span></div>
+        <div class="val-item"><span class="val-icon">📊</span><span class="val-text"><strong>Proyectos compartidos.</strong> Algo que puedan usar juntos y que cree sentido de construcción en equipo.</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Cómo Entregarlo Bien</h2>
+        <div class="table-wrap"><table>
+          <tr><th>Regla</th><th>Criterio</th></tr>
+          <tr><td>Envía el archivo primero</td><td>La curiosidad abre la puerta antes del texto.</td></tr>
+          <tr><td>Luego explica en 2 o 3 líneas</td><td>No conviertas el detalle en un ensayo por chat.</td></tr>
+          <tr><td>No reveles todo por mensaje</td><td>Deja parte de la explicación para cuando estén juntos.</td></tr>
+          <tr><td>No pidas reacción inmediata</td><td>El regalo no es una encuesta de validación.</td></tr>
+          <tr><td>No hables de cuánto te costó</td><td>El trabajo debe hablar por sí mismo.</td></tr>
+          <tr><td>Elige bien el momento</td><td>Que lo pueda abrir con calma y atención.</td></tr>
+        </table></div>
+      </div>
+
+      <div class="card">
+        <h2>Secuencia Recomendada</h2>
+        <div class="timeline">
+          <div class="t-step"><strong>Primero:</strong> algo útil y práctico, que demuestre atención a su realidad.</div>
+          <div class="t-step"><strong>Después:</strong> algo emocional que toque el corazón sin saturar.</div>
+          <div class="t-step"><strong>Más adelante:</strong> algo con visión, metas o construcción compartida.</div>
+        </div>
+        <div class="rule-box"><p>"No entregues todo de golpe. La paciencia en la entrega multiplica el peso de cada detalle."</p></div>
+      </div>
+
+      <div class="card">
+        <h2>Errores que Rebajan el Impacto</h2>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Enviar todo junto.</strong> Abruma y diluye el valor de cada pieza.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Explicar demasiado.</strong> Parte del encanto está en que la otra persona descubra.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Esperar gratitud instantánea.</strong> Si el detalle fue sincero, no necesita presión.</span></div>
+        <div class="val-item"><span class="val-icon">❌</span><span class="val-text"><strong>Usarlo como moneda.</strong> El detalle deja de ser noble cuando busca cobrar algo a cambio.</span></div>
+      </div>
+    `;
+  }
+
+  function lettersPanelHtml() {
+    return `
+      <div class="card">
+        <h2>Cartas a Mano</h2>
+        <div class="val-item"><span class="val-icon">📝</span><span class="val-text"><strong>Úsalas para momentos importantes.</strong> Cumpleaños, logros, confesiones, disculpas o reconciliaciones.</span></div>
+        <div class="val-item"><span class="val-icon">📄</span><span class="val-text"><strong>Cuida la forma.</strong> Papel limpio, letra legible, tinta azul o negra y extensión contenida.</span></div>
+        <div class="val-item"><span class="val-icon">🎯</span><span class="val-text"><strong>Habla de cosas reales.</strong> Recuerdos específicos, gestos concretos y verdad personal, no frases copiadas.</span></div>
+        <div class="table-wrap"><table>
+          <tr><th>Parte</th><th>Qué debe lograr</th></tr>
+          <tr><td>Inicio</td><td>Abrir con vulnerabilidad y honestidad.</td></tr>
+          <tr><td>Cuerpo</td><td>Nombrar recuerdos y detalles reales.</td></tr>
+          <tr><td>Centro</td><td>Decir lo que sientes sin rebuscar.</td></tr>
+          <tr><td>Cierre</td><td>Dejar una frase que resuma todo con fuerza.</td></tr>
+        </table></div>
+      </div>
+
+      <div class="card">
+        <h2>Detalles que Sí Construyen</h2>
+        <div class="val-item"><span class="val-icon">🌺</span><span class="val-text"><strong>Una flor, una nota o una canción.</strong> Lo pequeño y pensado pesa más que lo caro y automático.</span></div>
+        <div class="val-item"><span class="val-icon">📸</span><span class="val-text"><strong>Compartir algo bonito.</strong> Una foto, un paisaje o algo que viste y quisiste mostrarle.</span></div>
+        <div class="val-item"><span class="val-icon">🍽️</span><span class="val-text"><strong>Llevar algo simple.</strong> Aunque sea pequeño, importa la intención y el contexto.</span></div>
+        <div class="val-item"><span class="val-icon">🤲</span><span class="val-text"><strong>Ayudar sin que lo pidan.</strong> Atención práctica también es detalle.</span></div>
+        <div class="val-item"><span class="val-icon">👂</span><span class="val-text"><strong>Recordar lo que te contó.</strong> Preguntar después demuestra escucha real.</span></div>
+        <div class="rule-box"><p>"Los detalles pequeños y constantes construyen más vínculo que un gran gesto aislado una vez al año."</p></div>
+      </div>
+
+      <div class="card">
+        <h2>Palabras que Construyen y Palabras que Rompen</h2>
+        <div class="do-dont">
+          <div class="do-col"><h4>Palabras que construyen</h4><ul>
+            <li>"Estoy orgulloso de ti"</li>
+            <li>"Gracias por esto"</li>
+            <li>"Confío en ti"</li>
+            <li>"¿Cómo te sientes con eso?"</li>
+            <li>"Me equivoqué, lo siento"</li>
+            <li>"Cuéntame más"</li>
+          </ul></div>
+          <div class="dont-col"><h4>Palabras que destruyen</h4><ul>
+            <li>"Siempre haces lo mismo"</li>
+            <li>"No es para tanto"</li>
+            <li>"Haz lo que quieras"</li>
+            <li>Insultos aunque sea en broma</li>
+            <li>Comparaciones con otras personas</li>
+            <li>Cerrar la conversación con arrogancia</li>
+          </ul></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function solteroExtraHtml() {
+    return `
+      <div class="card">
+        <h2>Presencia Sobre Pantalla</h2>
+        <span class="card-sub">En la vida real, lo presencial manda cuando lo presencial es posible.</span>
+        <p>Si la persona que te importa está cerca, si sabes dónde está, si existe la posibilidad real de verla con respeto, no te quedes atascado fabricando otro mensaje perfecto. Lo presencial revela más, aclara más y deja menos espacio a la fantasía.</p>
+        <div class="table-wrap"><table>
+          <tr><th>Situación</th><th>Tu mejor decisión</th></tr>
+          <tr><td>Ya tienes confianza básica y vive cerca</td><td>Propón verla o sube con respeto si ya existe esa dinámica.</td></tr>
+          <tr><td>El chat se enfría pero en persona hay vida</td><td>Deja de medir todo por el teléfono. Fortalece el canal real.</td></tr>
+          <tr><td>Quieres decir algo importante</td><td>Dilo mirando a los ojos, no refugiado en un texto largo.</td></tr>
+          <tr><td>No estás seguro del momento</td><td>Busca una acción simple, breve y digna, no una retirada eterna.</td></tr>
+        </table></div>
+        <div class="rule-box"><p>"La pantalla sirve para abrir puertas. La presencia sirve para cruzarlas."</p></div>
+      </div>
+
+      <div class="card">
+        <h2>Cuándo Dejar el Teléfono y Actuar</h2>
+        <div class="timeline">
+          <div class="t-step"><strong>Cuando ya pensaste suficiente.</strong> Si llevas horas corrigiendo un mensaje simple, ya no te falta claridad: te sobra miedo.</div>
+          <div class="t-step"><strong>Cuando la situación pide realidad.</strong> Invitaciones, confesiones, disculpas o conversaciones delicadas piden voz, mirada y presencia.</div>
+          <div class="t-step"><strong>Cuando la otra persona responde mejor en vivo.</strong> Si en persona se abre y por chat se enfría, el dato ya está. Usa el canal correcto.</div>
+          <div class="t-step"><strong>Cuando una acción pequeña resolvería más.</strong> A veces subir, pasar, preguntar de frente o acompañar unos minutos vale más que otra noche pensando.</div>
+        </div>
+        <div class="rule-box"><p>"No todo se resuelve escribiendo mejor. Muchas veces se resuelve apareciendo."</p></div>
+      </div>
+
+      <div class="card">
+        <h2>Adaptación al Idioma Emocional</h2>
+        <span class="card-sub">No trates a todos como si sintieran, escucharan o confiaran igual que tú.</span>
+        <div class="table-wrap"><table>
+          <tr><th>Si la persona es...</th><th>Qué necesita más</th><th>Cómo actuar</th></tr>
+          <tr><td>Reservada</td><td>Seguridad y tiempo</td><td>No invadas. Sé firme, claro y constante sin asfixiar.</td></tr>
+          <tr><td>Directa</td><td>Verdad limpia</td><td>Habla sin rodeos excesivos. Respeto y claridad.</td></tr>
+          <tr><td>Sensible</td><td>Tono y atención</td><td>No seas frío por parecer fuerte. Cuida la forma de decir.</td></tr>
+          <tr><td>Práctica</td><td>Hechos sostenidos</td><td>Menos discurso, más cumplimiento visible.</td></tr>
+        </table></div>
+        <div class="rule-box"><p>"Adaptarme no es actuar. Es elegir la forma correcta de decir una verdad real."</p></div>
+      </div>
+    `;
+  }
+
+  function parejaExtraHtml() {
+    return `
+      <div class="card">
+        <h2>Comunicación Directa con Elegancia</h2>
+        <span class="card-sub">En pareja, hablar claro evita resentimientos silenciosos.</span>
+        <p>Ser directo no significa ser brusco. Significa decir lo que pasa a tiempo, con respeto y mirando a la cara cuando haga falta. La elegancia está en el tono, no en esconder la verdad.</p>
+        <div class="do-dont">
+          <div class="do-col"><h4>Haz esto</h4><ul>
+            <li>Di lo que sientes sin rodeos innecesarios</li>
+            <li>Habla del problema antes de que se pudra</li>
+            <li>Nombra hechos concretos, no ataques vagos</li>
+            <li>Escucha antes de defenderte</li>
+            <li>Cierra con ajuste, no con teatro</li>
+          </ul></div>
+          <div class="dont-col"><h4>No hagas esto</h4><ul>
+            <li>Insinuar esperando que adivine</li>
+            <li>Callar por semanas y explotar de golpe</li>
+            <li>Usar indirectas por teléfono</li>
+            <li>Hablar con soberbia para parecer fuerte</li>
+            <li>Postergar todo por miedo al conflicto</li>
+          </ul></div>
+        </div>
+        <div class="rule-box"><p>"La verdad dicha con respeto une más que el silencio elegante que deja pudrir todo."</p></div>
+      </div>
+
+      <div class="card">
+        <h2>El Valor de Aparecer sin Avisar</h2>
+        <span class="card-sub">Tiene valor cuando nace del afecto y del criterio, no de la invasión.</span>
+        <div class="table-wrap"><table>
+          <tr><th>Sí tiene sentido</th><th>No tiene sentido</th></tr>
+          <tr><td>Cuando ya existe confianza, costumbre y contexto sano</td><td>Cuando apenas se están conociendo o ella ya dijo que no le gusta</td></tr>
+          <tr><td>Cuando buscas acompañar, alegrar o resolver algo puntual</td><td>Cuando quieres vigilar, reclamar o imponer presencia</td></tr>
+          <tr><td>Cuando respetas su tiempo, su familia y su espacio</td><td>Cuando llegas a una hora incómoda o en medio de obligaciones claras</td></tr>
+          <tr><td>Cuando puedes aceptar con paz que ese día no se pueda</td><td>Cuando usas la sorpresa como prueba de amor o presión</td></tr>
+        </table></div>
+        <div class="rule-box"><p>"Aparecer tiene valor cuando lleva respeto. Sin respeto, deja de ser detalle y se vuelve invasión."</p></div>
+      </div>
+
+      <div class="card">
+        <h2>Presencia Constante y Presencia de Calidad</h2>
+        <p>No se trata de estar pegado a alguien todo el tiempo. Se trata de que cuando estés, estés bien: atento, útil, limpio, disponible y real. La constancia sin calidad asfixia. La calidad sin constancia enfría.</p>
+        <div class="table-wrap"><table>
+          <tr><th>Presencia constante</th><th>Presencia de calidad</th></tr>
+          <tr><td>Da estabilidad y continuidad</td><td>Da profundidad y recuerdo</td></tr>
+          <tr><td>Se ve en saludar, cumplir y no desaparecer</td><td>Se ve en escuchar, notar detalles y aparecer bien</td></tr>
+          <tr><td>Evita el vínculo intermitente</td><td>Evita la presencia vacía y automática</td></tr>
+          <tr><td>Sin calidad puede sentirse rutina seca</td><td>Sin constancia puede sentirse impulso aislado</td></tr>
+        </table></div>
+        <div class="rule-box"><p>"No quiero estar mucho y mal. Quiero estar con constancia y con verdad."</p></div>
+      </div>
+    `;
+  }
+
+  function buildGuides() {
+    var host = els.guidePanelsHost;
+    var marker = els.legacyGuidesMarker;
+    if (!host || !marker || host.dataset.ready) return;
+
+    host.dataset.ready = '1';
+
+    var nodes = [];
+    var cursor = marker.nextElementSibling;
+    while (cursor) {
+      var next = cursor.nextElementSibling;
+      nodes.push(cursor);
+      cursor = next;
+    }
+
+    var separators = [];
+    nodes.forEach(function (node, index) {
+      if (node.classList && node.classList.contains('sep')) separators.push(index);
+    });
+
+    var firstSep = separators[0];
+    var secondSep = separators[1];
+    var thirdSep = separators[2];
+
+    var lawNodes = typeof firstSep === 'number' ? nodes.slice(0, firstSep + 1) : [];
+    var solteroNodes = typeof firstSep === 'number' && typeof secondSep === 'number' ? nodes.slice(firstSep + 1, secondSep) : [];
+    var parejaNodes = typeof secondSep === 'number' && typeof thirdSep === 'number' ? nodes.slice(secondSep + 1, thirdSep) : [];
+    var socialNodes = typeof thirdSep === 'number' ? nodes.slice(thirdSep + 1) : [];
+
+    lawNodes.forEach(hideGuideNode);
+    marker.style.display = 'none';
+
+    var solteroPanel = createGuidePanel('soltero', 'Soltero', 'Aquí queda toda la guía de construcción personal, citas y confesión, separada del resto.');
+    var parejaPanel = createGuidePanel('pareja', 'En Pareja', 'Esta vista concentra convivencia, trato diario, casa, familia y conflictos.');
+    var socialPanel = createGuidePanel('social', 'Social', 'Esta parte deja claro cómo conducirte con familia, amistades, trabajo y entorno.');
+    var messagesPanel = createGuidePanel('mensajes', 'Protocolo de Mensajes', 'Contenido integrado desde la parte adicional, ya ordenado para consulta rápida.');
+    var giftsPanel = createGuidePanel('regalos', 'Regalos Digitales', 'Qué crear, cómo entregarlo y cómo no arruinar el impacto del detalle.');
+    var lettersPanel = createGuidePanel('cartas', 'Cartas y Detalles', 'Cartas a mano, detalles pequeños y palabras que construyen vínculo.');
+
+    solteroNodes.forEach(function (node) { solteroPanel.appendChild(node); });
+    parejaNodes.forEach(function (node) { parejaPanel.appendChild(node); });
+    socialNodes.forEach(function (node) { socialPanel.appendChild(node); });
+
+    solteroPanel.insertAdjacentHTML('beforeend', solteroExtraHtml());
+    parejaPanel.insertAdjacentHTML('beforeend', parejaExtraHtml());
+    messagesPanel.insertAdjacentHTML('beforeend', messagesPanelHtml());
+    giftsPanel.insertAdjacentHTML('beforeend', giftsPanelHtml());
+    lettersPanel.insertAdjacentHTML('beforeend', lettersPanelHtml());
+
+    host.appendChild(solteroPanel);
+    host.appendChild(parejaPanel);
+    host.appendChild(socialPanel);
+    host.appendChild(messagesPanel);
+    host.appendChild(giftsPanel);
+    host.appendChild(lettersPanel);
+  }
+
+  function showGuide(name) {
+    guideButtons.forEach(function (button) {
+      button.classList.toggle('active', button.getAttribute('data-guide') === name);
+    });
+    document.querySelectorAll('.guide-panel').forEach(function (panel) {
+      panel.classList.toggle('active', panel.id === 'guide-' + name);
+    });
+  }
+
+  function activateGroup(group) {
+    var nextGroup = SECTION_GROUPS[group] ? group : 'home';
+    sections.forEach(function (section) {
+      section.classList.toggle('active', SECTION_GROUPS[nextGroup].indexOf(section.id) >= 0);
+    });
+  }
+
+  function resolveGroupForTarget(target) {
+    if (!target) return 'home';
+    if (target.classList && target.classList.contains('section')) {
+      return sectionToGroup[target.id] || 'home';
+    }
+    var parentSection = target.closest('.section');
+    return parentSection ? (sectionToGroup[parentSection.id] || 'home') : 'home';
+  }
+
+  function navigateToTarget(targetId, updateHash) {
+    var target = document.getElementById(targetId);
+    var hashId = targetId || 'sec-home';
+    if (!target) {
+      activateGroup('home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (updateHash) history.replaceState(null, '', '#sec-home');
+      return;
+    }
+
+    if (hashId.indexOf('guide-') === 0) {
+      showGuide(hashId.replace('guide-', ''));
+    }
+
+    activateGroup(resolveGroupForTarget(target));
+
+    requestAnimationFrame(function () {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (updateHash) {
+        history.replaceState(null, '', '#' + hashId);
+      }
+    });
+  }
+
+  function bindGuides() {
+    guideButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        showGuide(button.getAttribute('data-guide'));
+      });
+    });
+    guideTargetLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        showGuide(link.getAttribute('data-guide-target'));
+      });
+    });
+  }
+
+  function bindViewButtons() {
+    viewButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        navigateToTarget(button.getAttribute('data-target'), true);
+      });
+    });
+  }
+
+  function bindInternalLinks() {
+    internalLinks.forEach(function (link) {
+      var href = link.getAttribute('href') || '';
+      if (!href || href === '#') return;
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        navigateToTarget(href.slice(1), true);
+      });
+    });
+  }
+
+  function syncViewFromHash() {
+    var hash = (window.location.hash || '#sec-home').slice(1);
+    navigateToTarget(hash, false);
+  }
+  buildGuides();
+  bindGuides();
+  bindViewButtons();
+  bindInternalLinks();
+  syncViewFromHash();
+  window.addEventListener('hashchange', syncViewFromHash);
+}());
+</script>
+</body>
+</html>

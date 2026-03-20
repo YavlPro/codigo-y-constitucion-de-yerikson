@@ -1,0 +1,2517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚛️ Master Académico — Premium App</title>
+    <link rel="icon" href="data:,">
+    <style>
+
+        :root {
+            --bg-dark: #050505;
+            --gold-light: #F9E5C9;
+            --gold-base: #E5C07B;
+            --gold-dark: #B9935A;
+            --gold-muted: rgba(229, 192, 123, 0.15);
+            --gold-border: rgba(229, 192, 123, 0.3);
+            --gold-glow: rgba(229, 192, 123, 0.4);
+            --text-main: #E0E0E0;
+            --text-muted: #9E9E9E;
+            --glass-bg: rgba(15, 15, 15, 0.6);
+            --glass-border: rgba(229, 192, 123, 0.12);
+            --glass-blur: blur(16px);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* App Bar */
+        .app-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 100;
+        }
+        .app-title { font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif; font-size: 1.2rem; font-weight: 700; color: var(--gold-base); font-style: italic; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-back {
+            background: transparent; border: 1px solid var(--gold-border);
+            color: var(--gold-light); padding: 0.4rem 0.8rem; border-radius: 8px;
+            font-size: 0.85rem; font-family: system-ui, -apple-system, sans-serif; cursor: pointer;
+            transition: all 0.3s; display: none; align-items: center; gap: 0.4rem;
+        }
+        .btn-back:hover, .btn-back:active { background: var(--gold-muted); }
+        .btn-back.visible { display: flex; }
+
+        /* View Router */
+        .view-container { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; }
+        .view { display: none; width: 100%; max-width: 800px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+        .view.active { display: block; animation: fadeSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home View Styles */
+        .welcome-header { margin-bottom: 2rem; }
+        .welcome-title { font-size: 1.8rem; font-weight: 700; color: white; margin-bottom: 0.3rem; }
+        .welcome-title span { color: var(--gold-base); }
+        .welcome-sub { font-size: 0.95rem; color: var(--text-muted); }
+        .purpose-block {
+            margin-top: 1rem; padding: 1rem 1.1rem;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border); border-radius: 16px;
+        }
+        .purpose-block p { font-size: 0.9rem; color: var(--text-main); line-height: 1.65; }
+        .purpose-block strong { color: var(--gold-light); }
+
+        .cards-grid { display: grid; gap: 1.2rem; }
+        .nav-card {
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 1.5rem; display: flex; align-items: center; gap: 1.2rem;
+            cursor: pointer; transition: transform 0.2s, border-color 0.3s;
+        }
+        .nav-card:active { transform: scale(0.98); }
+        .nav-card:hover { border-color: var(--gold-border); background: rgba(30,30,30,0.6); }
+        .nav-card-icon { 
+            width: 55px; height: 55px; border-radius: 14px; 
+            background: linear-gradient(135deg, var(--gold-muted), rgba(229,192,123,0.02));
+            border: 1px solid var(--gold-border);
+            display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+        .nav-card-body h3 { font-size: 1.1rem; color: var(--gold-light); margin-bottom: 0.2rem; }
+        .nav-card-body p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+        .card-meta { display: block; margin-top: 0.45rem; color: var(--gold-base); font-size: 0.76rem; font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace; }
+
+        /* Form Views (Profile / Diary) */
+        .form-panel { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.5rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-size: 0.8rem; color: var(--gold-base); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .form-control { 
+            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); 
+            border-radius: 8px; padding: 0.9rem; color: white; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus { outline: none; border-color: var(--gold-base); box-shadow: 0 0 0 2px var(--gold-muted); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+        .btn-primary {
+            width: 100%; background: linear-gradient(135deg, var(--gold-base), var(--gold-dark));
+            color: var(--bg-dark); font-weight: 700; font-size: 1rem; font-family: system-ui, -apple-system, sans-serif; 
+            padding: 1rem; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            margin-top: 1rem; transition: transform 0.2s;
+        }
+        .btn-primary:active { transform: translateY(2px); }
+        .btn-primary.compact { width: auto; margin-top: 0; padding: 0.85rem 1rem; }
+        .btn-secondary {
+            width: auto; background: transparent; color: var(--gold-base);
+            border: 1px solid var(--gold-border); border-radius: 8px; cursor: pointer;
+            padding: 0.85rem 1rem; font-weight: 600; font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover, .btn-secondary:active { background: var(--gold-muted); }
+        .panel-stack { display: grid; gap: 1rem; }
+        .section-head { margin-bottom: 1rem; }
+        .section-head h3 {
+            font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+            font-size: 1.15rem; color: var(--gold-base); font-style: italic; margin-bottom: 0.25rem;
+        }
+        .section-head p { font-size: 0.85rem; color: var(--text-muted); }
+        .split-grid, .metric-grid, .chart-grid, .focus-grid, .grade-grid { display: grid; gap: 1rem; }
+        .metric-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+        .metric-card {
+            background: rgba(0,0,0,0.32); border: 1px solid var(--glass-border);
+            border-radius: 14px; padding: 1rem;
+        }
+        .metric-label {
+            display: block; font-size: 0.72rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;
+        }
+        .metric-value {
+            display: block; color: var(--gold-light); font-weight: 700; font-size: 1.25rem;
+            font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+        .metric-help { margin-top: 0.35rem; font-size: 0.8rem; color: var(--text-muted); }
+        .action-row { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .status-text {
+            font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: center;
+        }
+        .status-text.saved { color: var(--gold-light); }
+        .checklist-list { display: grid; gap: 0.7rem; }
+        .check-item {
+            display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.9rem 1rem;
+            background: rgba(0,0,0,0.28); border: 1px solid var(--glass-border);
+            border-radius: 12px; cursor: pointer; transition: all 0.2s;
+        }
+        .check-item:hover { border-color: var(--gold-border); }
+        .check-item.done { border-color: var(--gold-border); background: rgba(229, 192, 123, 0.06); }
+        .check-mark {
+            width: 24px; height: 24px; border-radius: 8px; border: 1px solid var(--gold-border);
+            display: flex; align-items: center; justify-content: center; color: transparent;
+            flex-shrink: 0; font-size: 0.85rem; margin-top: 0.05rem;
+        }
+        .check-item.done .check-mark { background: var(--gold-base); color: var(--bg-dark); border-color: var(--gold-base); }
+        .check-copy { flex: 1; font-size: 0.92rem; color: var(--text-main); line-height: 1.45; }
+        .check-item.done .check-copy { color: var(--gold-light); }
+        .entry-list { display: grid; gap: 0.9rem; }
+        .entry-card {
+            background: rgba(0,0,0,0.32); border: 1px solid var(--glass-border);
+            border-radius: 14px; padding: 1rem;
+        }
+        .entry-head {
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.65rem;
+        }
+        .entry-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .entry-title { font-size: 1rem; color: var(--gold-light); font-weight: 600; }
+        .entry-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+        .entry-card.editing {
+            border-color: var(--gold-border);
+            background: rgba(229, 192, 123, 0.05);
+        }
+        .entry-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.65rem; margin-top: 0.8rem;
+        }
+        .entry-stat {
+            background: rgba(5,5,5,0.65); border: 1px solid var(--glass-border);
+            border-radius: 10px; padding: 0.7rem 0.8rem;
+        }
+        .entry-stat span { display: block; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+        .entry-stat strong { color: var(--gold-light); font-size: 1rem; font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace; }
+        .tiny-btn {
+            background: transparent; border: 1px solid var(--glass-border); color: var(--text-muted);
+            border-radius: 8px; padding: 0.45rem 0.7rem; cursor: pointer; font-size: 0.78rem;
+        }
+        .tiny-btn:hover, .tiny-btn:active { border-color: var(--gold-border); color: var(--gold-light); }
+        .chart-card {
+            background: rgba(0,0,0,0.28); border: 1px solid var(--glass-border);
+            border-radius: 14px; padding: 1rem;
+        }
+        .chart-title { font-size: 1rem; color: var(--gold-light); margin-bottom: 0.2rem; }
+        .chart-sub { font-size: 0.8rem; color: var(--text-muted); }
+        .chart-box { margin-top: 0.9rem; min-height: 210px; }
+        .chart-box svg { width: 100%; height: auto; display: block; }
+        .empty-state {
+            min-height: 160px; display: flex; align-items: center; justify-content: center; text-align: center;
+            padding: 1rem; border-radius: 12px; border: 1px dashed var(--glass-border);
+            color: var(--text-muted); background: rgba(0,0,0,0.18);
+        }
+        .focus-list { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.85rem; }
+        .topic-pill {
+            display: inline-flex; align-items: center; padding: 0.45rem 0.75rem; border-radius: 999px;
+            border: 1px solid var(--gold-border); background: var(--gold-muted); color: var(--gold-light); font-size: 0.82rem;
+        }
+        .export-copy {
+            margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(229,192,123,0.1);
+        }
+        .mono-line {
+            font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+            color: var(--text-muted); font-size: 0.84rem;
+        }
+
+        /* Physics Hub */
+        .yr-tabs { display: flex; gap: 0.8rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 30px; }
+        .yr-tab { flex: 1; text-align: center; padding: 0.6rem; border-radius: 20px; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: 0.3s; }
+        .yr-tab.active { background: var(--gold-base); color: var(--bg-dark); }
+        
+        .topic-grid { display: none; grid-template-columns: 1fr; gap: 1rem; }
+        .topic-grid.active { display: grid; animation: fadeSlideUp 0.3s ease; }
+        .t-card {
+            background: rgba(15,15,15,0.7); border: 1px solid var(--glass-border); border-left: 4px solid var(--gold-dark);
+            border-radius: 12px; padding: 1.2rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+        }
+        .t-card h4 { font-size: 1rem; color: var(--gold-light); margin-bottom: 0.2rem; }
+        .t-card p { font-size: 0.8rem; color: var(--text-muted); }
+        .t-card-icon { font-size: 1.5rem; margin-right: 1rem; }
+        .t-card-content { flex: 1; }
+
+        /* Topic Individual View */
+        .topic-header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--gold-border); }
+        .topic-header .icon { font-size: 3rem; margin-bottom: 0.5rem; display: inline-block; filter: drop-shadow(0 0 10px var(--gold-muted)); }
+        .topic-header h2 { font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif; font-size: 1.8rem; color: var(--gold-base); line-height: 1.2; }
+        .topic-header p { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem; }
+
+        .idea { padding: 1.2rem; background: linear-gradient(90deg, var(--gold-muted), transparent); border-left: 3px solid var(--gold-base); border-radius: 0 12px 12px 0; margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6;}
+        .dato { padding: 1rem 1.2rem; background: rgba(229, 192, 123, 0.05); border: 1px dashed var(--gold-border); border-radius: 12px; margin: 1.5rem 0; font-size: 0.85rem; color: var(--gold-light); }
+        
+        .svg-wrap { width: 100%; background: rgba(5, 5, 5, 0.8); border: 1px solid var(--glass-border); border-radius: 16px; padding: 1rem; margin: 1.5rem 0; display: flex; justify-content: center; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden; }
+        .svg-wrap svg { max-width: 100%; height: auto; z-index: 1; }
+        
+        .fm { text-align: center; padding: 1.2rem; margin: 1rem 0; background: rgba(229, 192, 123, 0.03); border: 1px solid var(--glass-border); border-radius: 12px; }
+        .fm-eq { font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace; font-size: 1.1rem; color: var(--gold-light); font-weight: 700; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; display: inline-block; margin-bottom: 0.5rem;}
+        .fm-desc { font-size: 0.85rem; color: var(--text-muted); }
+        
+        /* Calculators */
+        .calc { background: rgba(0, 0, 0, 0.4); border: 1px solid var(--gold-border); border-radius: 16px; padding: 1.5rem; margin-top: 2rem; }
+        .calc-h { font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif; font-size: 1.1rem; color: var(--gold-base); margin-bottom: 1rem; font-style: italic; border-bottom: 1px solid rgba(229,192,123,0.1); padding-bottom: 0.5rem; }
+        .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.8rem; margin-bottom: 1.5rem; }
+        .calc-input { display: flex; flex-direction: column; gap: 0.4rem; }
+        .calc-input label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .inp-wrapper { display: flex; align-items: center; background: var(--bg-dark); border: 1px solid var(--glass-border); border-radius: 8px; padding: 0 0.8rem; }
+        .inp-wrapper input { background: transparent; border: none; color: var(--gold-light); font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace; padding: 0.8rem 0; width: 100%; outline: none; font-size: 1rem; }
+        .inp-wrapper input::placeholder { color: rgba(255,255,255,0.1); font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; }
+        .inp-wrapper span { color: var(--gold-dark); font-size: 0.8rem; }
+        .btn-calc { background: rgba(229, 192, 123, 0.1); border: 1px solid var(--gold-base); color: var(--gold-base); width: 100%; padding: 0.8rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; }
+        .btn-calc:hover, .btn-calc:active { background: var(--gold-base); color: var(--bg-dark); }
+        
+        .err-msg { border: 1px solid #FF6B6B; background: rgba(255, 107, 107, 0.05); color: #FF6B6B; padding: 0.8rem; border-radius: 8px; margin-top: 1rem; font-size: 0.85rem; text-align: center; display: none; }
+        .err-msg.active { display: block; animation: fadeUp 0.3s ease; }
+        
+        .step-result { margin-top: 1.5rem; background: #000; border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.2rem; display: none; }
+        .step-result.active { display: block; }
+        .step-list { display: flex; flex-direction: column; gap: 1rem; }
+        .step-item { padding-left: 0.8rem; border-left: 2px solid var(--gold-dark); }
+        .s-math { font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace; color: var(--text-main); font-size: 1rem; margin-bottom: 0.2rem; }
+        .s-desc { font-size: 0.8rem; color: var(--text-muted); }
+        .s-final { margin-top: 1.2rem; padding: 1rem; background: linear-gradient(135deg, rgba(229,192,123,0.1), transparent); border: 1px solid var(--gold-base); border-radius: 8px; text-align: center; }
+        .s-final .res { font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace; font-size: 1.3rem; color: var(--gold-light); font-weight: 700; display: block; margin-bottom: 0.3rem; }
+
+        /* Toast UI */
+        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--gold-base); color: var(--bg-dark); padding: 0.8rem 1.5rem; border-radius: 30px; font-weight: 600; font-size: 0.9rem; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 1000; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .topic-article { display: none; }
+        .topic-article.active { display: block; }
+        
+        @media(min-width: 600px) {
+            .cards-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+            .topic-grid { grid-template-columns: repeat(2, 1fr); }
+            .split-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .chart-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .focus-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .grade-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<!-- Top App Bar -->
+<header class="app-bar">
+    <div class="app-title">
+        <span style="font-style:normal;">⚛️</span> Física Master
+    </div>
+    <button class="btn-back" id="btn-back" onclick="navigateBack()">
+        <span>←</span> Volver
+    </button>
+</header>
+
+<div id="toast">✅ Guardado</div>
+
+<div class="view-container">
+    
+    <!-- ========================================== -->
+    <!-- VIEW 1: HOME -->
+    <!-- ========================================== -->
+    <div id="view-home" class="view active">
+        <div class="welcome-header">
+            <h1 class="welcome-title" id="home-greeting">Hola, <span>Estudiante</span></h1>
+            <p class="welcome-sub">¿Qué vamos a descubrir hoy?</p>
+            <div class="purpose-block">
+                <p><strong>Creamos esta herramienta para ti</strong> porque tu esfuerzo diario, tu disciplina y tu crecimiento académico merecen una estructura real que te acompañe cada día.</p>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="nav-card" onclick="navigateTo('view-physics-hub')">
+                <div class="nav-card-icon">🧠</div>
+                <div class="nav-card-body">
+                    <h3>Física Academia</h3>
+                    <p>Órbitas, fuerzas y el lenguaje del cosmos (4to y 5to año).</p>
+                </div>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('view-diary')">
+                <div class="nav-card-icon">📖</div>
+                <div class="nav-card-body">
+                    <h3>Mi Diario</h3>
+                    <p>Registra tu progreso, las clases de hoy y tus notas personales.</p>
+                </div>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('view-grades')">
+                <div class="nav-card-icon">📝</div>
+                <div class="nav-card-body">
+                    <h3>Calificaciones</h3>
+                    <p>Guarda notas por período y mantén visible tu promedio general.<span class="card-meta" id="home-grades-meta">Sin registros aún.</span></p>
+                </div>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('view-academic-checklist')">
+                <div class="nav-card-icon">✅</div>
+                <div class="nav-card-body">
+                    <h3>Checklist Diario</h3>
+                    <p>Convierte tu estudio en cumplimiento medible, día por día.<span class="card-meta" id="home-checklist-meta">Hoy: 0% completado.</span></p>
+                </div>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('view-performance')">
+                <div class="nav-card-icon">📊</div>
+                <div class="nav-card-body">
+                    <h3>Rendimiento Académico</h3>
+                    <p>Observa tus métricas, rachas, promedios y cierres periódicos.<span class="card-meta" id="home-performance-meta">Racha actual: 0 días.</span></p>
+                </div>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('view-profile')">
+                <div class="nav-card-icon">👤</div>
+                <div class="nav-card-body">
+                    <h3>Mi Perfil</h3>
+                    <p>Guarda tus metas e información localmente de forma segura.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: PROFILE -->
+    <!-- ========================================== -->
+    <div id="view-profile" class="view">
+        <div class="form-panel">
+            <div class="welcome-title" style="margin-bottom:1.5rem;text-align:center;">Expediente <span>Académico</span></div>
+            
+            <form id="profile-form" onsubmit="saveProfile(event)">
+                <div class="form-group">
+                    <label>Nombre o Apodo</label>
+                    <input type="text" id="prof-name" class="form-control" placeholder="Escribe tu nombre visible" required>
+                </div>
+                <div class="form-group" style="display:flex;gap:1rem;">
+                    <div style="flex:1;">
+                        <label>Año</label>
+                        <select id="prof-year" class="form-control" required style="appearance:none; padding-right:2rem;">
+                            <option value="" disabled selected>Selecciona</option>
+                            <option value="4to">Cuarto Año</option>
+                            <option value="5to">Quinto Año</option>
+                            <option value="Universitario">Universitario</option>
+                        </select>
+                    </div>
+                    <div style="flex:1;">
+                        <label>Sección / Grupo</label>
+                        <input type="text" id="prof-sect" class="form-control" placeholder="Ej: A, B, U">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Institución</label>
+                    <input type="text" id="prof-school" class="form-control" placeholder="Nombre de tu Liceo o Colegio">
+                </div>
+                <div class="form-group">
+                    <label>Tu Meta Física</label>
+                    <textarea id="prof-goal" class="form-control" placeholder="¿Qué calificación buscas? ¿Qué tema quieres dominar?"></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary">Guardar Perfil (Local)</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: DIARY -->
+    <!-- ========================================== -->
+    <div id="view-diary" class="view">
+        <div class="form-panel">
+            <div class="welcome-title" style="margin-bottom:0.5rem;text-align:center;">Diario de <span>Hoy</span></div>
+            <p id="diary-date" style="text-align:center; color:var(--text-muted); margin-bottom:1.5rem; font-family:ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;"></p>
+            
+            <form id="diary-form" onsubmit="saveDiary(event)">
+                <div class="form-group">
+                    <label>¿Cómo me fue hoy en clases?</label>
+                    <textarea id="di-feeling" class="form-control" placeholder="Relata tu día (exámenes, sorpresas...)"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tema Nuevo Aprendido</label>
+                    <input type="text" id="di-topic" class="form-control" placeholder="Ej: Trabajo Mecánico">
+                </div>
+                <div class="form-group">
+                    <label>¿Qué me costó entender?</label>
+                    <textarea id="di-hard" class="form-control" placeholder="Ej: Despejar la aceleración en Torricelli"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Notas / Pendientes</label>
+                    <textarea id="di-notes" class="form-control" placeholder="Anotaciones libres"></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary">Registrar en el Diario</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: GRADES -->
+    <!-- ========================================== -->
+    <div id="view-grades" class="view">
+        <div class="panel-stack">
+            <div class="form-panel">
+                <div class="welcome-title" style="margin-bottom:0.5rem;text-align:center;">Calificaciones de <span>Física</span></div>
+                <p class="welcome-sub" style="text-align:center; margin-bottom:1.5rem;">Registra exámenes, talleres, prácticas y observa el promedio real de tu avance.</p>
+
+                <form id="grades-form" onsubmit="saveGradeRecord(event)">
+                    <input type="hidden" id="grade-edit-id">
+                    <div class="split-grid">
+                        <div class="form-group">
+                            <label>Materia o Bloque</label>
+                            <input type="text" id="grade-subject" class="form-control" value="Física" placeholder="Ej: Física">
+                        </div>
+                        <div class="form-group">
+                            <label>Lapso / Período</label>
+                            <input type="text" id="grade-period" class="form-control" placeholder="Ej: 1er Lapso 2026" required>
+                        </div>
+                    </div>
+
+                    <div class="grade-grid">
+                        <div class="form-group">
+                            <label>Examen</label>
+                            <input type="number" id="grade-exam" class="form-control" min="0" max="20" step="0.01" placeholder="0 - 20">
+                        </div>
+                        <div class="form-group">
+                            <label>Taller</label>
+                            <input type="number" id="grade-workshop" class="form-control" min="0" max="20" step="0.01" placeholder="0 - 20">
+                        </div>
+                        <div class="form-group">
+                            <label>Práctica</label>
+                            <input type="number" id="grade-practice" class="form-control" min="0" max="20" step="0.01" placeholder="0 - 20">
+                        </div>
+                        <div class="form-group">
+                            <label>Laboratorio</label>
+                            <input type="number" id="grade-lab" class="form-control" min="0" max="20" step="0.01" placeholder="0 - 20">
+                        </div>
+                        <div class="form-group">
+                            <label>Exposición</label>
+                            <input type="number" id="grade-presentation" class="form-control" min="0" max="20" step="0.01" placeholder="0 - 20">
+                        </div>
+                        <div class="form-group">
+                            <label>Nota Final</label>
+                            <input type="number" id="grade-final" class="form-control" min="0" max="20" step="0.01" placeholder="Opcional">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Observación</label>
+                        <textarea id="grade-observation" class="form-control" placeholder="Qué salió bien, qué debes reforzar o qué patrón conviene recordar."></textarea>
+                    </div>
+
+                    <div class="action-row">
+                        <span id="grades-form-status" class="status-text">Listo para un nuevo registro.</span>
+                        <button type="button" class="btn-secondary" id="grade-cancel-btn" hidden>Cancelar edición</button>
+                        <button type="submit" class="btn-primary compact" id="grade-submit-btn">Guardar Calificación</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="form-panel">
+                <div class="section-head">
+                    <h3>Resumen de Calificaciones</h3>
+                    <p>Todo se guarda localmente en este dispositivo. Si llenas nota final, se prioriza para el promedio del registro.</p>
+                </div>
+
+                <div class="metric-grid" style="margin-bottom:1rem;">
+                    <div class="metric-card">
+                        <span class="metric-label">Promedio General</span>
+                        <span class="metric-value" id="grades-average">0.00</span>
+                        <p class="metric-help">Promedio de todos tus registros guardados.</p>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Registros Guardados</span>
+                        <span class="metric-value" id="grades-count">0</span>
+                        <p class="metric-help">Cantidad total de períodos cargados.</p>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Último Período</span>
+                        <span class="metric-value" id="grades-last">Sin datos</span>
+                        <p class="metric-help">Último bloque académico registrado.</p>
+                    </div>
+                </div>
+
+                <div id="grades-list" class="entry-list">
+                    <div class="empty-state">Aún no has cargado calificaciones. Cuando registres un período, aquí podrás revisarlo, editarlo o eliminarlo.</div>
+                </div>
+
+                <div class="export-copy">
+                    <div class="section-head" style="margin-bottom:0.8rem;">
+                        <h3>Exportación Simple</h3>
+                        <p>Descarga un resumen en texto con calificaciones, disciplina y notas clave para conservar una copia rápida.</p>
+                    </div>
+                    <div class="action-row">
+                        <span id="grades-export-status" class="status-text">Disponible para descargar cuando tengas datos guardados.</span>
+                        <button type="button" class="btn-secondary" id="grade-export-btn">Descargar Resumen TXT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 5: ACADEMIC CHECKLIST -->
+    <!-- ========================================== -->
+    <div id="view-academic-checklist" class="view">
+        <div class="panel-stack">
+            <div class="form-panel">
+                <div class="welcome-title" style="margin-bottom:0.5rem;text-align:center;">Checklist Diario <span>Académico</span></div>
+                <p id="academic-check-date" class="mono-line" style="text-align:center; margin-bottom:1.2rem;"></p>
+
+                <div class="metric-grid" style="margin-bottom:1rem;">
+                    <div class="metric-card">
+                        <span class="metric-label">Cumplimiento Hoy</span>
+                        <span class="metric-value" id="check-percent">0%</span>
+                        <p class="metric-help">Porcentaje del checklist diario.</p>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Ítems Cumplidos</span>
+                        <span class="metric-value" id="check-count">0 / 10</span>
+                        <p class="metric-help">Progreso directo del día.</p>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Racha Activa</span>
+                        <span class="metric-value" id="check-streak">0</span>
+                        <p class="metric-help">Días seguidos con 80% o más.</p>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Promedio Semanal</span>
+                        <span class="metric-value" id="check-week-average">0%</span>
+                        <p class="metric-help">Promedio de la semana actual.</p>
+                    </div>
+                </div>
+
+                <form id="academic-checklist-form" onsubmit="saveAcademicChecklist(event)">
+                    <div id="academic-checklist" class="checklist-list" style="margin-bottom:1.2rem;">
+                        <div class="check-item" tabindex="0" data-check-index="0"><div class="check-mark">✓</div><div class="check-copy">Asistí o cumplí con la clase.</div></div>
+                        <div class="check-item" tabindex="0" data-check-index="1"><div class="check-mark">✓</div><div class="check-copy">Repasé Física.</div></div>
+                        <div class="check-item" tabindex="0" data-check-index="2"><div class="check-mark">✓</div><div class="check-copy">Resolví ejercicios.</div></div>
+                        <div class="check-item" tabindex="0" data-check-index="3"><div class="check-mark">✓</div><div class="check-copy">Anoté dudas concretas.</div></div>
+                        <div class="check-item" tabindex="0" data-check-index="4"><div class="check-mark">✓</div><div class="check-copy">Estudié fórmulas o relaciones importantes.</div></div>
+                        <div class="check-item" tabindex="0" data-check-index="5"><div class="check-mark">✓</div><div class="check-copy">Registré el tema nuevo aprendido.</div></div>
+                        <div class="check-item" tabindex="0" data-check-index="6"><div class="check-mark">✓</div><div class="check-copy">Ordené apuntes o materiales.</div></div>
+                        <div class="check-item" tabindex="0" data-check-index="7"><div class="check-mark">✓</div><div class="check-copy">Avancé aunque fuera un poco.</div></div>
+                        <div class="check-item" tabindex="0" data-check-index="8"><div class="check-mark">✓</div><div class="check-copy">Evité distracciones importantes.</div></div>
+                        <div class="check-item" tabindex="0" data-check-index="9"><div class="check-mark">✓</div><div class="check-copy">Cerré el día con claridad sobre qué sigue.</div></div>
+                    </div>
+
+                    <div class="split-grid">
+                        <div class="form-group">
+                            <label>Qué hice bien hoy</label>
+                            <textarea id="ac-good" class="form-control" placeholder="Qué sí sostuviste con disciplina."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Qué me costó hoy</label>
+                            <textarea id="ac-hard" class="form-control" placeholder="Dónde se trabó el avance o qué te quitó claridad."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Qué corregiré mañana</label>
+                        <textarea id="ac-next" class="form-control" placeholder="Un ajuste concreto para el siguiente día."></textarea>
+                    </div>
+
+                    <div class="action-row">
+                        <span id="academic-check-status" class="status-text">Sin cambios recientes.</span>
+                        <button type="button" class="btn-secondary" onclick="resetAcademicChecklist()">Reiniciar</button>
+                        <button type="submit" class="btn-primary compact">Guardar Día</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 6: PERFORMANCE -->
+    <!-- ========================================== -->
+    <div id="view-performance" class="view">
+        <div class="panel-stack">
+            <div class="form-panel">
+                <div class="section-head">
+                    <h3>Rendimiento Académico</h3>
+                    <p>Métricas derivadas desde tus registros diarios, tus reflexiones y tus calificaciones guardadas localmente.</p>
+                </div>
+
+                <div class="metric-grid">
+                    <div class="metric-card"><span class="metric-label">Cumplimiento Diario</span><span class="metric-value" id="perf-today">0%</span><p class="metric-help">Porcentaje del checklist del día actual.</p></div>
+                    <div class="metric-card"><span class="metric-label">Promedio Semanal</span><span class="metric-value" id="perf-week">0%</span><p class="metric-help">Promedio de la semana actual.</p></div>
+                    <div class="metric-card"><span class="metric-label">Promedio Mensual</span><span class="metric-value" id="perf-month">0%</span><p class="metric-help">Promedio del mes actual.</p></div>
+                    <div class="metric-card"><span class="metric-label">Promedio Anual</span><span class="metric-value" id="perf-year">0%</span><p class="metric-help">Promedio del año actual.</p></div>
+                    <div class="metric-card"><span class="metric-label">Racha Activa</span><span class="metric-value" id="perf-streak">0</span><p class="metric-help">Días seguidos con estándar sólido.</p></div>
+                    <div class="metric-card"><span class="metric-label">Días Registrados</span><span class="metric-value" id="perf-days">0</span><p class="metric-help">Cantidad total de días guardados.</p></div>
+                    <div class="metric-card"><span class="metric-label">Mejor Semana</span><span class="metric-value" id="perf-best-week">Sin datos</span><p class="metric-help">Semana con mejor promedio.</p></div>
+                    <div class="metric-card"><span class="metric-label">Mejor Mes</span><span class="metric-value" id="perf-best-month">Sin datos</span><p class="metric-help">Mes con mejor promedio.</p></div>
+                    <div class="metric-card"><span class="metric-label">Notas Escritas</span><span class="metric-value" id="perf-notes">0</span><p class="metric-help">Diarias y de revisión.</p></div>
+                    <div class="metric-card"><span class="metric-label">Temas Dominados / Pendientes</span><span class="metric-value" id="perf-focus">0 / 0</span><p class="metric-help">Conteo rápido de tu radar académico.</p></div>
+                </div>
+            </div>
+
+            <div class="form-panel">
+                <div class="section-head">
+                    <h3>Gráficas</h3>
+                    <p>Visualización offline de la disciplina académica con SVG nativo.</p>
+                </div>
+
+                <div class="chart-grid">
+                    <div class="chart-card">
+                        <div class="chart-title">Barras Semanales</div>
+                        <div class="chart-sub">Últimas 8 semanas registradas</div>
+                        <div class="chart-box" id="perf-weekly-chart"></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-title">Progreso Mensual</div>
+                        <div class="chart-sub">Días del mes actual</div>
+                        <div class="chart-box" id="perf-monthly-chart"></div>
+                    </div>
+                    <div class="chart-card" style="grid-column:1 / -1;">
+                        <div class="chart-title">Resumen Anual</div>
+                        <div class="chart-sub">Promedio por mes en el año actual</div>
+                        <div class="chart-box" id="perf-yearly-chart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-panel">
+                <div class="section-head">
+                    <h3>Cierres y Reflexiones</h3>
+                    <p>Breves, útiles y orientadas a corregir el rumbo.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Reflexión Semanal</label>
+                    <div class="mono-line" id="weekly-review-label" style="margin-bottom:0.5rem;">Semana actual</div>
+                    <textarea id="review-weekly" class="form-control" placeholder="Qué se sostuvo esta semana y qué ajustarás la próxima."></textarea>
+                    <div class="action-row" style="margin-top:0.75rem;">
+                        <span id="review-weekly-status" class="status-text">Sin cambios recientes.</span>
+                        <button type="button" class="btn-primary compact" onclick="saveAcademicReview('week')">Guardar Semana</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Reflexión Mensual</label>
+                    <div class="mono-line" id="monthly-review-label" style="margin-bottom:0.5rem;">Mes actual</div>
+                    <textarea id="review-monthly" class="form-control" placeholder="Qué consolidaste este mes y qué patrón debes corregir."></textarea>
+                    <div class="action-row" style="margin-top:0.75rem;">
+                        <span id="review-monthly-status" class="status-text">Sin cambios recientes.</span>
+                        <button type="button" class="btn-primary compact" onclick="saveAcademicReview('month')">Guardar Mes</button>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0;">
+                    <label>Reflexión Anual</label>
+                    <div class="mono-line" id="yearly-review-label" style="margin-bottom:0.5rem;">Año actual</div>
+                    <textarea id="review-yearly" class="form-control" placeholder="Qué tipo de estudiante estás siendo y qué estándar quieres consolidar."></textarea>
+                    <div class="action-row" style="margin-top:0.75rem;">
+                        <span id="review-yearly-status" class="status-text">Sin cambios recientes.</span>
+                        <button type="button" class="btn-primary compact" onclick="saveAcademicReview('year')">Guardar Año</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-panel">
+                <div class="section-head">
+                    <h3>Radar de Temas</h3>
+                    <p>Úsalo sin forzar demasiado: solo deja visibles los temas dominados y los temas que siguen pendientes.</p>
+                </div>
+
+                <div class="focus-grid">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Temas Dominados</label>
+                        <textarea id="focus-mastered" class="form-control" placeholder="Ej: MRU, Torricelli, Ley de Ohm."></textarea>
+                        <div id="focus-mastered-list" class="focus-list"></div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Temas Pendientes</label>
+                        <textarea id="focus-pending" class="form-control" placeholder="Ej: Energía potencial, circuitos en serie, ejercicios de laboratorio."></textarea>
+                        <div id="focus-pending-list" class="focus-list"></div>
+                    </div>
+                </div>
+
+                <div class="action-row" style="margin-top:1rem;">
+                    <span id="focus-status" class="status-text">Sin cambios recientes.</span>
+                    <button type="button" class="btn-primary compact" onclick="saveFocusTracker()">Guardar Radar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 7: PHYSICS HUB (Topic Selector) -->
+    <!-- ========================================== -->
+    <div id="view-physics-hub" class="view">
+        
+        <div class="yr-tabs">
+            <div class="yr-tab active" onclick="switchPhysicsTab('yr4', this)">4to Año</div>
+            <div class="yr-tab" onclick="switchPhysicsTab('yr5', this)">5to Año</div>
+        </div>
+
+        <!-- TEMAS DE 4TO -->
+        <div class="topic-grid active" id="grid-yr4">
+            <div class="t-card" onclick="openTopic('topic-mru')">
+                <div class="t-card-icon">➡️</div>
+                <div class="t-card-content">
+                    <h4>MRU</h4>
+                    <p>Movimiento Constante</p>
+                </div>
+            </div>
+            <div class="t-card" onclick="openTopic('topic-mruv')">
+                <div class="t-card-icon">🏎️</div>
+                <div class="t-card-content">
+                    <h4>MRUV</h4>
+                    <p>Aceleración Lineal</p>
+                </div>
+            </div>
+            <div class="t-card" onclick="openTopic('topic-cl')">
+                <div class="t-card-icon">⬇️</div>
+                <div class="t-card-content">
+                    <h4>Caída Libre</h4>
+                    <p>Gravedad Descendente</p>
+                </div>
+            </div>
+            <div class="t-card" onclick="openTopic('topic-tv')">
+                <div class="t-card-icon">⬆️</div>
+                <div class="t-card-content">
+                    <h4>Tiro Vertical</h4>
+                    <p>Desaceleración</p>
+                </div>
+            </div>
+            <div class="t-card" onclick="openTopic('topic-newton')">
+                <div class="t-card-icon">🍎</div>
+                <div class="t-card-content">
+                    <h4>Newton</h4>
+                    <p>Leyes Dinámicas</p>
+                </div>
+            </div>
+            <div class="t-card" onclick="openTopic('topic-energia')">
+                <div class="t-card-icon">🔋</div>
+                <div class="t-card-content">
+                    <h4>Mecánica</h4>
+                    <p>Trabajo y Energía</p>
+                </div>
+            </div>
+            <div class="t-card" onclick="openTopic('topic-mc')">
+                <div class="t-card-icon">🔄</div>
+                <div class="t-card-content">
+                    <h4>Circular</h4>
+                    <p>Fuerzas Centrales</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEMAS DE 5TO -->
+        <div class="topic-grid" id="grid-yr5">
+            <div class="t-card" onclick="openTopic('topic-elec')">
+                <div class="t-card-icon">⚡</div>
+                <div class="t-card-content">
+                    <h4>Coulomb</h4>
+                    <p>Ley Electrostática</p>
+                </div>
+            </div>
+            <div class="t-card" onclick="openTopic('topic-ohm')">
+                <div class="t-card-icon">🔌</div>
+                <div class="t-card-content">
+                    <h4>Ohm</h4>
+                    <p>Circuitos y Corriente</p>
+                </div>
+            </div>
+            <div class="t-card" onclick="openTopic('topic-ond')">
+                <div class="t-card-icon">📻</div>
+                <div class="t-card-content">
+                    <h4>Ondas</h4>
+                    <p>Propagación y Frecuencia</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 8: TOPIC INDIVIDUAL -->
+    <!-- ========================================== -->
+    <div id="view-topic" class="view">
+        
+        <!-- MRU -->
+        <div id="topic-mru" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">➡️</span>
+                <h2>Movimiento Rectilíneo Uniforme</h2>
+                <p>Trayectoria lineal · Velocidad constante · Aceleración nula</p>
+            </div>
+            
+            <div class="idea">
+                <p>Un objeto en Movimiento Rectilíneo Uniforme (MRU) se desplaza en línea recta sin cambiar su rapidez ni su dirección. En este estado fundamental, <strong>la aceleración es estrictamente cero</strong> en todo momento. Un automóvil en una autopista recta manteniendo el velocímetro intacto es un buen modelo de estudio.</p>
+            </div>
+            
+            <div class="svg-wrap">
+                <svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="50" y1="80" x2="450" y2="80" stroke="var(--gold-muted)" stroke-width="2" stroke-dasharray="10"/>
+                    <circle r="12" fill="var(--gold-base)" stroke="var(--gold-light)" stroke-width="2">
+                        <animateMotion dur="4s" repeatCount="indefinite" path="M 50,70 L 450,70" />
+                    </circle>
+                    <text x="250" y="30" fill="var(--gold-dark)" font-size="12" font-family="monospace" text-anchor="middle">Velocidad v = constante</text>
+                    <line x1="100" y1="50" x2="150" y2="50" stroke="var(--gold-light)" stroke-width="2" marker-end="url(#arrow)"/>
+                    <line x1="250" y1="50" x2="300" y2="50" stroke="var(--gold-light)" stroke-width="2" marker-end="url(#arrow)"/>
+                    <line x1="400" y1="50" x2="450" y2="50" stroke="var(--gold-light)" stroke-width="2" marker-end="url(#arrow)"/>
+                    <defs>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--gold-light)" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="fm"><div class="fm-eq">v = d / t</div><div class="fm-desc">Para analizar la Magnitud de Velocidad (m/s) constante</div></div>
+            <div class="fm"><div class="fm-eq">d = v · t</div><div class="fm-desc">Para calcular el Espacio (m) recorrido en un lapso predeterminado</div></div>
+            <div class="fm"><div class="fm-eq">t = d / v</div><div class="fm-desc">Para despejar el Tiempo (s) que toma cubrir el trayecto</div></div>
+            
+            <div class="dato">🚀 Notación importante: Aunque las velocidades se usen coloquialmente en km/h, en el S.I. (Sistema Internacional) siempre se trabajan y presentan en <strong>metros por segundo (m/s)</strong>.</div>
+
+            <div class="calc">
+                <div class="calc-h">Calculadora Analítica MRU</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Velocidad (v)</label>
+                        <div class="inp-wrapper"><input type="number" id="mru_v" placeholder="vacío = calcular"><span>m/s</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Distancia (d)</label>
+                        <div class="inp-wrapper"><input type="number" id="mru_d" placeholder="vacío = calcular"><span>m</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Tiempo (t)</label>
+                        <div class="inp-wrapper"><input type="number" id="mru_t" placeholder="vacío = calcular"><span>s</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcMRU()">Resolver Incógnita</button>
+                <div class="err-msg" id="err-mru"></div>
+                <div class="step-result" id="res_mru"></div>
+            </div>
+        </div>
+
+        <!-- MRUV -->
+        <div id="topic-mruv" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">🏎️</span>
+                <h2>MRUV</h2>
+                <p>Trayectoria lineal · Velocidad variable · Aceleración constante</p>
+            </div>
+            
+            <div class="idea">
+                <p>En este movimiento, un objeto experimenta un cambio de velocidad a un ritmo parejo y constante. A esta magnitud de cambio se le llama <strong>aceleración</strong>. Si la velocidad aumenta, la aceleración es positiva; si el objeto frena gradualmente, su aceleración es negativa (desaceleración).</p>
+            </div>
+            
+            <div class="svg-wrap">
+                <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50,150 L550,150" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                    <path d="M50,150 L50,30" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                    <text x="35" y="40" fill="var(--gold-dark)" font-size="12" font-family="monospace">v(m/s)</text>
+                    <text x="560" y="155" fill="var(--gold-dark)" font-size="12" font-family="monospace">t(s)</text>
+                    <polygon points="50,150 50,120 450,40 450,150" fill="rgba(229,192,123,0.1)"/>
+                    <line x1="50" y1="120" x2="450" y2="40" stroke="var(--gold-base)" stroke-width="3"/>
+                    <circle r="6" fill="var(--bg-dark)" stroke="var(--gold-light)" stroke-width="2">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M 50,120 L 450,40" />
+                    </circle>
+                    <line x1="300" y1="70" x2="350" y2="70" stroke="var(--gold-light)" stroke-width="2" marker-end="url(#arrow-mruv)"/>
+                    <text x="310" y="60" fill="var(--text-main)" font-size="12" font-family="monospace">v = v₀ + a·t</text>
+                    <text x="200" y="130" fill="var(--gold-dark)" font-size="12" font-family="monospace">Área bajo curva = Distancia total</text>
+                    <defs>
+                        <marker id="arrow-mruv" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--gold-light)" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="fm"><div class="fm-eq">v_f = v₀ + a · t</div><div class="fm-desc">Ecuación de Velocidad Final en función del tiempo</div></div>
+            <div class="fm"><div class="fm-eq">d = v₀·t + ½·a·t²</div><div class="fm-desc">Ecuación de Posición o recorrido acelerado</div></div>
+            <div class="fm"><div class="fm-eq">v_f² = v₀² + 2·a·d</div><div class="fm-desc">Ecuación independiente del tiempo (Ec. de Torricelli)</div></div>
+            
+            <div class="dato">⚡ Convención de signos: Si el móvil <strong>parte del reposo</strong>, su velocidad inicial (v₀) es 0 m/s. Si <strong>frena hasta detenerse</strong>, su velocidad final (v_f) será 0 m/s.</div>
+
+            <div class="calc">
+                <div class="calc-h">Calculadora Cinemática MRUV</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Vel. Inicial (v₀)</label>
+                        <div class="inp-wrapper"><input type="number" id="mruv_v0" placeholder="Ej: 0"><span>m/s</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Aceleración (a)</label>
+                        <div class="inp-wrapper"><input type="number" id="mruv_a" placeholder="Ej: 2.5"><span>m/s²</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Tiempo (t)</label>
+                        <div class="inp-wrapper"><input type="number" id="mruv_t" placeholder="Ej: 4"><span>s</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcMRUV()">Computar Variables</button>
+                <div class="err-msg" id="err-mruv"></div>
+                <div class="step-result" id="res_mruv"></div>
+            </div>
+        </div>
+
+        <!-- CAÍDA LIBRE -->
+        <div id="topic-cl" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">⬇️</span>
+                <h2>Caída Libre</h2>
+                <p>Exclusividad de la gravedad (g ≈ 9.8 m/s²) · MRUV vertical</p>
+            </div>
+            
+            <div class="idea">
+                <p>Es un movimiento vertical descendente donde solo actúa la fuerza gravitatoria, despreciando la fricción. Matemáticamente <strong>es análogo al MRUV</strong>, donde la aceleración (a) es una constante conocida (g = 9.8 m/s²) y habitualmente inicia cuando el objeto es soltado, por lo que v₀ = 0.</p>
+            </div>
+            
+            <div class="svg-wrap">
+                <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="50" y="20" width="80" height="10" fill="var(--gold-dark)"/>
+                    <rect x="50" y="30" width="20" height="150" fill="var(--gold-muted)"/>
+                    <line x1="20" y1="180" x2="380" y2="180" stroke="var(--gold-base)" stroke-width="2"/>
+                    <line x1="100" y1="40" x2="100" y2="180" stroke="var(--gold-muted)" stroke-dasharray="5"/>
+                    <circle cx="100" cy="40" r="8" fill="var(--gold-light)">
+                        <animate attributeName="cy" values="40; 172" dur="1.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 1 1"/>
+                    </circle>
+                    <text x="140" y="80" fill="var(--text-main)" font-size="12" font-family="monospace">v_y = g · t</text>
+                    <text x="140" y="100" fill="var(--gold-dark)" font-size="12" font-family="monospace">Aceleración: g = 9.8 m/s²</text>
+                </svg>
+            </div>
+
+            <div class="fm"><div class="fm-eq">v_f = g · t</div><div class="fm-desc">Velocidad final antes del impacto tras *t* segundos</div></div>
+            <div class="fm"><div class="fm-eq">h = ½ · g · t²</div><div class="fm-desc">Altura (o distancia en la vertical, *y*) libremente caída</div></div>
+            <div class="fm"><div class="fm-eq">v_f² = 2 · g · h</div><div class="fm-desc">Para hallar velocidad conociendo la altura y no el tiempo</div></div>
+            
+            <div class="dato">🌍 Principio de Equivalencia: Galileo demostró que en el vacío (sin fricción atmosférica), dos cuerpos caen con idéntica aceleración, sin importar que uno tenga mayor masa que el otro.</div>
+
+            <div class="calc">
+                <div class="calc-h">Calculadora de Caída Libre</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Tiempo de caída (t)</label>
+                        <div class="inp-wrapper"><input type="number" id="cl_t" placeholder="Ej: 3"><span>s</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcCL()">Proyectar Caída</button>
+                <div class="err-msg" id="err-cl"></div>
+                <div class="step-result" id="res_cl"></div>
+            </div>
+        </div>
+
+        <!-- TIRO VERTICAL -->
+        <div id="topic-tv" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">⬆️</span>
+                <h2>Tiro Vertical</h2>
+                <p>Lanzamiento ascendente · Gravedad negativa · Altura Máxima</p>
+            </div>
+            
+            <div class="idea">
+                <p>Un objeto es impulsado hacia arriba con velocidad inicial. A medida que sube, la gravedad opera como un vector de <strong>aceleración en sentido contrario al movimiento</strong>. En la Altura Máxima, el objeto posee momentáneamente velocidad vertical cero (v_y = 0), y a partir de allí experimenta una Caída Libre. El tiempo de ascenso suele ser idéntico al de descenso si el nivel de lanzamiento y aterrizaje coinciden.</p>
+            </div>
+            
+            <div class="svg-wrap">
+                <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 100,180 Q 200,10 300,180" fill="none" stroke="var(--gold-muted)" stroke-dasharray="5"/>
+                    <line x1="50" y1="180" x2="350" y2="180" stroke="var(--gold-base)" stroke-width="2"/>
+                    <circle cx="200" cy="15" r="5" fill="var(--gold-dark)"/>
+                    <text x="215" y="20" fill="var(--gold-light)" font-size="11" font-family="monospace">v_y = 0</text>
+                    <circle r="8" fill="var(--gold-light)">
+                        <animateMotion dur="2.5s" repeatCount="indefinite" path="M 100,180 Q 200,10 300,180" />
+                    </circle>
+                    <text x="110" y="100" fill="var(--text-main)" font-size="11" font-family="monospace">Desacelera (g↓)</text>
+                    <text x="240" y="100" fill="var(--text-main)" font-size="11" font-family="monospace">Acelera (g↓)</text>
+                </svg>
+            </div>
+
+            <div class="fm"><div class="fm-eq">h_max = v₀² / (2·g)</div><div class="fm-desc">Punto más elevado alcanzado antes de caer.</div></div>
+            <div class="fm"><div class="fm-eq">t_subida = v₀ / g</div><div class="fm-desc">Tiempo que requiere la gravedad para anular la velocidad ascendente</div></div>
+            <div class="fm"><div class="fm-eq">t_vuelo = 2 · (v₀ / g)</div><div class="fm-desc">Tiempo de vuelo completo (Ida y Vuelta) al volver al nodo local</div></div>
+
+            <div class="calc">
+                <div class="calc-h">Calculadora de Tiro Vertical</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Velocidad Inicial (v₀)</label>
+                        <div class="inp-wrapper"><input type="number" id="tv_v0" placeholder="Ej: 20"><span>m/s</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcTV()">Calcular Trayectoria</button>
+                <div class="err-msg" id="err-tv"></div>
+                <div class="step-result" id="res_tv"></div>
+            </div>
+        </div>
+
+        <!-- NEWTON -->
+        <div id="topic-newton" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">🍎</span>
+                <h2>Leyes de Newton</h2>
+                <p>Relación axiomática entre Fuerza, Masa y Aceleración</p>
+            </div>
+            
+            <div class="idea">
+                <p>De los axiomas dinámicos, la <strong>Segunda Ley de Newton</strong> cuantifica cómo una fuerza neta desequilibra la Inercia de un cuerpo: la aceleración adquirida es directamente proporcional a la fuerza (F) e inversamente proporcional a la masa del objeto (m). <strong>F = m · a</strong>.</p>
+            </div>
+            
+            <div class="svg-wrap">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="50,250 350,250 50,100" fill="rgba(255,255,255,0.02)" stroke="var(--gold-muted)" stroke-width="2"/>
+                    <path d="M 100,250 A 50,50 0 0,0 80,235" fill="none" stroke="var(--gold-dark)" stroke-width="1"/>
+                    <text x="110" y="240" fill="var(--gold-dark)" font-size="12">θ</text>
+                    
+                    <g transform="translate(180, 160) rotate(26.5)">
+                        <rect x="-30" y="-40" width="60" height="40" fill="rgba(229,192,123,0.1)" stroke="var(--gold-base)" stroke-width="2"/>
+                        <line x1="0" y1="-40" x2="0" y2="-100" stroke="var(--gold-light)" stroke-width="2" marker-end="url(#arr2)"/>
+                        <text x="10" y="-90" fill="var(--gold-light)" font-size="14" transform="rotate(-26.5)">N (Normal)</text>
+                        
+                        <g transform="rotate(-26.5)">
+                            <line x1="0" y1="0" x2="0" y2="80" stroke="#FF6B6B" stroke-width="2" marker-end="url(#arrR)"/>
+                            <text x="10" y="70" fill="#FF6B6B" font-size="14">W (m·g)</text>
+                            <line x1="0" y1="0" x2="0" y2="70" stroke="rgba(255,105,105,0.3)" stroke-dasharray="4" transform="rotate(26.5)"/>
+                            <line x1="0" y1="0" x2="35" y2="0" stroke="rgba(255,105,105,0.3)" stroke-dasharray="4" transform="rotate(26.5)"/>
+                        </g>
+                    </g>
+                    <defs>
+                        <marker id="arr2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--gold-light)" />
+                        </marker>
+                        <marker id="arrR" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF6B6B" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="fm"><div class="fm-eq">F_neta = m · a</div><div class="fm-desc">Ecuación principal de la Segunda Ley de Newton</div></div>
+            <div class="fm"><div class="fm-eq">W = m · g</div><div class="fm-desc">Peso (la fuerza con la que la Tierra atrae a la masa gravitacional)</div></div>
+
+            <div class="calc">
+                <div class="calc-h">Calculadora de 2da Ley de Newton</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Masa (m)</label>
+                        <div class="inp-wrapper"><input type="number" id="nw_m" placeholder="Ej: 10"><span>kg</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Aceleración deseada (a)</label>
+                        <div class="inp-wrapper"><input type="number" id="nw_a" placeholder="Ej: 2"><span>m/s²</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcNW()">Identificar Fuerza</button>
+                <div class="err-msg" id="err-nw"></div>
+                <div class="step-result" id="res_nw"></div>
+            </div>
+        </div>
+
+        <!-- ENERGÍA Y TRABAJO -->
+        <div id="topic-energia" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">🔋</span>
+                <h2>Mecánica y Energía</h2>
+                <p>Transferencia de trabajo · Sistemas conservativos</p>
+            </div>
+            
+            <div class="idea">
+                <p>En la física clásica, la energía no se crea ni se destruye, solo muta entre diversas formas cinemáticas y posicionales. Si un sistema físico se encuentra libre de fricción u otras fuerzas disipativas (sistema aislado), su <strong>Traspaso de Energía Mecánica total (Em)</strong> permanece inalterable a lo largo del tiempo.</p>
+            </div>
+
+            <div class="svg-wrap">
+                <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 50,150 Q 250,150 450,50" fill="none" stroke="var(--gold-dark)" stroke-width="4"/>
+                    <line x1="50" y1="160" x2="450" y2="160" stroke="rgba(255,255,255,0.1)"/>
+                    <g>
+                        <circle cx="0" cy="0" r="10" fill="var(--gold-light)">
+                            <animateMotion dur="4s" repeatCount="indefinite" path="M 50,140 Q 250,140 450,40" keyPoints="0;1" keyTimes="0;1" calcMode="linear"/>
+                        </circle>
+                    </g>
+                    <text x="50" y="120" fill="var(--gold-base)" font-size="12" font-family="monospace">Ec Máxima / Ep = 0</text>
+                    <text x="350" y="80" fill="var(--gold-base)" font-size="12" font-family="monospace">Ep Máxima / Ec ↓</text>
+                </svg>
+            </div>
+
+            <div class="fm"><div class="fm-eq">E_c = ½ · m · v²</div><div class="fm-desc">Energía Cinética: Proviene de la velocidad actual del objeto (Joules)</div></div>
+            <div class="fm"><div class="fm-eq">E_p = m · g · h</div><div class="fm-desc">Energía Potencial Gravitatoria: Acumulada por la altura ganada localmente</div></div>
+
+            <div class="calc">
+                <div class="calc-h">Balance Analítico de Energía</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Masa (m)</label>
+                        <div class="inp-wrapper"><input type="number" id="en_m" placeholder="Ej: 5"><span>kg</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Velocidad Módulo (v)</label>
+                        <div class="inp-wrapper"><input type="number" id="en_v" placeholder="Ej: 10"><span>m/s</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Altura (h)</label>
+                        <div class="inp-wrapper"><input type="number" id="en_h" placeholder="Ej: 2"><span>m</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcEN()">Determinar Energía Mecánica</button>
+                <div class="err-msg" id="err-en"></div>
+                <div class="step-result" id="res_en"></div>
+            </div>
+        </div>
+
+        <!-- MOVIMIENTO CIRCULAR -->
+        <div id="topic-mc" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">🔄</span>
+                <h2>Circular Uniforme</h2>
+                <p>Órbitas · Aceleración Centrípeta · Radios Modulares</p>
+            </div>
+            
+            <div class="idea">
+                <p>Aunque un objeto trace un círculo con rapidez constante (su velocímetro no cambia), su trayectoria sí cambia contínuamente de dirección en el espacio de 360 grados. Esta alteración constante del "vector velocidad" implica la existencia ineludible de una aceleración obligatoria hacia adentro: la <strong>Aceleración Centrípeta</strong>.</p>
+            </div>
+
+            <div class="svg-wrap">
+                <svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="0" cy="0" r="60" fill="none" stroke="var(--gold-muted)" stroke-dasharray="8"/>
+                    <circle cx="0" cy="0" r="4" fill="var(--gold-dark)"/>
+                    <line x1="0" y1="0" x2="60" y2="0" stroke="var(--gold-dark)"/>
+                    <text x="25" y="-5" fill="var(--gold-base)" font-size="10" font-family="monospace">Radio r</text>
+                    <g>
+                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite" />
+                        <circle cx="60" cy="0" r="8" fill="var(--gold-light)"/>
+                        <line x1="60" y1="0" x2="60" y2="-40" stroke="var(--gold-light)" stroke-width="2" marker-end="url(#arrTan)"/>
+                        <text x="65" y="-20" fill="var(--text-main)" font-size="10" transform="rotate(90, 65, -20)">v (Tangencial)</text>
+                        <line x1="60" y1="0" x2="30" y2="0" stroke="#FF6B6B" stroke-width="2" marker-end="url(#arrCent)"/>
+                    </g>
+                    <defs>
+                        <marker id="arrTan" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--gold-light)" />
+                        </marker>
+                        <marker id="arrCent" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF6B6B" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="fm"><div class="fm-eq">v_t = 2πr / T</div><div class="fm-desc">Velocidad Tangencial del margen analizado (m/s)</div></div>
+            <div class="fm"><div class="fm-eq">a_c = v_t² / r</div><div class="fm-desc">Aceleración que empuja al vector a torcer la recta al centro radial</div></div>
+
+            <div class="calc">
+                <div class="calc-h">Operaciones para Circular Uniforme</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Radio Órbita (r)</label>
+                        <div class="inp-wrapper"><input type="number" id="mc_r" placeholder="Ej: 2"><span>m</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Período Total (T)</label>
+                        <div class="inp-wrapper"><input type="number" id="mc_t" placeholder="Ej: 3.14"><span>s</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Masa Inercial (m)</label>
+                        <div class="inp-wrapper"><input type="number" id="mc_m" placeholder="Ej: 10"><span>kg</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcMC()">Resolver Dinámica Central</button>
+                <div class="err-msg" id="err-mc"></div>
+                <div class="step-result" id="res_mc"></div>
+            </div>
+        </div>
+
+        <!-- ELECTROSTÁTICA (5to Año) -->
+        <div id="topic-elec" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">⚡</span>
+                <h2>Coulomb</h2>
+                <p>Interacción eléctrica puntual · Cargas en reposo interactivo</p>
+            </div>
+            
+            <div class="fm"><div class="fm-eq">F = k · (|q₁| · |q₂|) / d²</div><div class="fm-desc">Constante de Coulomb en el vacío k ≈ 9 × 10⁹ N·m²/C²</div></div>
+
+            <div class="calc">
+                <div class="calc-h">Calculadora de Atracción/Repulsión</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Carga q₁</label>
+                        <div class="inp-wrapper"><input type="number" id="co_q1" placeholder="Ej: 3"><span>μC</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Carga q₂</label>
+                        <div class="inp-wrapper"><input type="number" id="co_q2" placeholder="Ej: -5"><span>μC</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Distancia (d)</label>
+                        <div class="inp-wrapper"><input type="number" id="co_d" placeholder="Ej: 0.2"><span>m</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcCoulomb()">Calcular Fuerza</button>
+                <div class="err-msg" id="err-co"></div>
+                <div class="step-result" id="res_co"></div>
+            </div>
+        </div>
+
+        <!-- LEY DE OHM (5to Año) -->
+        <div id="topic-ohm" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">🔌</span>
+                <h2>Ley de Ohm</h2>
+                <p>Relación Voltaje - Corriente - Resistencia</p>
+            </div>
+            <div class="fm"><div class="fm-eq">V = I · R</div><div class="fm-desc">El diferencial es igual al flujo por el obstáculo molecular</div></div>
+            <div class="calc">
+                <div class="calc-h">Despeje Ohm</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Voltaje (V)</label>
+                        <div class="inp-wrapper"><input type="number" id="oh_v" placeholder="vacío = despejar"><span>V</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Corriente (I)</label>
+                        <div class="inp-wrapper"><input type="number" id="oh_i" placeholder="vacío = despejar"><span>A</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Resistencia (R)</label>
+                        <div class="inp-wrapper"><input type="number" id="oh_r" placeholder="vacío = despejar"><span>Ω</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcOHM()">Verificar Métrica</button>
+                <div class="err-msg" id="err-ohm"></div>
+                <div class="step-result" id="res_ohm"></div>
+            </div>
+        </div>
+
+        <!-- ONDAS (5to Año) -->
+        <div id="topic-ond" class="topic-article">
+            <div class="topic-header">
+                <span class="icon">📻</span>
+                <h2>Ondas Mecánicas</h2>
+                <p>Propagación de energía sin transporte de materia neta</p>
+            </div>
+            <div class="fm"><div class="fm-eq">v = λ · f</div><div class="fm-desc">Ecuación fundamental de Rapidez de Onda (m/s)</div></div>
+            <div class="calc">
+                <div class="calc-h">Velocidad de Onda</div>
+                <div class="calc-grid">
+                    <div class="calc-input">
+                        <label>Rapidez (v)</label>
+                        <div class="inp-wrapper"><input type="number" id="on_v" placeholder="Ej: 340"><span>m/s</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Frecuencia (f)</label>
+                        <div class="inp-wrapper"><input type="number" id="on_f" placeholder="vacío=despeja"><span>Hz</span></div>
+                    </div>
+                    <div class="calc-input">
+                        <label>Longitud (λ)</label>
+                        <div class="inp-wrapper"><input type="number" id="on_l" placeholder="vacío=despeja"><span>m</span></div>
+                    </div>
+                </div>
+                <button class="btn-calc" onclick="calcWave()">Resolver Longitud</button>
+                <div class="err-msg" id="err-on"></div>
+                <div class="step-result" id="res_on"></div>
+            </div>
+        </div>
+        
+    </div> <!-- END VIEW 5 (TOPIC) -->
+
+</div> <!-- END VIEW CONTAINER -->
+
+<script>
+    // ESTRELLAS DE FONDO (CANVAS)
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let width, height, stars = [];
+    
+    function initCanvas() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        stars = Array.from({length: 150}, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            r: Math.random() * 1.5,
+            a: Math.random(),
+            s: Math.random() * 0.05 + 0.01
+        }));
+    }
+    initCanvas();
+    window.addEventListener('resize', initCanvas);
+
+    function drawStars() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = '#E5C07B';
+        stars.forEach(s => {
+            s.a += s.s;
+            ctx.globalAlpha = Math.abs(Math.sin(s.a)) * 0.6;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+            ctx.fill();
+        });
+        requestAnimationFrame(drawStars);
+    }
+    drawStars();
+
+    // ==========================================
+    // ROUTER Y NAVEGACIÓN LOCAL-FIRST (OFFLINE)
+    // ==========================================
+    const views = document.querySelectorAll('.view');
+    const btnBack = document.getElementById('btn-back');
+    const topics = document.querySelectorAll('.topic-article');
+    let historyStack = ['view-home'];
+
+    function navigateTo(viewId) {
+        if (historyStack[historyStack.length - 1] !== viewId) {
+            historyStack.push(viewId);
+        }
+        renderView(viewId);
+    }
+
+    function navigateBack() {
+        if (historyStack.length > 1) {
+            historyStack.pop(); 
+            let target = historyStack[historyStack.length - 1];
+            renderView(target);
+        }
+    }
+
+    function renderView(viewId) {
+        // Desactiva todas las vistas y muestra la elegida
+        views.forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        
+        // El bóton volver solo es visible si NO estamos en HOME
+        if(viewId === 'view-home') {
+            btnBack.classList.remove('visible');
+        } else {
+            btnBack.classList.add('visible');
+        }
+        
+        // Hacemos scroll top para evitar quedar atrapados abajo
+        document.querySelector('.view-container').scrollTo(0, 0);
+    }
+
+    function openTopic(topicId) {
+        // Ocultar todos los temas individuales 
+        topics.forEach(t => t.classList.remove('active'));
+        // Mostrar solo el artículo pedido
+        document.getElementById(topicId).classList.add('active');
+        // Transicionar a la "View" global de tópicos
+        navigateTo('view-topic');
+    }
+
+    function switchPhysicsTab(yrId, btn) {
+        document.querySelectorAll('.yr-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.topic-grid').forEach(g => g.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('grid-' + yrId).classList.add('active');
+    }
+
+    // ==========================================
+    // TOAST NOTIFICATIONS
+    // ==========================================
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = `✅ ${msg}`;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ==========================================
+    // PERSISTENCIA LOCAL (PERFIL Y DIARIO)
+    // ==========================================
+    function initDate() {
+        const d = new Date();
+        const str = d.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('diary-date').innerText = str.toUpperCase();
+    }
+
+    function loadStats() {
+        initDate();
+        loadProfile();
+        loadDiary();
+        loadAcademicSuite();
+    }
+
+    function saveProfile(e) {
+        e.preventDefault();
+        const p = {
+            name: document.getElementById('prof-name').value,
+            year: document.getElementById('prof-year').value,
+            sect: document.getElementById('prof-sect').value,
+            school: document.getElementById('prof-school').value,
+            goal: document.getElementById('prof-goal').value
+        };
+        localStorage.setItem('fm_profile', JSON.stringify(p));
+        showToast('Perfil actualizado en dispositivo');
+        loadProfile();
+        navigateBack();
+    }
+
+    function loadProfile() {
+        const raw = localStorage.getItem('fm_profile');
+        if (raw) {
+            const p = JSON.parse(raw);
+            document.getElementById('prof-name').value = p.name || "";
+            document.getElementById('prof-year').value = p.year || "";
+            document.getElementById('prof-sect').value = p.sect || "";
+            document.getElementById('prof-school').value = p.school || "";
+            document.getElementById('prof-goal').value = p.goal || "";
+            
+            // Actualizar el saludo del HOME
+            let n = p.name ? p.name.split(' ')[0] : "Estudiante";
+            document.getElementById('home-greeting').innerHTML = `Hola, <span>${n}</span>`;
+        }
+    }
+
+    function saveDiary(e) {
+        e.preventDefault();
+        const d = new Date().toLocaleDateString('es-ES'); // llave cruda 'dd/mm/aaaa'
+        
+        const entry = {
+            feeling: document.getElementById('di-feeling').value,
+            topic: document.getElementById('di-topic').value,
+            hard: document.getElementById('di-hard').value,
+            notes: document.getElementById('di-notes').value
+        };
+        
+        // Extraemos historial general 
+        let history = JSON.parse(localStorage.getItem('fm_diary_history')) || {};
+        history[d] = entry; // Sobreescribe la entrada de hoy o crea nueva
+        
+        localStorage.setItem('fm_diary_history', JSON.stringify(history));
+        showToast('Reflexión académica guardada localmente');
+        navigateBack();
+    }
+
+    function loadDiary() {
+        const d = new Date().toLocaleDateString('es-ES');
+        let history = JSON.parse(localStorage.getItem('fm_diary_history')) || {};
+        
+        if (history[d]) {
+            // Existe un diario de hoy, rellenemos
+            document.getElementById('di-feeling').value = history[d].feeling || "";
+            document.getElementById('di-topic').value = history[d].topic || "";
+            document.getElementById('di-hard').value = history[d].hard || "";
+            document.getElementById('di-notes').value = history[d].notes || "";
+        }
+    }
+
+    // ==========================================
+    // MÓDULO ACADÉMICO EXTENDIDO
+    // ==========================================
+    const FM_ACADEMIC_KEY = 'fm_academic_v1';
+    const ACADEMIC_CHECKLIST_TOTAL = 10;
+    const ACADEMIC_STREAK_THRESHOLD = 80;
+    const academicCheckItems = Array.from(document.querySelectorAll('#academic-checklist .check-item'));
+    const academicTimers = {};
+    let academicState = defaultAcademicState();
+    let activeGradeEditId = '';
+
+    function safeParse(raw, fallback) {
+        try { return raw ? JSON.parse(raw) : fallback; }
+        catch (error) { return fallback; }
+    }
+
+    function createAcademicId(prefix, existingIds = new Set()) {
+        let nextId = '';
+        do {
+            const core = window.crypto && typeof window.crypto.randomUUID === 'function'
+                ? window.crypto.randomUUID()
+                : `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+            nextId = `${prefix}-${core}`;
+        } while (existingIds.has(nextId));
+        return nextId;
+    }
+
+    function defaultAcademicState() {
+        return {
+            version: 1,
+            grades: [],
+            checklist: {},
+            reviews: { weeks: {}, months: {}, years: {} },
+            focus: { mastered: '', pending: '', updatedAt: '' }
+        };
+    }
+
+    function normalizeAcademicState(raw) {
+        const base = defaultAcademicState();
+        if (!raw || typeof raw !== 'object') return base;
+        if (Array.isArray(raw.grades)) {
+            const seenGradeIds = new Set();
+            base.grades = raw.grades.map(item => {
+                const grade = item && typeof item === 'object' ? { ...item } : {};
+                if (!grade.id || seenGradeIds.has(grade.id)) {
+                    grade.id = createAcademicId('grade', seenGradeIds);
+                }
+                seenGradeIds.add(grade.id);
+                return grade;
+            });
+        }
+        base.checklist = raw.checklist && typeof raw.checklist === 'object' ? raw.checklist : {};
+        if (raw.reviews && typeof raw.reviews === 'object') {
+            base.reviews.weeks = raw.reviews.weeks && typeof raw.reviews.weeks === 'object' ? raw.reviews.weeks : {};
+            base.reviews.months = raw.reviews.months && typeof raw.reviews.months === 'object' ? raw.reviews.months : {};
+            base.reviews.years = raw.reviews.years && typeof raw.reviews.years === 'object' ? raw.reviews.years : {};
+        }
+        if (raw.focus && typeof raw.focus === 'object') {
+            base.focus.mastered = raw.focus.mastered || '';
+            base.focus.pending = raw.focus.pending || '';
+            base.focus.updatedAt = raw.focus.updatedAt || '';
+        }
+        return base;
+    }
+
+    function loadAcademicState() {
+        const stored = localStorage.getItem(FM_ACADEMIC_KEY);
+        academicState = normalizeAcademicState(safeParse(stored, null));
+        const normalized = JSON.stringify(academicState);
+        if (stored !== normalized) localStorage.setItem(FM_ACADEMIC_KEY, normalized);
+    }
+
+    function persistAcademicState() {
+        localStorage.setItem(FM_ACADEMIC_KEY, JSON.stringify(academicState));
+    }
+
+    function padNumber(num) {
+        return String(num).padStart(2, '0');
+    }
+
+    function getIsoDateKey(date = new Date()) {
+        return `${date.getFullYear()}-${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())}`;
+    }
+
+    function parseIsoDateKey(key) {
+        const parts = (key || '').split('-').map(Number);
+        return new Date(parts[0] || 0, (parts[1] || 1) - 1, parts[2] || 1);
+    }
+
+    function getMonthKey(date = new Date()) {
+        return `${date.getFullYear()}-${padNumber(date.getMonth() + 1)}`;
+    }
+
+    function getYearKey(date = new Date()) {
+        return String(date.getFullYear());
+    }
+
+    function getWeekInfo(date = new Date()) {
+        const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        const day = target.getDay() || 7;
+        target.setDate(target.getDate() + 4 - day);
+        const yearStart = new Date(target.getFullYear(), 0, 1);
+        const week = Math.ceil((((target - yearStart) / 86400000) + 1) / 7);
+        const monday = new Date(target);
+        monday.setDate(target.getDate() - ((target.getDay() || 7) - 1));
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+        return { key: `${target.getFullYear()}-W${padNumber(week)}`, monday, sunday };
+    }
+
+    function formatAcademicDate(date = new Date()) {
+        return date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
+    }
+
+    function formatWeekRange(info) {
+        return `${info.monday.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} - ${info.sunday.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+    }
+
+    function formatMonthText(key) {
+        const date = parseIsoDateKey(`${key}-01`);
+        return date.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+    }
+
+    function currentTimeLabel() {
+        return new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function setStatus(elOrId, msg, saved = false) {
+        const el = typeof elOrId === 'string' ? document.getElementById(elOrId) : elOrId;
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.toggle('saved', !!saved);
+    }
+
+    function scheduleAcademicSave(key, callback, statusId, loadingText) {
+        if (statusId) setStatus(statusId, loadingText || 'Guardando...', false);
+        clearTimeout(academicTimers[key]);
+        academicTimers[key] = setTimeout(callback, 450);
+    }
+
+    function normalizeNumericField(value) {
+        if (value === "" || value === null || value === undefined) return null;
+        const num = Number(value);
+        return Number.isFinite(num) ? num : null;
+    }
+
+    function formatGradeValue(value) {
+        return value === null || value === undefined ? '—' : Number(value).toFixed(2);
+    }
+
+    function buildDefaultChecklistRecord(date = new Date()) {
+        return {
+            checks: Array.from({ length: ACADEMIC_CHECKLIST_TOTAL }, () => 0),
+            notes: { good: '', hard: '', next: '' },
+            percent: 0,
+            week: getWeekInfo(date).key,
+            month: getMonthKey(date),
+            year: getYearKey(date),
+            updatedAt: ''
+        };
+    }
+
+    function normalizeChecklistRecord(record, key) {
+        const base = buildDefaultChecklistRecord(parseIsoDateKey(key));
+        if (record && Array.isArray(record.checks)) {
+            record.checks.slice(0, ACADEMIC_CHECKLIST_TOTAL).forEach((value, index) => {
+                base.checks[index] = value ? 1 : 0;
+            });
+        }
+        if (record && record.notes) {
+            base.notes.good = record.notes.good || '';
+            base.notes.hard = record.notes.hard || '';
+            base.notes.next = record.notes.next || '';
+        }
+        base.percent = computeChecklistPercent(base.checks);
+        base.updatedAt = record && record.updatedAt ? record.updatedAt : '';
+        return base;
+    }
+
+    function computeChecklistPercent(checks) {
+        return Math.round((checks.filter(Boolean).length / ACADEMIC_CHECKLIST_TOTAL) * 100);
+    }
+
+    function recordHasContent(record) {
+        return record.checks.some(Boolean) || [record.notes.good, record.notes.hard, record.notes.next].some(text => String(text || '').trim());
+    }
+
+    function escapeHtml(text) {
+        return String(text || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function splitTopicText(text) {
+        const seen = new Set();
+        return String(text || '')
+            .split(/[\n,;]+/)
+            .map(item => item.trim())
+            .filter(Boolean)
+            .filter(item => {
+                const key = item.toLowerCase();
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+    }
+
+    function computeGradeAverage(record) {
+        if (record.final !== null && record.final !== undefined) return Number(record.final);
+        const values = [record.exam, record.workshop, record.practice, record.lab, record.presentation].filter(value => value !== null && value !== undefined);
+        if (!values.length) return 0;
+        return values.reduce((sum, value) => sum + Number(value), 0) / values.length;
+    }
+
+    function getTodayAcademicRecord() {
+        const key = getIsoDateKey();
+        return academicState.checklist[key] ? normalizeChecklistRecord(academicState.checklist[key], key) : buildDefaultChecklistRecord();
+    }
+
+    function collectAcademicMetrics() {
+        const checklistEntries = Object.keys(academicState.checklist)
+            .sort()
+            .map(key => ({ key, record: normalizeChecklistRecord(academicState.checklist[key], key) }))
+            .filter(entry => recordHasContent(entry.record));
+
+        const weekMap = {};
+        const monthMap = {};
+        const yearMap = {};
+        let notesCount = 0;
+
+        checklistEntries.forEach(entry => {
+            const { record } = entry;
+            weekMap[record.week] = weekMap[record.week] || { sum: 0, count: 0 };
+            monthMap[record.month] = monthMap[record.month] || { sum: 0, count: 0 };
+            yearMap[record.year] = yearMap[record.year] || { sum: 0, count: 0 };
+            weekMap[record.week].sum += record.percent;
+            weekMap[record.week].count += 1;
+            monthMap[record.month].sum += record.percent;
+            monthMap[record.month].count += 1;
+            yearMap[record.year].sum += record.percent;
+            yearMap[record.year].count += 1;
+            notesCount += [record.notes.good, record.notes.hard, record.notes.next].filter(text => String(text || '').trim()).length;
+        });
+
+        Object.values(academicState.reviews.weeks).forEach(entry => { if (String((entry || {}).text || '').trim()) notesCount += 1; });
+        Object.values(academicState.reviews.months).forEach(entry => { if (String((entry || {}).text || '').trim()) notesCount += 1; });
+        Object.values(academicState.reviews.years).forEach(entry => { if (String((entry || {}).text || '').trim()) notesCount += 1; });
+        academicState.grades.forEach(entry => { if (String((entry || {}).observation || '').trim()) notesCount += 1; });
+
+        let streak = 0;
+        const cursor = new Date();
+        while (true) {
+            const key = getIsoDateKey(cursor);
+            if (!academicState.checklist[key]) break;
+            const record = normalizeChecklistRecord(academicState.checklist[key], key);
+            if (!recordHasContent(record) || record.percent < ACADEMIC_STREAK_THRESHOLD) break;
+            streak += 1;
+            cursor.setDate(cursor.getDate() - 1);
+        }
+
+        const getAverage = bucket => bucket && bucket.count ? Math.round(bucket.sum / bucket.count) : 0;
+        const currentWeek = getWeekInfo();
+        const currentMonth = getMonthKey();
+        const currentYear = getYearKey();
+
+        let bestWeekKey = '';
+        let bestWeekValue = -1;
+        Object.keys(weekMap).forEach(key => {
+            const value = getAverage(weekMap[key]);
+            if (value > bestWeekValue) {
+                bestWeekValue = value;
+                bestWeekKey = key;
+            }
+        });
+
+        let bestMonthKey = '';
+        let bestMonthValue = -1;
+        Object.keys(monthMap).forEach(key => {
+            const value = getAverage(monthMap[key]);
+            if (value > bestMonthValue) {
+                bestMonthValue = value;
+                bestMonthKey = key;
+            }
+        });
+
+        const masteredTopics = splitTopicText(academicState.focus.mastered);
+        const pendingTopics = splitTopicText(academicState.focus.pending);
+        const gradeAverage = academicState.grades.length
+            ? academicState.grades.reduce((sum, item) => sum + Number(item.average || 0), 0) / academicState.grades.length
+            : 0;
+
+        return {
+            todayRecord: getTodayAcademicRecord(),
+            todayPercent: getTodayAcademicRecord().percent,
+            currentWeekAverage: getAverage(weekMap[currentWeek.key]),
+            currentMonthAverage: getAverage(monthMap[currentMonth]),
+            currentYearAverage: getAverage(yearMap[currentYear]),
+            streak,
+            totalDays: checklistEntries.length,
+            bestWeekText: bestWeekKey ? `Sem ${Number(bestWeekKey.split('W')[1])} · ${bestWeekValue}%` : 'Sin datos',
+            bestMonthText: bestMonthKey ? `${formatMonthText(bestMonthKey)} · ${bestMonthValue}%` : 'Sin datos',
+            notesCount,
+            masteredTopics,
+            pendingTopics,
+            gradeAverage,
+            weekMap,
+            monthMap
+        };
+    }
+
+    function renderHomeAcademicSummary(metrics) {
+        document.getElementById('home-grades-meta').textContent = academicState.grades.length
+            ? `Promedio: ${metrics.gradeAverage.toFixed(2)} · ${academicState.grades.length} registro(s).`
+            : 'Sin registros aún.';
+        document.getElementById('home-checklist-meta').textContent = `Hoy: ${metrics.todayPercent}% completado.`;
+        document.getElementById('home-performance-meta').textContent = `Racha actual: ${metrics.streak} día(s).`;
+    }
+
+    function updateAcademicCheckSummary(record, metrics) {
+        document.getElementById('academic-check-date').textContent = formatAcademicDate(new Date());
+        academicCheckItems.forEach((item, index) => {
+            const done = !!record.checks[index];
+            item.classList.toggle('done', done);
+            item.setAttribute('aria-checked', done ? 'true' : 'false');
+        });
+        document.getElementById('check-percent').textContent = `${record.percent}%`;
+        document.getElementById('check-count').textContent = `${record.checks.filter(Boolean).length} / ${ACADEMIC_CHECKLIST_TOTAL}`;
+        document.getElementById('check-streak').textContent = String(metrics.streak);
+        document.getElementById('check-week-average').textContent = `${metrics.currentWeekAverage}%`;
+    }
+
+    function loadAcademicChecklistIntoDom() {
+        const record = getTodayAcademicRecord();
+        document.getElementById('ac-good').value = record.notes.good || '';
+        document.getElementById('ac-hard').value = record.notes.hard || '';
+        document.getElementById('ac-next').value = record.notes.next || '';
+        setStatus('academic-check-status', record.updatedAt ? `Guardado local: ${new Date(record.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}` : 'Sin cambios recientes.', !!record.updatedAt);
+        updateAcademicCheckSummary(record, collectAcademicMetrics());
+    }
+
+    function buildAcademicChecklistFromDom() {
+        const record = buildDefaultChecklistRecord();
+        record.checks = academicCheckItems.map(item => item.classList.contains('done') ? 1 : 0);
+        record.notes.good = document.getElementById('ac-good').value.trim();
+        record.notes.hard = document.getElementById('ac-hard').value.trim();
+        record.notes.next = document.getElementById('ac-next').value.trim();
+        record.percent = computeChecklistPercent(record.checks);
+        record.week = getWeekInfo().key;
+        record.month = getMonthKey();
+        record.year = getYearKey();
+        record.updatedAt = new Date().toISOString();
+        return record;
+    }
+
+    function saveAcademicChecklist(event, silent = false) {
+        if (event) event.preventDefault();
+        const key = getIsoDateKey();
+        const record = buildAcademicChecklistFromDom();
+        if (recordHasContent(record)) academicState.checklist[key] = record;
+        else delete academicState.checklist[key];
+        persistAcademicState();
+        const metrics = collectAcademicMetrics();
+        updateAcademicCheckSummary(record, metrics);
+        renderPerformance(metrics);
+        renderHomeAcademicSummary(metrics);
+        setStatus('academic-check-status', `Guardado local: ${currentTimeLabel()}`, true);
+        if (!silent) showToast('Checklist académico guardado');
+    }
+
+    function resetAcademicChecklist() {
+        academicCheckItems.forEach(item => item.classList.remove('done'));
+        document.getElementById('ac-good').value = '';
+        document.getElementById('ac-hard').value = '';
+        document.getElementById('ac-next').value = '';
+        const key = getIsoDateKey();
+        delete academicState.checklist[key];
+        persistAcademicState();
+        const metrics = collectAcademicMetrics();
+        updateAcademicCheckSummary(buildDefaultChecklistRecord(), metrics);
+        renderPerformance(metrics);
+        renderHomeAcademicSummary(metrics);
+        setStatus('academic-check-status', 'Checklist reiniciado.', true);
+        showToast('Checklist reiniciado');
+    }
+
+    function resetGradeForm(preserveSubject = true, message = 'Listo para un nuevo registro.', saved = false) {
+        const subjectInput = document.getElementById('grade-subject');
+        const subjectValue = preserveSubject ? (subjectInput.value.trim() || 'Física') : 'Física';
+        subjectInput.value = subjectValue;
+        document.getElementById('grade-edit-id').value = '';
+        document.getElementById('grade-period').value = '';
+        document.getElementById('grade-exam').value = '';
+        document.getElementById('grade-workshop').value = '';
+        document.getElementById('grade-practice').value = '';
+        document.getElementById('grade-lab').value = '';
+        document.getElementById('grade-presentation').value = '';
+        document.getElementById('grade-final').value = '';
+        document.getElementById('grade-observation').value = '';
+        document.getElementById('grade-submit-btn').textContent = 'Guardar Calificación';
+        document.getElementById('grade-cancel-btn').hidden = true;
+        activeGradeEditId = '';
+        setStatus('grades-form-status', message, saved);
+    }
+
+    function startGradeEdit(id) {
+        const record = academicState.grades.find(item => item.id === id);
+        if (!record) return;
+        activeGradeEditId = id;
+        document.getElementById('grade-edit-id').value = id;
+        document.getElementById('grade-subject').value = record.subject || 'Física';
+        document.getElementById('grade-period').value = record.period || '';
+        document.getElementById('grade-exam').value = record.exam ?? '';
+        document.getElementById('grade-workshop').value = record.workshop ?? '';
+        document.getElementById('grade-practice').value = record.practice ?? '';
+        document.getElementById('grade-lab').value = record.lab ?? '';
+        document.getElementById('grade-presentation').value = record.presentation ?? '';
+        document.getElementById('grade-final').value = record.final ?? '';
+        document.getElementById('grade-observation').value = record.observation || '';
+        document.getElementById('grade-submit-btn').textContent = 'Actualizar Calificación';
+        document.getElementById('grade-cancel-btn').hidden = false;
+        setStatus('grades-form-status', `Editando ${record.period || 'registro'}.`, true);
+        renderGradeRecords();
+        document.querySelector('.view-container').scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById('grade-period').focus();
+    }
+
+    function buildAcademicExportText() {
+        const metrics = collectAcademicMetrics();
+        const profile = safeParse(localStorage.getItem('fm_profile'), {}) || {};
+        const todayKey = getIsoDateKey();
+        const todayRecord = academicState.checklist[todayKey] ? normalizeChecklistRecord(academicState.checklist[todayKey], todayKey) : null;
+        const weekInfo = getWeekInfo();
+        const monthKey = getMonthKey();
+        const yearKey = getYearKey();
+        const weekReview = (academicState.reviews.weeks[weekInfo.key] || {}).text || '';
+        const monthReview = (academicState.reviews.months[monthKey] || {}).text || '';
+        const yearReview = (academicState.reviews.years[yearKey] || {}).text || '';
+        const grades = academicState.grades.slice().sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        const lines = [
+            'MASTER ACADEMICO - RESUMEN LOCAL',
+            `Exportado: ${new Date().toLocaleString('es-ES')}`,
+            `Estudiante: ${String(profile.name || 'Estudiante')}`,
+            ''
+        ];
+
+        lines.push('CALIFICACIONES');
+        if (!grades.length) {
+            lines.push('- Sin calificaciones registradas.');
+        } else {
+            lines.push(`- Promedio general: ${metrics.gradeAverage.toFixed(2)}`);
+            grades.forEach((item, index) => {
+                lines.push(`${index + 1}. ${item.subject || 'Física'} | ${item.period || 'Sin período'} | Promedio ${Number(item.average || 0).toFixed(2)}`);
+                lines.push(`   Examen: ${formatGradeValue(item.exam)} | Taller: ${formatGradeValue(item.workshop)} | Practica: ${formatGradeValue(item.practice)} | Laboratorio: ${formatGradeValue(item.lab)} | Exposicion: ${formatGradeValue(item.presentation)} | Final: ${formatGradeValue(item.final)}`);
+                if (item.observation) lines.push(`   Observacion: ${item.observation}`);
+            });
+        }
+
+        lines.push('', 'DISCIPLINA ACADEMICA');
+        lines.push(`- Cumplimiento de hoy: ${metrics.todayPercent}%`);
+        lines.push(`- Promedio semanal: ${metrics.currentWeekAverage}%`);
+        lines.push(`- Promedio mensual: ${metrics.currentMonthAverage}%`);
+        lines.push(`- Promedio anual: ${metrics.currentYearAverage}%`);
+        lines.push(`- Racha activa: ${metrics.streak} dia(s)`);
+        lines.push(`- Dias registrados: ${metrics.totalDays}`);
+        lines.push(`- Mejor semana: ${metrics.bestWeekText}`);
+        lines.push(`- Mejor mes: ${metrics.bestMonthText}`);
+        lines.push(`- Notas escritas: ${metrics.notesCount}`);
+
+        lines.push('', 'RADAR ACADEMICO');
+        lines.push(`- Temas dominados: ${metrics.masteredTopics.length ? metrics.masteredTopics.join(', ') : 'Sin registrar'}`);
+        lines.push(`- Temas pendientes: ${metrics.pendingTopics.length ? metrics.pendingTopics.join(', ') : 'Sin registrar'}`);
+
+        lines.push('', 'NOTAS Y CIERRES');
+        if (todayRecord && recordHasContent(todayRecord)) {
+            lines.push(`- Nota diaria (${todayKey})`);
+            lines.push(`  Que hice bien: ${todayRecord.notes.good || 'Sin nota'}`);
+            lines.push(`  Que me costo: ${todayRecord.notes.hard || 'Sin nota'}`);
+            lines.push(`  Que corregire manana: ${todayRecord.notes.next || 'Sin nota'}`);
+        } else {
+            lines.push('- Nota diaria: Sin registro hoy.');
+        }
+        lines.push(`- Reflexion semanal (${formatWeekRange(weekInfo)}): ${weekReview || 'Sin nota'}`);
+        lines.push(`- Reflexion mensual (${formatMonthText(monthKey)}): ${monthReview || 'Sin nota'}`);
+        lines.push(`- Reflexion anual (${yearKey}): ${yearReview || 'Sin nota'}`);
+
+        return lines.join('\n');
+    }
+
+    function hasAcademicExportableData() {
+        return !!(
+            academicState.grades.length
+            || Object.keys(academicState.checklist).some(key => recordHasContent(normalizeChecklistRecord(academicState.checklist[key], key)))
+            || Object.values(academicState.reviews.weeks).some(entry => String((entry || {}).text || '').trim())
+            || Object.values(academicState.reviews.months).some(entry => String((entry || {}).text || '').trim())
+            || Object.values(academicState.reviews.years).some(entry => String((entry || {}).text || '').trim())
+            || String(academicState.focus.mastered || '').trim()
+            || String(academicState.focus.pending || '').trim()
+        );
+    }
+
+    function refreshAcademicExportStatus() {
+        setStatus(
+            'grades-export-status',
+            hasAcademicExportableData()
+                ? 'Listo para descargar un resumen local.'
+                : 'Disponible para descargar cuando tengas datos guardados.',
+            false
+        );
+    }
+
+    function exportAcademicSummary() {
+        if (!hasAcademicExportableData()) {
+            setStatus('grades-export-status', 'Aún no hay datos suficientes para exportar.', false);
+            showToast('Aún no hay datos para exportar');
+            return;
+        }
+
+        const blob = new Blob([buildAcademicExportText()], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `resumen-academico-${getIsoDateKey()}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        setStatus('grades-export-status', `Resumen descargado: ${currentTimeLabel()}`, true);
+        showToast('Resumen académico exportado');
+    }
+
+    function renderGradeRecords() {
+        const list = document.getElementById('grades-list');
+        const total = academicState.grades.length;
+        document.getElementById('grades-count').textContent = String(total);
+        if (!total) {
+            document.getElementById('grades-average').textContent = '0.00';
+            document.getElementById('grades-last').textContent = 'Sin datos';
+            list.innerHTML = '<div class="empty-state">Aún no has cargado calificaciones. Cuando registres un período, aquí podrás revisarlo, editarlo o eliminarlo.</div>';
+            return;
+        }
+
+        const ordered = academicState.grades.slice().sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        const avg = ordered.reduce((sum, item) => sum + Number(item.average || 0), 0) / ordered.length;
+        document.getElementById('grades-average').textContent = avg.toFixed(2);
+        document.getElementById('grades-last').textContent = ordered[0].period || 'Sin datos';
+
+        list.innerHTML = ordered.map(item => `
+            <div class="entry-card ${item.id === activeGradeEditId ? 'editing' : ''}">
+                <div class="entry-head">
+                    <div>
+                        <div class="entry-title">${escapeHtml(item.subject || 'Física')}</div>
+                        <div class="entry-sub">${escapeHtml(item.period || 'Sin período')} · ${new Date(item.updatedAt).toLocaleDateString('es-ES')}</div>
+                    </div>
+                    <div class="entry-actions">
+                        <button type="button" class="tiny-btn" data-edit-grade="${item.id}">Editar</button>
+                        <button type="button" class="tiny-btn" data-delete-grade="${item.id}">Eliminar</button>
+                    </div>
+                </div>
+                ${item.observation ? `<div class="entry-sub">${escapeHtml(item.observation)}</div>` : ''}
+                <div class="entry-grid">
+                    <div class="entry-stat"><span>Examen</span><strong>${formatGradeValue(item.exam)}</strong></div>
+                    <div class="entry-stat"><span>Taller</span><strong>${formatGradeValue(item.workshop)}</strong></div>
+                    <div class="entry-stat"><span>Práctica</span><strong>${formatGradeValue(item.practice)}</strong></div>
+                    <div class="entry-stat"><span>Laboratorio</span><strong>${formatGradeValue(item.lab)}</strong></div>
+                    <div class="entry-stat"><span>Exposición</span><strong>${formatGradeValue(item.presentation)}</strong></div>
+                    <div class="entry-stat"><span>Nota Final</span><strong>${formatGradeValue(item.final)}</strong></div>
+                    <div class="entry-stat"><span>Promedio</span><strong>${Number(item.average || 0).toFixed(2)}</strong></div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function saveGradeRecord(event) {
+        event.preventDefault();
+        const existingId = document.getElementById('grade-edit-id').value;
+        const existingIndex = academicState.grades.findIndex(item => item.id === existingId);
+        const isEditing = existingIndex >= 0;
+        const record = {
+            id: isEditing ? academicState.grades[existingIndex].id : createAcademicId('grade', new Set(academicState.grades.map(item => item.id))),
+            subject: document.getElementById('grade-subject').value.trim() || 'Física',
+            period: document.getElementById('grade-period').value.trim(),
+            exam: normalizeNumericField(document.getElementById('grade-exam').value),
+            workshop: normalizeNumericField(document.getElementById('grade-workshop').value),
+            practice: normalizeNumericField(document.getElementById('grade-practice').value),
+            lab: normalizeNumericField(document.getElementById('grade-lab').value),
+            presentation: normalizeNumericField(document.getElementById('grade-presentation').value),
+            final: normalizeNumericField(document.getElementById('grade-final').value),
+            observation: document.getElementById('grade-observation').value.trim(),
+            updatedAt: new Date().toISOString()
+        };
+        const numericCount = [record.exam, record.workshop, record.practice, record.lab, record.presentation, record.final].filter(value => value !== null).length;
+        if (!record.period || numericCount === 0) {
+            showToast('Completa período y al menos una nota');
+            return;
+        }
+        record.average = computeGradeAverage(record);
+        if (isEditing) academicState.grades[existingIndex] = record;
+        else academicState.grades.unshift(record);
+        persistAcademicState();
+        resetGradeForm(true, isEditing ? `Registro actualizado: ${currentTimeLabel()}` : `Registro guardado: ${currentTimeLabel()}`, true);
+        renderGradeRecords();
+        const metrics = collectAcademicMetrics();
+        renderPerformance(metrics);
+        renderHomeAcademicSummary(metrics);
+        showToast(isEditing ? 'Calificación actualizada' : 'Calificación guardada');
+    }
+
+    function deleteGradeRecord(id) {
+        const wasEditing = activeGradeEditId === id;
+        academicState.grades = academicState.grades.filter(item => item.id !== id);
+        persistAcademicState();
+        if (wasEditing) resetGradeForm(true, 'El registro en edición fue eliminado.', true);
+        renderGradeRecords();
+        const metrics = collectAcademicMetrics();
+        renderPerformance(metrics);
+        renderHomeAcademicSummary(metrics);
+        showToast('Registro eliminado');
+    }
+
+    function loadAcademicReviewsIntoDom() {
+        const weekInfo = getWeekInfo();
+        const monthKey = getMonthKey();
+        const yearKey = getYearKey();
+        document.getElementById('weekly-review-label').textContent = formatWeekRange(weekInfo);
+        document.getElementById('monthly-review-label').textContent = formatMonthText(monthKey);
+        document.getElementById('yearly-review-label').textContent = yearKey;
+
+        const weekReview = academicState.reviews.weeks[weekInfo.key] || {};
+        const monthReview = academicState.reviews.months[monthKey] || {};
+        const yearReview = academicState.reviews.years[yearKey] || {};
+        document.getElementById('review-weekly').value = weekReview.text || '';
+        document.getElementById('review-monthly').value = monthReview.text || '';
+        document.getElementById('review-yearly').value = yearReview.text || '';
+        setStatus('review-weekly-status', weekReview.updatedAt ? `Guardado local: ${new Date(weekReview.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}` : 'Sin cambios recientes.', !!weekReview.updatedAt);
+        setStatus('review-monthly-status', monthReview.updatedAt ? `Guardado local: ${new Date(monthReview.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}` : 'Sin cambios recientes.', !!monthReview.updatedAt);
+        setStatus('review-yearly-status', yearReview.updatedAt ? `Guardado local: ${new Date(yearReview.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}` : 'Sin cambios recientes.', !!yearReview.updatedAt);
+    }
+
+    function saveAcademicReview(scope, silent = false) {
+        const mapName = scope === 'week' ? 'weeks' : scope === 'month' ? 'months' : 'years';
+        const key = scope === 'week' ? getWeekInfo().key : scope === 'month' ? getMonthKey() : getYearKey();
+        const inputId = scope === 'week' ? 'review-weekly' : scope === 'month' ? 'review-monthly' : 'review-yearly';
+        const statusId = scope === 'week' ? 'review-weekly-status' : scope === 'month' ? 'review-monthly-status' : 'review-yearly-status';
+        const text = document.getElementById(inputId).value.trim();
+        if (text) academicState.reviews[mapName][key] = { text, updatedAt: new Date().toISOString() };
+        else delete academicState.reviews[mapName][key];
+        persistAcademicState();
+        const stored = academicState.reviews[mapName][key];
+        setStatus(statusId, stored ? `Guardado local: ${currentTimeLabel()}` : 'Sin cambios recientes.', !!stored);
+        const metrics = collectAcademicMetrics();
+        renderPerformance(metrics);
+        renderHomeAcademicSummary(metrics);
+        if (!silent) showToast(`Reflexión ${scope === 'week' ? 'semanal' : scope === 'month' ? 'mensual' : 'anual'} guardada`);
+    }
+
+    function renderTopicPills(targetId, values, emptyText) {
+        const node = document.getElementById(targetId);
+        if (!values.length) {
+            node.innerHTML = `<span class="mono-line">${emptyText}</span>`;
+            return;
+        }
+        node.innerHTML = values.map(item => `<span class="topic-pill">${escapeHtml(item)}</span>`).join('');
+    }
+
+    function loadFocusIntoDom() {
+        document.getElementById('focus-mastered').value = academicState.focus.mastered || '';
+        document.getElementById('focus-pending').value = academicState.focus.pending || '';
+        renderTopicPills('focus-mastered-list', splitTopicText(academicState.focus.mastered), 'Aún no has marcado temas dominados.');
+        renderTopicPills('focus-pending-list', splitTopicText(academicState.focus.pending), 'Aún no has marcado temas pendientes.');
+        setStatus('focus-status', academicState.focus.updatedAt ? `Guardado local: ${new Date(academicState.focus.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}` : 'Sin cambios recientes.', !!academicState.focus.updatedAt);
+    }
+
+    function saveFocusTracker(silent = false) {
+        academicState.focus = {
+            mastered: document.getElementById('focus-mastered').value.trim(),
+            pending: document.getElementById('focus-pending').value.trim(),
+            updatedAt: new Date().toISOString()
+        };
+        persistAcademicState();
+        loadFocusIntoDom();
+        const metrics = collectAcademicMetrics();
+        renderPerformance(metrics);
+        renderHomeAcademicSummary(metrics);
+        if (!silent) showToast('Radar académico guardado');
+    }
+
+    function renderEmptyChart(id, text) {
+        document.getElementById(id).innerHTML = `<div class="empty-state">${escapeHtml(text)}</div>`;
+    }
+
+    function chartY(value, top, plotHeight) {
+        return top + plotHeight - (value / 100) * plotHeight;
+    }
+
+    function renderWeeklyChart(metrics) {
+        const keys = Object.keys(metrics.weekMap).sort().slice(-8);
+        if (!keys.length) return renderEmptyChart('perf-weekly-chart', 'Todavía no hay semanas registradas.');
+        const width = 540, height = 240, left = 36, right = 18, top = 18, bottom = 34;
+        const plotWidth = width - left - right;
+        const plotHeight = height - top - bottom;
+        const slot = plotWidth / keys.length;
+        const barWidth = Math.min(40, slot * 0.58);
+        const parts = [];
+        [0, 25, 50, 75, 100].forEach(mark => {
+            const y = chartY(mark, top, plotHeight);
+            parts.push(`<line x1="${left}" y1="${y}" x2="${width - right}" y2="${y}" stroke="rgba(255,255,255,0.08)" />`);
+            parts.push(`<text x="${left - 8}" y="${y + 4}" text-anchor="end" fill="var(--text-muted)" font-size="10">${mark}</text>`);
+        });
+        keys.forEach((key, index) => {
+            const value = Math.round(metrics.weekMap[key].sum / metrics.weekMap[key].count);
+            const x = left + slot * index + ((slot - barWidth) / 2);
+            const y = chartY(value, top, plotHeight);
+            const barHeight = top + plotHeight - y;
+            parts.push(`<rect x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" rx="8" fill="var(--gold-base)" opacity="0.78" />`);
+            parts.push(`<text x="${x + barWidth / 2}" y="${y - 8}" text-anchor="middle" fill="var(--gold-light)" font-size="11">${value}%</text>`);
+            parts.push(`<text x="${x + barWidth / 2}" y="${height - 10}" text-anchor="middle" fill="var(--text-muted)" font-size="10">S${Number(key.split('W')[1])}</text>`);
+        });
+        document.getElementById('perf-weekly-chart').innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Barras semanales">${parts.join('')}</svg>`;
+    }
+
+    function renderMonthlyChart() {
+        const today = new Date();
+        const monthPrefix = getMonthKey(today);
+        const totalDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+        const width = 540, height = 240, left = 28, right = 18, top = 18, bottom = 34;
+        const plotWidth = width - left - right;
+        const plotHeight = height - top - bottom;
+        const points = [];
+        const circles = [];
+        let hasData = false;
+        const parts = [];
+
+        [0, 25, 50, 75, 100].forEach(mark => {
+            const y = chartY(mark, top, plotHeight);
+            parts.push(`<line x1="${left}" y1="${y}" x2="${width - right}" y2="${y}" stroke="rgba(255,255,255,0.08)" />`);
+        });
+
+        for (let day = 1; day <= totalDays; day += 1) {
+            const key = `${monthPrefix}-${padNumber(day)}`;
+            if (!academicState.checklist[key]) continue;
+            const record = normalizeChecklistRecord(academicState.checklist[key], key);
+            if (!recordHasContent(record)) continue;
+            hasData = true;
+            const x = totalDays === 1 ? left + (plotWidth / 2) : left + ((day - 1) / (totalDays - 1)) * plotWidth;
+            const y = chartY(record.percent, top, plotHeight);
+            points.push(`${x},${y}`);
+            circles.push(`<circle cx="${x}" cy="${y}" r="4" fill="var(--gold-light)" />`);
+        }
+
+        if (!hasData) return renderEmptyChart('perf-monthly-chart', 'Todavía no hay días guardados este mes.');
+        if (points.length > 1) parts.push(`<polyline fill="none" stroke="var(--gold-base)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${points.join(' ')}" />`);
+        parts.push(circles.join(''));
+        [1, Math.ceil(totalDays / 2), totalDays].forEach(day => {
+            const x = totalDays === 1 ? left + (plotWidth / 2) : left + ((day - 1) / (totalDays - 1)) * plotWidth;
+            parts.push(`<text x="${x}" y="${height - 10}" text-anchor="middle" fill="var(--text-muted)" font-size="10">${day}</text>`);
+        });
+        document.getElementById('perf-monthly-chart').innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Progreso mensual">${parts.join('')}</svg>`;
+    }
+
+    function renderYearlyChart(metrics) {
+        const year = getYearKey();
+        const labels = ['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+        const hasData = labels.some((_, index) => metrics.monthMap[`${year}-${padNumber(index + 1)}`]);
+        if (!hasData) return renderEmptyChart('perf-yearly-chart', 'Todavía no hay meses registrados este año.');
+        const width = 540, height = 240, left = 20, right = 18, top = 18, bottom = 34;
+        const plotWidth = width - left - right;
+        const plotHeight = height - top - bottom;
+        const slot = plotWidth / 12;
+        const barWidth = Math.min(24, slot * 0.5);
+        const parts = [];
+
+        [0, 25, 50, 75, 100].forEach(mark => {
+            const y = chartY(mark, top, plotHeight);
+            parts.push(`<line x1="${left}" y1="${y}" x2="${width - right}" y2="${y}" stroke="rgba(255,255,255,0.08)" />`);
+        });
+
+        labels.forEach((label, index) => {
+            const bucket = metrics.monthMap[`${year}-${padNumber(index + 1)}`];
+            const value = bucket ? Math.round(bucket.sum / bucket.count) : 0;
+            const x = left + slot * index + ((slot - barWidth) / 2);
+            const y = chartY(value, top, plotHeight);
+            const barHeight = top + plotHeight - y;
+            parts.push(`<rect x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" rx="7" fill="var(--gold-base)" opacity="${value ? '0.78' : '0.16'}" />`);
+            parts.push(`<text x="${x + barWidth / 2}" y="${height - 10}" text-anchor="middle" fill="var(--text-muted)" font-size="10">${label}</text>`);
+        });
+        document.getElementById('perf-yearly-chart').innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Resumen anual">${parts.join('')}</svg>`;
+    }
+
+    function renderPerformance(metrics = collectAcademicMetrics()) {
+        document.getElementById('perf-today').textContent = `${metrics.todayPercent}%`;
+        document.getElementById('perf-week').textContent = `${metrics.currentWeekAverage}%`;
+        document.getElementById('perf-month').textContent = `${metrics.currentMonthAverage}%`;
+        document.getElementById('perf-year').textContent = `${metrics.currentYearAverage}%`;
+        document.getElementById('perf-streak').textContent = String(metrics.streak);
+        document.getElementById('perf-days').textContent = String(metrics.totalDays);
+        document.getElementById('perf-best-week').textContent = metrics.bestWeekText;
+        document.getElementById('perf-best-month').textContent = metrics.bestMonthText;
+        document.getElementById('perf-notes').textContent = String(metrics.notesCount);
+        document.getElementById('perf-focus').textContent = `${metrics.masteredTopics.length} / ${metrics.pendingTopics.length}`;
+        renderWeeklyChart(metrics);
+        renderMonthlyChart();
+        renderYearlyChart(metrics);
+        refreshAcademicExportStatus();
+    }
+
+    function loadAcademicSuite() {
+        loadAcademicState();
+        renderGradeRecords();
+        loadAcademicChecklistIntoDom();
+        loadAcademicReviewsIntoDom();
+        loadFocusIntoDom();
+        const metrics = collectAcademicMetrics();
+        renderPerformance(metrics);
+        renderHomeAcademicSummary(metrics);
+    }
+
+    function bindAcademicEvents() {
+        if (bindAcademicEvents.bound) return;
+        bindAcademicEvents.bound = true;
+
+        academicCheckItems.forEach(item => {
+            item.setAttribute('role', 'checkbox');
+            item.setAttribute('aria-checked', 'false');
+            item.addEventListener('click', () => {
+                item.classList.toggle('done');
+                saveAcademicChecklist(null, true);
+            });
+            item.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    item.classList.toggle('done');
+                    saveAcademicChecklist(null, true);
+                }
+            });
+        });
+
+        ['ac-good', 'ac-hard', 'ac-next'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                scheduleAcademicSave('daily-check', () => saveAcademicChecklist(null, true), 'academic-check-status', 'Guardando cambios del día...');
+            });
+        });
+
+        document.getElementById('grades-list').addEventListener('click', event => {
+            const editBtn = event.target.closest('[data-edit-grade]');
+            if (editBtn) {
+                startGradeEdit(editBtn.getAttribute('data-edit-grade'));
+                return;
+            }
+            const btn = event.target.closest('[data-delete-grade]');
+            if (btn) deleteGradeRecord(btn.getAttribute('data-delete-grade'));
+        });
+
+        document.getElementById('grade-cancel-btn').addEventListener('click', () => {
+            resetGradeForm(true, 'Edición cancelada.', true);
+            renderGradeRecords();
+        });
+
+        document.getElementById('grade-export-btn').addEventListener('click', exportAcademicSummary);
+
+        document.getElementById('review-weekly').addEventListener('input', () => {
+            scheduleAcademicSave('review-week', () => saveAcademicReview('week', true), 'review-weekly-status', 'Guardando reflexión semanal...');
+        });
+        document.getElementById('review-monthly').addEventListener('input', () => {
+            scheduleAcademicSave('review-month', () => saveAcademicReview('month', true), 'review-monthly-status', 'Guardando reflexión mensual...');
+        });
+        document.getElementById('review-yearly').addEventListener('input', () => {
+            scheduleAcademicSave('review-year', () => saveAcademicReview('year', true), 'review-yearly-status', 'Guardando reflexión anual...');
+        });
+
+        ['focus-mastered', 'focus-pending'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                renderTopicPills('focus-mastered-list', splitTopicText(document.getElementById('focus-mastered').value), 'Aún no has marcado temas dominados.');
+                renderTopicPills('focus-pending-list', splitTopicText(document.getElementById('focus-pending').value), 'Aún no has marcado temas pendientes.');
+                scheduleAcademicSave('focus', () => saveFocusTracker(true), 'focus-status', 'Guardando radar académico...');
+            });
+        });
+    }
+
+    // Precarga al abrir la app
+    window.addEventListener('DOMContentLoaded', () => {
+        loadStats();
+        bindAcademicEvents();
+    });
+
+
+    // ==========================================
+    // CÓDIGO DE CALCULADORAS DE FÍSICA Y UX
+    // ==========================================
+    function buildStep(math, desc) { return `<div class="step-item"><div class="s-math">${math}</div><div class="s-desc">${desc}</div></div>`; }
+    function showRes(id, html, finalVal, unit) {
+        const el = document.getElementById(id);
+        el.innerHTML = `<div class="step-list">${html}</div><div class="s-final"><span class="res">${finalVal} ${unit}</span><span style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Resultado Computado</span></div>`;
+        el.classList.add('active');
+    }
+    function showErr(id, msg) {
+        const el = document.getElementById(id);
+        el.textContent = msg; el.classList.add('active');
+        document.getElementById(id.replace('err-', 'res_')).classList.remove('active');
+    }
+    function clearErr(id) { document.getElementById(id).classList.remove('active'); }
+
+    // MRU
+    function calcMRU() {
+        clearErr('err-mru');
+        const v = document.getElementById('mru_v').value, d = document.getElementById('mru_d').value, t = document.getElementById('mru_t').value;
+        if ([v, d, t].filter(x => x !== "").length !== 2) return showErr('err-mru', 'Debe ingresar exactamente 2 parámetros.');
+        let h = "";
+        if (d && t && !v) { h += buildStep(`v = d / t`, "Fórmula canónica"); h += buildStep(`v = ${d} / ${t}`, "Sustitución"); showRes('res_mru', h, (d/t).toFixed(2), "m/s"); }
+        else if (v && t && !d) { h += buildStep(`d = v · t`, "Despeje de distancia"); h += buildStep(`d = ${v} · ${t}`, "Sustitución"); showRes('res_mru', h, (v*t).toFixed(2), "m"); }
+        else if (d && v && !t) { h += buildStep(`t = d / v`, "Despeje de tiempo"); h += buildStep(`t = ${d} / ${v}`, "Sustitución"); showRes('res_mru', h, (d/v).toFixed(2), "s"); }
+    }
+
+    // MRUV
+    function calcMRUV() {
+        clearErr('err-mruv');
+        const v0 = Number(document.getElementById('mruv_v0').value) || 0;
+        const aStr = document.getElementById('mruv_a').value, tStr = document.getElementById('mruv_t').value;
+        if (aStr === "" || tStr === "") return showErr('err-mruv', "Requiere ingresar Aceleración (a) y Tiempo (t).");
+        const a = Number(aStr), t = Number(tStr), vf = v0 + (a * t), d = (v0 * t) + (0.5 * a * Math.pow(t, 2));
+        let h = buildStep(`v_f = ${v0} + (${a} · ${t}) = ${vf.toFixed(2)} m/s`, "Velocidad Final");
+        h += buildStep(`d = (${v0}·${t}) + 0.5·(${a})·(${t})²`, "Posición calculada");
+        showRes('res_mruv', h, d.toFixed(2), "m (Distancia)");
+    }
+
+    // Caída
+    function calcCL() {
+        clearErr('err-cl');
+        const tStr = document.getElementById('cl_t').value;
+        if (tStr === "") return showErr('err-cl', "Ingrese el tiempo de caída.");
+        const t = Number(tStr), h_dist = 0.5 * 9.8 * Math.pow(t, 2), vf = 9.8 * t;
+        let h = buildStep(`h = 0.5 · (9.8 m/s²) · (${t} s)²`, "Desplazamiento vertical");
+        h += buildStep(`v_f = 9.8 · ${t} = ${vf.toFixed(2)} m/s`, "Velocidad de impacto");
+        showRes('res_cl', h, h_dist.toFixed(2), "m");
+    }
+
+    // Tiro Vert
+    function calcTV() {
+        clearErr('err-tv');
+        const v0Str = document.getElementById('tv_v0').value;
+        if (v0Str === "") return showErr('err-tv', "Ingrese una Velocidad Inicial.");
+        const v0 = Number(v0Str), hmax = Math.pow(v0, 2) / (2 * 9.8), tsubida = v0 / 9.8;
+        let h = buildStep(`h_max = ${v0}² / (2 · 9.8) = ${hmax.toFixed(2)} m`, "Altura Máxima paramétrica");
+        h += buildStep(`t_vuelo = 2 · (${v0} / 9.8)`, "Tiempo total subida-bajada");
+        showRes('res_tv', h, (tsubida*2).toFixed(2), "s");
+    }
+
+    // Newton
+    function calcNW() {
+        clearErr('err-nw');
+        const m = document.getElementById('nw_m').value, a = document.getElementById('nw_a').value;
+        if(m === "" || a === "") return showErr('err-nw', "Indicar masa y aceleración.");
+        let h = buildStep(`F_neta = ${m} kg · ${a} m/s²`, "Segunda Ley de Newton");
+        showRes('res_nw', h, (Number(m)*Number(a)).toFixed(2), "N");
+    }
+
+    // Energía
+    function calcEN() {
+        clearErr('err-en');
+        const m = document.getElementById('en_m').value, v = document.getElementById('en_v').value, ht = document.getElementById('en_h').value;
+        if(m==="" || v==="" || ht==="") return showErr('err-en', "Rellene masa, rapidez y altura.");
+        const mN=Number(m), vN=Number(v), hN=Number(ht), ec = 0.5*mN*Math.pow(vN, 2), ep = mN*9.8*hN;
+        let h = buildStep(`E_c = 0.5 · ${mN} · ${vN}² = ${ec.toFixed(2)} J`, "Energía Cinética");
+        h += buildStep(`E_p = ${mN} · 9.8 · ${hN} = ${ep.toFixed(2)} J`, "Energía Potencial");
+        showRes('res_en', h, (ec+ep).toFixed(2), "J");
+    }
+
+    // Circular
+    function calcMC() {
+        clearErr('err-mc');
+        const r = document.getElementById('mc_r').value, t = document.getElementById('mc_t').value, m = document.getElementById('mc_m').value;
+        if(r==="" || t==="" || m==="") return showErr('err-mc', "Requiere Radio, Período y Masa.");
+        const rN=Number(r), tN=Number(t), mN=Number(m), v = (2*Math.PI*rN)/tN, fc = (mN*Math.pow(v,2))/rN;
+        let h = buildStep(`v_t = 2π(${rN}) / ${tN} = ${v.toFixed(2)} m/s`, "Rapidez límite");
+        h += buildStep(`F_c = ${mN} · (${v.toFixed(2)})² / ${rN}`, "Fuerza Centrípeta necesaria");
+        showRes('res_mc', h, fc.toFixed(2), "N");
+    }
+
+    // Coulomb
+    function calcCoulomb() {
+        clearErr('err-co');
+        const q1 = document.getElementById('co_q1').value, q2 = document.getElementById('co_q2').value, d = document.getElementById('co_d').value;
+        if(q1==="" || q2==="" || d==="") return showErr('err-co', "Módulo de cargas (q) y distancia (d) obligatorios.");
+        const dN = Number(d);
+        if (dN === 0) return showErr('err-co', "Distancia no puede ser 0.");
+        const q1C = Number(q1)*1e-6, q2C = Number(q2)*1e-6, F = (9e9 * Math.abs(q1C) * Math.abs(q2C)) / Math.pow(dN, 2);
+        let h = buildStep(`K = 9×10⁹ N·m²/C² ; q = Conversión de μC a C`, "Ajuste de magnitudes");
+        h += buildStep(`F = K · (|q₁|·|q₂|) / d²`, "Atracción / Repulsión electrostática");
+        showRes('res_co', h, F.toExponential(4), "N");
+    }
+
+    // Ohm
+    function calcOHM() {
+        clearErr('err-ohm');
+        const v = document.getElementById('oh_v').value, i = document.getElementById('oh_i').value, r = document.getElementById('oh_r').value;
+        if ([v, i, r].filter(x => x !== "").length !== 2) return showErr('err-ohm', "Ingrese exactamente dos factores paramétricos.");
+        let h = "";
+        if (i && r && !v) { h += buildStep(`V = ${i} · ${r}`, "Despeje de Potencial"); showRes('res_ohm', h, (Number(i)*Number(r)).toFixed(2), "V"); }
+        else if (v && r && !i) { h += buildStep(`I = ${v} / ${r}`, "Despeje de Corriente"); showRes('res_ohm', h, (Number(v)/Number(r)).toFixed(2), "A"); }
+        else if (v && i && !r) { h += buildStep(`R = ${v} / ${i}`, "Despeje Resistivo"); showRes('res_ohm', h, (Number(v)/Number(i)).toFixed(2), "Ω"); }
+    }
+
+    // Ondas
+    function calcWave() {
+        clearErr('err-on');
+        const v = document.getElementById('on_v').value, f = document.getElementById('on_f').value, l = document.getElementById('on_l').value;
+        if ([v, f, l].filter(x => x !== "").length !== 2) return showErr('err-on', "Debe ingresar dos aspectos de la onda.");
+        let h = "";
+        if (v && f && !l) { h += buildStep(`λ = ${v} / ${f}`, "Despeje Longitudinal"); showRes('res_on', h, (Number(v)/Number(f)).toFixed(4), "m"); }
+        else if (v && l && !f) { h += buildStep(`f = ${v} / ${l}`, "Despeje de Frecuencia"); showRes('res_on', h, (Number(v)/Number(l)).toFixed(2), "Hz"); }
+        else if (f && l && !v) { h += buildStep(`v = ${l} · ${f}`, "Equilibrio estructural macroscópico lineal analizado"); showRes('res_on', h, (Number(l)*Number(f)).toFixed(2), "m/s"); }
+    }
+</script>
+</body>
+</html>
+
