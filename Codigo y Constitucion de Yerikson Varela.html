@@ -176,6 +176,22 @@
         }
         .search-trigger svg { flex-shrink: 0; }
 
+        /* Indicador de filtro activo en el botón de búsqueda */
+        .search-trigger.search-active {
+            background: rgba(201,168,76,0.14);
+            border-color: rgba(201,168,76,0.4);
+            color: var(--gold-light);
+        }
+        .search-trigger .search-filter-badge {
+            display: none;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            flex-shrink: 0;
+        }
+        .search-trigger.search-active .search-filter-badge { display: block; }
+
         /* ── Search overlay ── */
         /* Suprimir el app-bar interno de los templates cuando están dentro del monolito */
         .view-content .app-bar { display: none !important; }
@@ -345,7 +361,7 @@
 
             .search-trigger span { display: none; }
 
-            .shell { padding-top: calc(var(--bar-height) + 20px); }
+            .shell { padding-top: calc(var(--bar-height) + 36px); }
         }
 
         @media (max-width: 640px) {
@@ -371,6 +387,7 @@
             <button class="search-trigger" id="searchTrigger" type="button" aria-label="Buscar en el sistema">
                 <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><line x1="16" y1="16" x2="12.65" y2="12.65"/></svg>
                 <span>Buscar</span>
+                <span class="search-filter-badge" aria-hidden="true"></span>
             </button>
         </div>
     </header>
@@ -737,7 +754,7 @@
         </div>
     </div>
     <div class="link-card-grid">
-        <a class="link-card" href="#constitucion/sec-codigo" data-switch-view="constitucion" data-switch-target="sec-codigo"><span class="card-icon">⚖️</span><h3>Las 17 leyes</h3><p>Acceso directo al corazón del sistema: leyes de carácter y leyes de construcción.</p></a>
+        <a class="link-card" href="#constitucion/sec-codigo" data-switch-view="constitucion" data-switch-target="sec-codigo"><span class="card-icon">⚖️</span><h3>Las 12 Leyes del Honor</h3><p>Acceso directo al corazón del sistema: leyes de carácter y leyes de construcción.</p></a>
         <a class="link-card" href="#constitucion/sec-prohibitions" data-switch-view="constitucion" data-switch-target="sec-prohibitions"><span class="card-icon">🚫</span><h3>Prohibiciones y deberes</h3><p>Lo que nunca negocias y lo que sí debes sostener como hombre.</p></a>
         <a class="link-card" href="#constitucion/sec-frases" data-switch-view="constitucion" data-switch-target="sec-frases"><span class="card-icon">📜</span><h3>Frases Maestras</h3><p>Recordatorios cortos y contundentes cuando necesitas volver al eje.</p></a>
         <a class="link-card" href="#constitucion/sec-oath" data-switch-view="constitucion" data-switch-target="sec-oath"><span class="card-icon">✍️</span><h3>Juramento</h3><p>El compromiso explícito, sin resumen ni reducción decorativa.</p></a>
@@ -1048,13 +1065,15 @@
   var STREAK_THRESHOLD = 80;
   var AUTO_DELAY = 450;
 
-  var cover = document.getElementById('cover');
-  var page = document.getElementById('page');
-  var btnBack = document.getElementById('btnBack');
-  var sections = Array.from(document.querySelectorAll('.section'));
-  var counterBar = document.getElementById('counterBar');
-  var homeCards = Array.from(document.querySelectorAll('.home-card[data-sec]'));
-  var checkItems = Array.from(document.querySelectorAll('#checklist .check-item'));
+  // Scopear al contenedor del Código para no cruzarse con la Constitución
+  var _codigoContainer = document.getElementById('view-codigo') || document;
+  var cover = _codigoContainer.querySelector('#cover');
+  var page = _codigoContainer.querySelector('#page');
+  var btnBack = _codigoContainer.querySelector('#btnBack');
+  var sections = Array.from(_codigoContainer.querySelectorAll('.section'));
+  var counterBar = _codigoContainer.querySelector('#counterBar');
+  var homeCards = Array.from(_codigoContainer.querySelectorAll('.home-card[data-sec]'));
+  var checkItems = Array.from(_codigoContainer.querySelectorAll('#checklist .check-item'));
   var reviewTabs = Array.from(document.querySelectorAll('.review-tab'));
   var guideButtons = Array.from(document.querySelectorAll('.guide-link'));
   var CHECK_TOTAL = checkItems.length;
@@ -1062,62 +1081,62 @@
   var opened = false;
 
   var els = {
-    checklist: document.getElementById('checklist'),
-    resetBtn: document.getElementById('resetBtn'),
-    dailyDateLabel: document.getElementById('dailyDateLabel'),
+    checklist: _codigoContainer.querySelector('#checklist'),
+    resetBtn: _codigoContainer.querySelector('#resetBtn'),
+    dailyDateLabel: _codigoContainer.querySelector('#dailyDateLabel'),
     dailyGood: document.getElementById('dailyGood'),
     dailyFail: document.getElementById('dailyFail'),
     dailyObservation: document.getElementById('dailyObservation'),
-    dailySaveStatus: document.getElementById('dailySaveStatus'),
-    saveDailyBtn: document.getElementById('saveDailyBtn'),
-    progressCircle: document.getElementById('progressCircle'),
-    dailyPercentValue: document.getElementById('dailyPercentValue'),
-    dailyCountValue: document.getElementById('dailyCountValue'),
-    dailyStreakValue: document.getElementById('dailyStreakValue'),
-    dailyWeekValue: document.getElementById('dailyWeekValue'),
-    ctNum: document.getElementById('ctNum'),
-    ctPercent: document.getElementById('ctPercent'),
-    ctStreak: document.getElementById('ctStreak'),
-    homeTodayPercent: document.getElementById('homeTodayPercent'),
-    homeStreak: document.getElementById('homeStreak'),
-    homeWeekAvg: document.getElementById('homeWeekAvg'),
-    homeNotesCount: document.getElementById('homeNotesCount'),
-    weekPeriodLabel: document.getElementById('weekPeriodLabel'),
-    monthPeriodLabel: document.getElementById('monthPeriodLabel'),
-    yearPeriodLabel: document.getElementById('yearPeriodLabel'),
-    weeklyReflection: document.getElementById('weeklyReflection'),
-    weeklySaveStatus: document.getElementById('weeklySaveStatus'),
-    saveWeeklyBtn: document.getElementById('saveWeeklyBtn'),
-    monthlyWins: document.getElementById('monthlyWins'),
-    monthlyFaults: document.getElementById('monthlyFaults'),
-    monthlyCorrection: document.getElementById('monthlyCorrection'),
-    monthlyFocus: document.getElementById('monthlyFocus'),
-    monthlySaveStatus: document.getElementById('monthlySaveStatus'),
-    saveMonthlyBtn: document.getElementById('saveMonthlyBtn'),
-    yearlyIdentity: document.getElementById('yearlyIdentity'),
-    yearlyAchievements: document.getElementById('yearlyAchievements'),
-    yearlyLessons: document.getElementById('yearlyLessons'),
-    yearlyCommitment: document.getElementById('yearlyCommitment'),
-    yearlySaveStatus: document.getElementById('yearlySaveStatus'),
-    saveYearlyBtn: document.getElementById('saveYearlyBtn'),
-    metricToday: document.getElementById('metricToday'),
-    metricStreak: document.getElementById('metricStreak'),
-    metricWeek: document.getElementById('metricWeek'),
-    metricMonth: document.getElementById('metricMonth'),
-    metricYear: document.getElementById('metricYear'),
-    metricBestWeek: document.getElementById('metricBestWeek'),
-    metricBestMonth: document.getElementById('metricBestMonth'),
-    metricDays: document.getElementById('metricDays'),
-    metricNotes: document.getElementById('metricNotes'),
-    weeklyChart: document.getElementById('weeklyChart'),
-    monthlyChart: document.getElementById('monthlyChart'),
-    yearlyChart: document.getElementById('yearlyChart'),
-    guidePanelsHost: document.getElementById('guidePanelsHost'),
-    legacyGuidesMarker: document.getElementById('legacyGuidesMarker')
+    dailySaveStatus: _codigoContainer.querySelector('#dailySaveStatus'),
+    saveDailyBtn: _codigoContainer.querySelector('#saveDailyBtn'),
+    progressCircle: _codigoContainer.querySelector('#progressCircle'),
+    dailyPercentValue: _codigoContainer.querySelector('#dailyPercentValue'),
+    dailyCountValue: _codigoContainer.querySelector('#dailyCountValue'),
+    dailyStreakValue: _codigoContainer.querySelector('#dailyStreakValue'),
+    dailyWeekValue: _codigoContainer.querySelector('#dailyWeekValue'),
+    ctNum: _codigoContainer.querySelector('#ctNum'),
+    ctPercent: _codigoContainer.querySelector('#ctPercent'),
+    ctStreak: _codigoContainer.querySelector('#ctStreak'),
+    homeTodayPercent: _codigoContainer.querySelector('#homeTodayPercent'),
+    homeStreak: _codigoContainer.querySelector('#homeStreak'),
+    homeWeekAvg: _codigoContainer.querySelector('#homeWeekAvg'),
+    homeNotesCount: _codigoContainer.querySelector('#homeNotesCount'),
+    weekPeriodLabel: _codigoContainer.querySelector('#weekPeriodLabel'),
+    monthPeriodLabel: _codigoContainer.querySelector('#monthPeriodLabel'),
+    yearPeriodLabel: _codigoContainer.querySelector('#yearPeriodLabel'),
+    weeklyReflection: _codigoContainer.querySelector('#weeklyReflection'),
+    weeklySaveStatus: _codigoContainer.querySelector('#weeklySaveStatus'),
+    saveWeeklyBtn: _codigoContainer.querySelector('#saveWeeklyBtn'),
+    monthlyWins: _codigoContainer.querySelector('#monthlyWins'),
+    monthlyFaults: _codigoContainer.querySelector('#monthlyFaults'),
+    monthlyCorrection: _codigoContainer.querySelector('#monthlyCorrection'),
+    monthlyFocus: _codigoContainer.querySelector('#monthlyFocus'),
+    monthlySaveStatus: _codigoContainer.querySelector('#monthlySaveStatus'),
+    saveMonthlyBtn: _codigoContainer.querySelector('#saveMonthlyBtn'),
+    yearlyIdentity: _codigoContainer.querySelector('#yearlyIdentity'),
+    yearlyAchievements: _codigoContainer.querySelector('#yearlyAchievements'),
+    yearlyLessons: _codigoContainer.querySelector('#yearlyLessons'),
+    yearlyCommitment: _codigoContainer.querySelector('#yearlyCommitment'),
+    yearlySaveStatus: _codigoContainer.querySelector('#yearlySaveStatus'),
+    saveYearlyBtn: _codigoContainer.querySelector('#saveYearlyBtn'),
+    metricToday: _codigoContainer.querySelector('#metricToday'),
+    metricStreak: _codigoContainer.querySelector('#metricStreak'),
+    metricWeek: _codigoContainer.querySelector('#metricWeek'),
+    metricMonth: _codigoContainer.querySelector('#metricMonth'),
+    metricYear: _codigoContainer.querySelector('#metricYear'),
+    metricBestWeek: _codigoContainer.querySelector('#metricBestWeek'),
+    metricBestMonth: _codigoContainer.querySelector('#metricBestMonth'),
+    metricDays: _codigoContainer.querySelector('#metricDays'),
+    metricNotes: _codigoContainer.querySelector('#metricNotes'),
+    weeklyChart: _codigoContainer.querySelector('#weeklyChart'),
+    monthlyChart: _codigoContainer.querySelector('#monthlyChart'),
+    yearlyChart: _codigoContainer.querySelector('#yearlyChart'),
+    guidePanelsHost: null,
+    legacyGuidesMarker: null
   };
 
   var weeklyAnswers = Array.from({ length: 9 }, function (_, index) {
-    return document.getElementById('weeklyAnswer' + index);
+    return _codigoContainer.querySelector('#weeklyAnswer' + index);
   });
 
   function pad(num) {
@@ -1941,11 +1960,12 @@
     if (!link) return;
 
     event.preventDefault();
-    parent.postMessage({
-      type: 'monolith-switch',
-      view: link.getAttribute('data-switch-view'),
-      target: link.getAttribute('data-switch-target') || ''
-    }, '*');
+    var switchView   = link.getAttribute('data-switch-view');
+    var switchTarget = link.getAttribute('data-switch-target') || '';
+    // Llamada directa: los templates están en la misma ventana, no en iframes
+    if (window.__monolithActivateView) {
+      window.__monolithActivateView(switchView, { target: switchTarget, updateHash: true });
+    }
   });
 
   window.addEventListener('message', function (event) {
@@ -3436,12 +3456,14 @@
     criterio: ['cat-criterio', 'sec-psicologia', 'sec-filosofia'],
     aplicacion: ['cat-aplicacion', 'sec-guias']
   };
-  var guideButtons = Array.from(document.querySelectorAll('.guide-link'));
-  var guideTargetLinks = Array.from(document.querySelectorAll('[data-guide-target]'));
-  var viewButtons = Array.from(document.querySelectorAll('[data-target]'));
-  var internalLinks = Array.from(document.querySelectorAll('a[href^="#"]'));
-  var sections = Array.from(document.querySelectorAll('.section'));
-  var els = { guidePanelsHost: document.getElementById('guidePanelsHost'), legacyGuidesMarker: document.getElementById('legacyGuidesMarker') };
+  // Scopear al contenedor de la Constitución para no cruzarse con el Código
+  var _container = document.getElementById('view-constitucion') || document;
+  var guideButtons = Array.from(_container.querySelectorAll('.guide-link'));
+  var guideTargetLinks = Array.from(_container.querySelectorAll('[data-guide-target]'));
+  var viewButtons = Array.from(_container.querySelectorAll('[data-target]'));
+  var internalLinks = Array.from(_container.querySelectorAll('a[href^="#"]'));
+  var sections = Array.from(_container.querySelectorAll('.section'));
+  var els = { guidePanelsHost: _container.querySelector('#guidePanelsHost'), legacyGuidesMarker: _container.querySelector('#legacyGuidesMarker') };
   var sectionToGroup = {};
   Object.keys(SECTION_GROUPS).forEach(function (group) {
     SECTION_GROUPS[group].forEach(function (id) {
@@ -3790,7 +3812,11 @@
   function activateGroup(group) {
     var nextGroup = SECTION_GROUPS[group] ? group : 'home';
     sections.forEach(function (section) {
-      section.classList.toggle('active', SECTION_GROUPS[nextGroup].indexOf(section.id) >= 0);
+      var isActive = SECTION_GROUPS[nextGroup].indexOf(section.id) >= 0;
+      section.classList.toggle('active', isActive);
+      // Limpiar inline style.display que pudo dejar openSection() del script externo,
+      // para que el CSS (.section.active { display:block }) tome control correctamente
+      section.style.display = '';
     });
   }
 
@@ -3804,7 +3830,7 @@
   }
 
   var navigateToTarget = window.__monolithNavigateToTarget = function navigateToTarget(targetId, updateHash) {
-    var target = document.getElementById(targetId);
+    var target = _container.querySelector('#' + targetId);
     var hashId = targetId || 'sec-home';
     if (!target) {
       activateGroup('home');
@@ -3888,11 +3914,12 @@
     if (!link) return;
 
     event.preventDefault();
-    parent.postMessage({
-      type: 'monolith-switch',
-      view: link.getAttribute('data-switch-view'),
-      target: link.getAttribute('data-switch-target') || ''
-    }, '*');
+    var switchView   = link.getAttribute('data-switch-view');
+    var switchTarget = link.getAttribute('data-switch-target') || '';
+    // Llamada directa: los templates están en la misma ventana, no en iframes
+    if (window.__monolithActivateView) {
+      window.__monolithActivateView(switchView, { target: switchTarget, updateHash: true });
+    }
   });
 
   window.addEventListener('message', function (event) {
@@ -3993,8 +4020,15 @@
                     if (btn) {
                         e.preventDefault();
                         var sectionId = btn.getAttribute('data-target');
-                        openSection(view, sectionId);
-                        updateHash(view, sectionId);
+                        if (view === 'constitucion' && window.__monolithNavigateToTarget) {
+                            // La Constitución usa grupos de secciones (activateGroup):
+                            // delegar a su propio sistema de navegación en lugar de openSection
+                            window.__monolithNavigateToTarget(sectionId, false);
+                            updateHash(view, sectionId);
+                        } else {
+                            openSection(view, sectionId);
+                            updateHash(view, sectionId);
+                        }
                     }
                 });
             }
@@ -4043,11 +4077,18 @@
                 activateView(route.view, { target: route.target, updateHash: false });
             }
 
+            // Exponer activateView para que los templates puedan llamarla directamente
+            // sin necesidad de postMessage (están en la misma ventana, no en iframes)
+            window.__monolithActivateView = activateView;
+
             // ── Bind tab buttons ──────────────────────────────────────
 
             buttons.forEach(function (button) {
                 button.addEventListener('click', function () {
-                    activateView(button.getAttribute('data-view'), { updateHash: true });
+                    var view = button.getAttribute('data-view');
+                    // Siempre navega al home de la vista al tocar su tab —
+                    // tanto si ya estaba activa como si viene de otra vista.
+                    activateView(view, { target: 'sec-home', updateHash: true });
                 });
             });
 
@@ -4086,7 +4127,12 @@
                 'sec-checklist':    { view: 'codigo',       label: 'Código · Checklist Diario' },
                 'sec-semanal':      { view: 'codigo',       label: 'Código · Revisión Semanal' },
                 'sec-stats':        { view: 'codigo',       label: 'Código · Estadísticas' },
-                // Vista Constitución
+                // Vista Constitución — categorías
+                'cat-nucleo':       { view: 'constitucion', label: 'Constitución · Núcleo Constitucional' },
+                'cat-identidad':    { view: 'constitucion', label: 'Constitución · Identidad y Dirección' },
+                'cat-criterio':     { view: 'constitucion', label: 'Constitución · Lectura y Criterio' },
+                'cat-aplicacion':   { view: 'constitucion', label: 'Constitución · Aplicación Contextual' },
+                // Vista Constitución — secciones
                 'sec-codigo':       { view: 'constitucion', label: 'Constitución · Código de Honor' },
                 'sec-prohibitions': { view: 'constitucion', label: 'Constitución · Prohibiciones' },
                 'sec-si':           { view: 'constitucion', label: 'Constitución · Lo que sí hacer' },
@@ -4271,19 +4317,14 @@
                         var targetView = btn.getAttribute('data-view');
                         var targetSec  = btn.getAttribute('data-sec');
                         var queryAtClick = activeSearchQuery;
-                        // Cerrar overlay pero conservar activeSearchQuery para highlight
-                        searchOverlay.classList.remove('open');
-                        document.body.style.overflow = '';
-                        searchInput.value = '';
-                        searchClear.classList.remove('visible');
-                        searchMeta.textContent = '';
-                        searchResults.innerHTML = '';
+                        // Cerrar overlay CONSERVANDO el filtro activo —
+                        // el query sigue en la caja y los highlights permanecen en el contenido
+                        collapseSearch();
                         activateView(targetView, { target: targetSec, updateHash: true });
                         setTimeout(function () {
                             var el = document.querySelector('#view-' + targetView + ' #' + targetSec);
                             if (el) {
                                 el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                // Limpiar highlights previos y aplicar nuevos
                                 clearHighlights();
                                 applyHighlights(el, queryAtClick);
                             }
@@ -4292,26 +4333,58 @@
                 });
             }
 
-            function openSearch() {
-                searchOverlay.classList.add('open');
-                document.body.style.overflow = 'hidden';
-                setTimeout(function () { searchInput.focus(); }, 50);
-            }
-
-            function closeSearch() {
+            // collapseSearch: cierra el overlay pero CONSERVA el filtro activo
+            // (query en caja, highlights en contenido, badge en botón)
+            function collapseSearch() {
                 searchOverlay.classList.remove('open');
                 document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+                // NO limpiamos activeSearchQuery ni searchInput.value ni highlights
+                // El badge indica que hay filtro activo
+                if (activeSearchQuery) {
+                    searchTrigger.classList.add('search-active');
+                } else {
+                    searchTrigger.classList.remove('search-active');
+                }
+            }
+
+            // clearFilter: desactiva el filtro completamente (query, highlights, badge)
+            function clearFilter() {
+                activeSearchQuery = '';
+                clearHighlights();
                 searchInput.value = '';
                 searchClear.classList.remove('visible');
                 searchMeta.textContent = '';
                 searchResults.innerHTML = '';
-                activeSearchQuery = '';
-                clearHighlights();
+                searchTrigger.classList.remove('search-active');
+            }
+
+            function openSearch() {
+                searchOverlay.classList.add('open');
+                // Prevenir scroll de fondo en iOS Safari también
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+                // Si hay filtro activo, repoblar los resultados
+                if (activeSearchQuery && searchInput.value) {
+                    doSearch(searchInput.value);
+                }
+                setTimeout(function () { searchInput.focus(); }, 50);
+            }
+
+            function closeSearch() {
+                // Escape / clic fuera: colapsa conservando el filtro
+                collapseSearch();
             }
 
             // Bind search UI
             if (searchTrigger) {
-                searchTrigger.addEventListener('click', openSearch);
+                searchTrigger.addEventListener('click', function () {
+                    if (searchOverlay.classList.contains('open')) {
+                        collapseSearch();
+                    } else {
+                        openSearch();
+                    }
+                });
             }
 
             if (searchInput) {
@@ -4323,9 +4396,9 @@
             }
 
             if (searchClear) {
+                // El botón ✕ dentro del overlay desactiva el filtro completamente
                 searchClear.addEventListener('click', function () {
-                    searchInput.value = '';
-                    doSearch('');
+                    clearFilter();
                     searchInput.focus();
                 });
             }
