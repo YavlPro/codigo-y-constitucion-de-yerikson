@@ -2294,6 +2294,39 @@
         @media(min-width:720px){.category-grid,.chapter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(min-width:980px){.chapter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
         @media(min-width:1040px){.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+        /* ── LEY BETA ────────────────────────────────────────────────── */
+        .beta-block{margin-top:36px;border-radius:18px;overflow:hidden;border:1px solid rgba(201,168,76,.18)}
+        .beta-header{display:flex;align-items:center;gap:12px;padding:16px 22px;background:rgba(201,168,76,.06);border-bottom:1px solid rgba(201,168,76,.1)}
+        .beta-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);font-size:.67em;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);white-space:nowrap;flex-shrink:0}
+        .beta-badge::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);animation:betaPulse 2s ease infinite}
+        @keyframes betaPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+        .beta-header-text{font-size:.8em;color:var(--text-m);line-height:1.5}
+        .beta-body{padding:24px 22px;background:var(--bg2);display:grid;gap:20px}
+        .beta-law{padding-bottom:20px;border-bottom:1px solid rgba(201,168,76,.07)}
+        .beta-law-label{font-size:.68em;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+        .beta-law h3{font-family:'Playfair Display',serif;font-size:1.22em;color:var(--gold-l);margin:0 0 10px;line-height:1.4}
+        .beta-phrase{background:var(--bg3);border-left:3px solid var(--gold-d);border-radius:0 10px 10px 0;padding:14px 16px}
+        .beta-phrase p{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold-l);font-size:.93em;line-height:1.8;margin:0}
+        .beta-tactic{display:grid;gap:0}
+        .beta-tactic-label{font-size:.68em;letter-spacing:.16em;text-transform:uppercase;color:var(--text-m);margin-bottom:12px}
+        .beta-tactic-grid{display:grid;gap:8px}
+        .beta-tactic-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)}
+        .beta-tactic-context{font-size:.72em;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:1px}
+        .beta-tactic-rule{font-size:.85em;color:var(--text);line-height:1.6}
+        .beta-tactic-rule strong{color:var(--gold-l)}
+        .beta-noconfuse{background:rgba(139,0,0,.06);border:1px solid rgba(139,0,0,.15);border-radius:12px;padding:18px 20px}
+        .beta-noconfuse-label{font-size:.68em;letter-spacing:.16em;text-transform:uppercase;color:#c0504d;margin-bottom:10px}
+        .beta-noconfuse ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+        .beta-noconfuse li{font-size:.84em;color:var(--text-m);line-height:1.6;padding-left:16px;position:relative}
+        .beta-noconfuse li::before{content:'—';position:absolute;left:0;color:#8B0000;font-weight:700}
+        .beta-alt{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);border-radius:12px;padding:18px 20px}
+        .beta-alt-label{font-size:.68em;letter-spacing:.16em;text-transform:uppercase;color:var(--text-m);margin-bottom:8px}
+        .beta-alt h4{font-family:'Playfair Display',serif;font-size:1.05em;color:var(--gold-l);margin:0 0 8px}
+        .beta-alt p{font-size:.84em;color:var(--text-m);line-height:1.65;margin:0 0 10px}
+        .beta-alt .beta-phrase{margin-top:10px}
+        .beta-footer{padding:16px 22px;background:rgba(0,0,0,.18);border-top:1px solid rgba(201,168,76,.08);font-size:.76em;color:var(--text-m);line-height:1.7}
+        .beta-footer strong{color:var(--text);font-weight:600}
 </style>
 <header class="app-bar" style="display:none!important" aria-hidden="true"><div class="app-bar-title"><span>🏛️</span> Constitución de Yerikson Varela</div><button class="btn-back visible" type="button" data-target="sec-home" aria-label="Volver al inicio constitucional"><span>←</span> Inicio</button></header>
 <div id="page">
@@ -2469,6 +2502,95 @@
         <p>Todo lo que haces termina revelándote: tu nivel de paciencia, tu limpieza mental, tu seriedad, tu respeto por el detalle y tu forma de responder a la realidad. La obra no miente. Por eso también educa a su creador.</p>
         <div class="rule-box"><p>"Mi obra termina diciendo quién soy, incluso cuando yo no hablo."</p></div>
     </div>
+
+    <!-- ── LEY EN FASE BETA ─────────────────────────────────────────────
+         Esta ley aún no es canónica. Está en proceso de refinamiento.
+         No moverla al cuerpo de leyes oficiales hasta validación completa.
+    ──────────────────────────────────────────────────────────────────── -->
+    <div class="beta-block">
+
+        <div class="beta-header">
+            <span class="beta-badge">Beta · En revisión</span>
+            <p class="beta-header-text">Esta ley está en fase de refinamiento. Su base moral es sólida, pero el texto sigue siendo trabajado para eliminar rigidez, vaguedad y posibles malentendidos antes de entrar como ley canónica.</p>
+        </div>
+
+        <div class="beta-body">
+
+            <!-- LEY PRINCIPAL -->
+            <div class="beta-law">
+                <p class="beta-law-label">Versión principal</p>
+                <h3>Dignidad en la Presencia</h3>
+                <p style="font-size:.88em;color:var(--text);line-height:1.85;margin-bottom:14px">La presencia no depende del lujo. Depende del respeto. Cada vez que te presentas ante alguien, ante un lugar o ante una situación que lo merece, llegas con cuidado. No con ropa cara. No con perfección. Con cuidado. Trabajo de campo, ropa de trabajo, urgencias reales: ninguno cancela la dignidad. La cancelan el descuido habitual, la flojera disfrazada de comodidad y el abandono personal que ya no incomoda.</p>
+                <div class="beta-phrase">
+                    <p>"Si no puedo llegar impecable, llego con dignidad. Las dos son posibles. El abandono no lo es."</p>
+                </div>
+            </div>
+
+            <!-- FRASE MAESTRA -->
+            <div>
+                <p class="beta-tactic-label">Frase Maestra</p>
+                <div class="beta-phrase">
+                    <p>"La presencia nace del respeto, no del lujo. El descuido no es humildad: es abandono."</p>
+                </div>
+            </div>
+
+            <!-- TÁCTICA -->
+            <div class="beta-tactic">
+                <p class="beta-tactic-label">Cómo se aplica en la realidad</p>
+                <div class="beta-tactic-grid">
+                    <div class="beta-tactic-row">
+                        <span class="beta-tactic-context">Visita normal</span>
+                        <span class="beta-tactic-rule">Baño, ropa limpia, cabello ordenado. <strong>Sin negociación.</strong> El mínimo de respeto siempre aplica.</span>
+                    </div>
+                    <div class="beta-tactic-row">
+                        <span class="beta-tactic-context">Trabajo de campo</span>
+                        <span class="beta-tactic-rule">La ropa puede ser de trabajo. <strong>Debe estar limpia antes de salir.</strong> Si se ensucia durante la jornada, eso es contexto legítimo, no excusa previa.</span>
+                    </div>
+                    <div class="beta-tactic-row">
+                        <span class="beta-tactic-context">Ropa de trabajo</span>
+                        <span class="beta-tactic-rule">No tiene que ser elegante. <strong>Sí tiene que estar en condiciones.</strong> Rota, sucia de días anteriores o descuidada sin razón no pasa.</span>
+                    </div>
+                    <div class="beta-tactic-row">
+                        <span class="beta-tactic-context">Urgencia real</span>
+                        <span class="beta-tactic-rule">Si el tiempo real no lo permite, <strong>la circunstancia habla por sí sola.</strong> Lo que no se puede explicar con hechos concretos no es urgencia, es comodidad.</span>
+                    </div>
+                    <div class="beta-tactic-row">
+                        <span class="beta-tactic-context">Criterio de excepción</span>
+                        <span class="beta-tactic-rule">Una excepción legítima nace de la responsabilidad, <strong>no de la flojera ni del desorden cómodo.</strong> Si puedes prepararte y no lo haces, no hay excepción.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NO CONFUNDIR CON -->
+            <div class="beta-noconfuse">
+                <p class="beta-noconfuse-label">No confundir con</p>
+                <ul>
+                    <li>Lujo o ropa cara. Esta ley no exige dinero.</li>
+                    <li>Perfección estética. No se trata de verse de revista.</li>
+                    <li>Formalismo vacío. No hay uniforme obligatorio para cada situación.</li>
+                    <li>Vanidad. El cuidado personal aquí es respeto, no imagen.</li>
+                    <li>Una regla que castiga trabajar, ensuciarse o actuar en urgencias reales.</li>
+                </ul>
+            </div>
+
+            <!-- VERSIÓN ALTERNATIVA -->
+            <div class="beta-alt">
+                <p class="beta-alt-label">Versión alternativa · tono más duro</p>
+                <h4>Presencia con Respeto o No Aparezcas</h4>
+                <p>La forma en que llegas dice lo que piensas del lugar y de quien te recibe. El hombre que aparece de cualquier manera, sin razón real que lo justifique, está comunicando algo aunque no abra la boca. No es severidad exigir lo mínimo. Es el piso desde el que funciona el respeto.</p>
+                <div class="beta-phrase">
+                    <p>"Llegar con descuido cuando el tiempo y la voluntad existen es una forma silenciosa de decir que el otro no lo valía."</p>
+                </div>
+            </div>
+
+        </div><!-- /beta-body -->
+
+        <div class="beta-footer">
+            <strong>Estado:</strong> Esta ley no es canónica. Está en fase beta — base moral establecida, texto en refinamiento activo. Pendiente de validación antes de integrarse como ley oficial del Código. Puede cambiar en forma, precisión o alcance. No debe leerse como norma definitiva todavía.
+        </div>
+
+    </div><!-- /beta-block -->
+
 </div>
 <!-- ==================== PROHIBICIONES ==================== -->
 <div id="sec-prohibitions" class="section" role="tabpanel">
