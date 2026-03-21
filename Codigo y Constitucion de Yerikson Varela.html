@@ -438,7 +438,7 @@
         html::-webkit-scrollbar{display:none;width:0;height:0}
         body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(201,168,76,.06),transparent 24%),var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-tap-highlight-color:transparent;scrollbar-width:none;-ms-overflow-style:none}
         body::-webkit-scrollbar{display:none;width:0;height:0}
-        button,input,textarea{font:inherit}
+        button,input,textarea,select{font:inherit}
         textarea{resize:vertical}
 
         /* COVER */
@@ -611,16 +611,49 @@
         .law-body{padding:0 18px 18px}
         .panel-intro{margin-bottom:18px}
         .panel-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-        .subtle-btn{background:transparent;border:1px solid rgba(201,168,76,.12);color:var(--gold-l);padding:9px 16px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-height:42px;font-weight:500;letter-spacing:.3px;transition:all .25s;text-decoration:none}
-        .subtle-btn:hover{border-color:var(--gold-b);background:var(--gold-m);transform:translateY(-1px)}
-        .counter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-        .counter-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(201,168,76,.1);background:rgba(201,168,76,.04)}
-        .counter-pill strong{font-family:'JetBrains Mono',monospace;color:var(--gold-l)}
+         .subtle-btn{background:transparent;border:1px solid rgba(201,168,76,.12);color:var(--gold-l);padding:9px 16px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-height:42px;font-weight:500;letter-spacing:.3px;transition:all .25s;text-decoration:none}
+         .subtle-btn:hover{border-color:var(--gold-b);background:var(--gold-m);transform:translateY(-1px)}
+         .counter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+         .counter-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(201,168,76,.1);background:rgba(201,168,76,.04)}
+         .counter-pill strong{font-family:'JetBrains Mono',monospace;color:var(--gold-l)}
 
-        /* IDENTITY GRID */
-        .identity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
-        .identity-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:22px 20px;transition:border-color .3s;position:relative;overflow:hidden}
-        .identity-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
+         /* ══════════════════════════════════════════
+            LECTURA DIARIA · SISTEMA DE PROGRESO
+            ══════════════════════════════════════════ */
+         .ld-progress-header{margin-bottom:24px;padding:16px 20px;background:var(--bg3);border:1px solid rgba(201,168,76,.12);border-radius:12px}
+         .ld-progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+         .ld-progress-label{font-size:.72em;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-m)}
+         .ld-progress-stats{font-family:'JetBrains Mono',monospace;font-size:.82em;color:var(--gold-l);display:flex;gap:10px;align-items:center}
+         .ld-progress-pct{color:var(--gold)}
+         .ld-progress-bar-wrap{width:100%;height:3px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+         .ld-progress-bar{height:100%;background:var(--gold-d);border-radius:999px;transition:width .45s cubic-bezier(.4,0,.2,1),background .4s ease;width:0}
+         .ld-progress-bar.ld-complete{background:#4c9e78}
+         .ld-complete-msg{display:none;text-align:center;padding:10px 0 2px;font-size:.78em;color:#4c9e78;letter-spacing:1px;text-transform:uppercase}
+         .ld-complete-msg.show{display:block}
+         .ld-task{cursor:pointer;border-radius:8px;transition:background .18s;border-left:3px solid transparent;padding-left:6px;margin:1px 0}
+         .ld-task:hover{background:rgba(201,168,76,.04)}
+         .ld-task:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+         .ld-task .val-icon{transition:color .3s,background .3s,border-color .3s;min-width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid rgba(201,168,76,.15);display:flex;align-items:center;justify-content:center;font-size:.7em;font-family:'JetBrains Mono',monospace;color:var(--text-m);flex-shrink:0}
+         .ld-task .val-text{transition:color .3s,opacity .3s}
+         .ld-task.done{border-left-color:rgba(76,158,120,.35)}
+         .ld-task.done .val-icon{background:rgba(76,158,120,.12);border-color:rgba(76,158,120,.4);color:#4c9e78}
+         .ld-task.done .val-text{color:var(--text-m);opacity:.72}
+         .ld-task.done .val-text strong{color:var(--text-m)}
+         .ld-commit-wrap{position:relative}
+         .ld-commit{cursor:pointer;transition:opacity .18s,border-left-color .28s;position:relative;padding-right:40px!important}
+         .ld-commit:hover{background:rgba(201,168,76,.04)}
+         .ld-commit:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+         .ld-commit-check{position:absolute;top:12px;right:12px;width:18px;height:18px;border-radius:4px;border:1.5px solid rgba(201,168,76,.2);background:transparent;transition:all .28s;pointer-events:none}
+         .ld-commit.done .ld-commit-check{background:rgba(76,158,120,.18);border-color:rgba(76,158,120,.45)}
+         .ld-commit.done .ld-commit-check::after{content:'✓';display:block;text-align:center;line-height:17px;font-size:.68em;color:#4c9e78}
+         .ld-commit.done{border-left-color:#4c9e78;opacity:.76}
+         .ld-commit.done p{color:var(--text-m)}
+         @media(max-width:600px){.ld-progress-header{padding:12px 14px}.ld-commit-check{top:10px;right:10px}}
+
+         /* IDENTITY GRID */
+         .identity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+         .identity-card{background:var(--bg2);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:22px 20px;transition:border-color .3s;position:relative;overflow:hidden}
+         .identity-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-m),transparent)}
         .identity-card:hover{border-color:var(--gold-b)}
         .card-icon{font-size:1.6em;display:block;margin-bottom:10px;opacity:.75}
         .card-title{font-family:'Playfair Display',serif;font-size:1em;color:var(--gold-l);margin-bottom:8px;letter-spacing:.5px}
@@ -691,6 +724,39 @@
         /* MONOLITH OVERRIDES */
         #cover{display:none !important}
         #page{display:block !important}
+
+        /* NOTES CRUD */
+        .notes-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+        .notes-toolbar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+        .notes-filter-btn{background:transparent;border:1px solid var(--gold-b);color:var(--text-m);padding:6px 14px;border-radius:20px;font-size:.78em;cursor:pointer;transition:all .2s}
+        .notes-filter-btn.active,.notes-filter-btn:hover{background:var(--gold-m);color:var(--gold-l);border-color:var(--gold-b)}
+        .notes-search{background:rgba(255,255,255,.03);border:1px solid rgba(201,168,76,.12);color:var(--text);padding:7px 14px;border-radius:20px;font-size:.82em;width:180px;outline:none;transition:border .2s}
+        .notes-search:focus{border-color:var(--gold-b)}
+        .notes-empty{text-align:center;padding:40px 20px;color:var(--text-d);font-size:.88em}
+        .notes-list{display:flex;flex-direction:column;gap:12px}
+        .note-card{background:var(--bg3);border:1px solid rgba(201,168,76,.08);border-radius:14px;padding:18px 20px;transition:all .25s}
+        .note-card:hover{border-color:var(--gold-b)}
+        .note-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+        .note-card-title{font-family:'Playfair Display',serif;color:var(--gold-l);font-size:1em;font-weight:400;word-break:break-word}
+        .note-card-actions{display:flex;gap:6px;flex-shrink:0}
+        .note-icon-btn{background:transparent;border:1px solid rgba(201,168,76,.12);color:var(--text-m);padding:4px 10px;border-radius:8px;font-size:.78em;cursor:pointer;transition:all .2s;white-space:nowrap}
+        .note-icon-btn:hover{background:var(--gold-m);color:var(--gold-l);border-color:var(--gold-b)}
+        .note-icon-btn.del:hover{background:rgba(139,0,0,.15);color:#e07070;border-color:rgba(139,0,0,.3)}
+        .note-card-body{font-size:.87em;color:var(--text);line-height:1.7;white-space:pre-wrap;word-break:break-word}
+        .note-card-meta{margin-top:10px;font-size:.75em;color:var(--text-d);display:flex;gap:14px;flex-wrap:wrap}
+        .note-tag{display:inline-block;background:var(--gold-m);color:var(--gold-l);border-radius:20px;padding:2px 10px;font-size:.75em;margin-right:6px}
+        .note-form-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1500;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)}
+        .note-form-overlay.hidden{display:none}
+        .note-form-box{background:var(--bg2);border:1px solid rgba(201,168,76,.18);border-radius:18px;padding:28px 24px;width:100%;max-width:520px;max-height:90dvh;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+        .note-form-title{font-family:'Playfair Display',serif;color:var(--gold-l);font-size:1.1em;font-weight:400}
+        .note-form-label{font-size:.8em;color:var(--text-m);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px;display:block}
+        .note-form-field{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(201,168,76,.12);color:var(--text);padding:12px 14px;border-radius:10px;outline:none;transition:border .2s}
+        .note-form-field:focus{border-color:var(--gold-b)}
+        .note-form-textarea{min-height:140px;resize:vertical;line-height:1.7}
+        .note-form-row{display:flex;justify-content:flex-end;gap:10px;margin-top:6px}
+        .note-cancel-btn{background:transparent;border:1px solid rgba(201,168,76,.15);color:var(--text-m);padding:9px 18px;border-radius:999px;cursor:pointer;font-size:.88em;transition:all .2s}
+        .note-cancel-btn:hover{background:rgba(255,255,255,.04);color:var(--text)}
+        @media(max-width:600px){.notes-toolbar{flex-direction:column;align-items:flex-start}.notes-search{width:100%}.note-form-box{padding:20px 16px}}
     
 </style>
 <div id="cover" role="button" tabindex="0" aria-label="Entrar al Código de Yerikson Varela">
@@ -734,6 +800,7 @@
         <div class="home-card" role="listitem" tabindex="0" data-sec="sec-constitucion"><div class="home-card-icon">📚</div><div class="home-card-body"><h3>Núcleo Constitucional</h3><p>Accesos directos a las leyes, el juramento, Mi Norte y el manual de interpretación.</p></div></div>
         <a class="home-card" role="listitem" href="#constitucion/sec-oath" data-switch-view="constitucion" data-switch-target="sec-oath"><div class="home-card-icon">✍️</div><div class="home-card-body"><h3>Juramento</h3><p>Abre el compromiso completo dentro del documento canónico.</p></div></a>
         <a class="home-card" role="listitem" href="#constitucion/sec-norte" data-switch-view="constitucion" data-switch-target="sec-norte"><div class="home-card-icon">🧭</div><div class="home-card-body"><h3>Mi Norte</h3><p>Acceso directo a identidad, raíz, legado, verdad y seguridad interna.</p></div></a>
+        <div class="home-card" role="listitem" tabindex="0" data-sec="sec-notas"><div class="home-card-icon">📝</div><div class="home-card-body"><h3>Mis Notas</h3><p>Notas libres con historial completo. Agrega, edita y elimina cuando quieras.</p></div></div>
     </div>
 </div>
 
@@ -773,27 +840,52 @@
         <p>La lectura breve para entrar al día con claridad, dignidad y disciplina</p>
     </div>
 
+    <!-- BARRA DE PROGRESO DE LECTURA -->
+    <div class="ld-progress-header" id="ldProgressHeader">
+        <div class="ld-progress-top">
+            <span class="ld-progress-label">Progreso de hoy</span>
+            <span class="ld-progress-stats">
+                <span id="ldProgressCount">0 / 14</span>
+                <span style="color:var(--text-d)">·</span>
+                <span class="ld-progress-pct" id="ldProgressPct">0%</span>
+            </span>
+        </div>
+        <div class="ld-progress-bar-wrap">
+            <div class="ld-progress-bar" id="ldProgressBar"></div>
+        </div>
+        <div class="ld-complete-msg" id="ldCompleteMsg">Lectura completada — listo para ejecutar el día</div>
+    </div>
+
     <div class="card">
         <h2>Lectura Central</h2>
-        <span class="card-sub">Lee esto cada mañana antes de empezar el ruido del día</span>
-        <div class="val-item"><span class="val-icon">01</span><span class="val-text"><strong>Hoy primero cumplo con mi deber y después con mi comodidad.</strong></span></div>
-        <div class="val-item"><span class="val-icon">02</span><span class="val-text"><strong>Mi palabra pesa. Si digo algo, lo sostengo.</strong></span></div>
-        <div class="val-item"><span class="val-icon">03</span><span class="val-text"><strong>Si puedo estar ahí en persona, no me escondo detrás de una pantalla.</strong></span></div>
-        <div class="val-item"><span class="val-icon">04</span><span class="val-text"><strong>No confundo paciencia con miedo. Cuando debo actuar, actúo con calma.</strong></span></div>
-        <div class="val-item"><span class="val-icon">05</span><span class="val-text"><strong>Presencia vale más que perfección. Mejor real y presente que impecable y ausente.</strong></span></div>
-        <div class="val-item"><span class="val-icon">06</span><span class="val-text"><strong>Escucho más de lo que hablo y leo más de lo que me dicen.</strong></span></div>
-        <div class="val-item"><span class="val-icon">07</span><span class="val-text"><strong>No construyo historias completas a partir de un visto ni de un silencio corto.</strong></span></div>
-        <div class="val-item"><span class="val-icon">08</span><span class="val-text"><strong>Construyo valor real, pero no lo escondo cuando toca mostrarlo.</strong></span></div>
-        <div class="val-item"><span class="val-icon">09</span><span class="val-text"><strong>Mi presencia limpia, mi voz firme y mis acciones hablan por mí.</strong></span></div>
-        <div class="val-item"><span class="val-icon">10</span><span class="val-text"><strong>Hoy cierro el día con verdad, no con excusas.</strong></span></div>
+        <span class="card-sub">Lee cada punto. Tócalo cuando lo hayas interiorizado.</span>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">01</span><span class="val-text"><strong>Hoy primero cumplo con mi deber y después con mi comodidad.</strong></span></div>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">02</span><span class="val-text"><strong>Mi palabra pesa. Si digo algo, lo sostengo.</strong></span></div>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">03</span><span class="val-text"><strong>Si puedo estar ahí en persona, no me escondo detrás de una pantalla.</strong></span></div>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">04</span><span class="val-text"><strong>No confundo paciencia con miedo. Cuando debo actuar, actúo con calma.</strong></span></div>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">05</span><span class="val-text"><strong>Presencia vale más que perfección. Mejor real y presente que impecable y ausente.</strong></span></div>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">06</span><span class="val-text"><strong>Escucho más de lo que hablo y leo más de lo que me dicen.</strong></span></div>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">07</span><span class="val-text"><strong>No construyo historias completas a partir de un visto ni de un silencio corto.</strong></span></div>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">08</span><span class="val-text"><strong>Construyo valor real, pero no lo escondo cuando toca mostrarlo.</strong></span></div>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">09</span><span class="val-text"><strong>Mi presencia limpia, mi voz firme y mis acciones hablan por mí.</strong></span></div>
+        <div class="val-item ld-task" role="checkbox" aria-checked="false" tabindex="0"><span class="val-icon">10</span><span class="val-text"><strong>Hoy cierro el día con verdad, no con excusas.</strong></span></div>
     </div>
 
     <div class="card">
         <h2>Compromiso de Hoy</h2>
-        <div class="rule-box"><p>Hoy voy a moverme con calma.<br>Hoy voy a respetar mi palabra.<br>Hoy voy a elegir presencia sobre pantalla cuando pueda.<br>Hoy no voy a disfrazar de paciencia lo que en realidad sea miedo.</p></div>
-        <div class="rule-box"><p>Mi disciplina me da estructura. Mi fuego me da motor. Mi presencia me da verdad. Eso es lo que elijo hoy.</p></div>
-        <div class="rule-box"><p>Hoy voy a construir algo que valga la pena.<br>Hoy no voy a entregar nada sin alma.<br>Hoy mi trabajo va a reflejar quién soy.</p></div>
-        <div class="rule-box"><p>Hoy no voy a inventar narrativas sin pruebas.<br>Hoy no voy a competir donde no hay competencia.<br>Hoy mi paz no depende de la respuesta de nadie.</p></div>
+        <span class="card-sub">Toca cada bloque cuando lo hayas leído y asumido.</span>
+        <div class="ld-commit-wrap">
+            <div class="rule-box ld-commit" role="checkbox" aria-checked="false" tabindex="0"><div class="ld-commit-check"></div><p>Hoy voy a moverme con calma.<br>Hoy voy a respetar mi palabra.<br>Hoy voy a elegir presencia sobre pantalla cuando pueda.<br>Hoy no voy a disfrazar de paciencia lo que en realidad sea miedo.</p></div>
+        </div>
+        <div class="ld-commit-wrap">
+            <div class="rule-box ld-commit" role="checkbox" aria-checked="false" tabindex="0"><div class="ld-commit-check"></div><p>Mi disciplina me da estructura. Mi fuego me da motor. Mi presencia me da verdad. Eso es lo que elijo hoy.</p></div>
+        </div>
+        <div class="ld-commit-wrap">
+            <div class="rule-box ld-commit" role="checkbox" aria-checked="false" tabindex="0"><div class="ld-commit-check"></div><p>Hoy voy a construir algo que valga la pena.<br>Hoy no voy a entregar nada sin alma.<br>Hoy mi trabajo va a reflejar quién soy.</p></div>
+        </div>
+        <div class="ld-commit-wrap">
+            <div class="rule-box ld-commit" role="checkbox" aria-checked="false" tabindex="0"><div class="ld-commit-check"></div><p>Hoy no voy a inventar narrativas sin pruebas.<br>Hoy no voy a competir donde no hay competencia.<br>Hoy mi paz no depende de la respuesta de nadie.</p></div>
+        </div>
     </div>
 </div>
 <!-- ==================== PREGUNTAS ==================== -->
@@ -1009,6 +1101,61 @@
         </div>
     </div>
 </div>
+<!-- ==================== MIS NOTAS ==================== -->
+<div id="sec-notas" class="section" role="tabpanel">
+    <div class="s-head">
+        <span class="section-kicker">Registro Personal</span>
+        <span class="icon">📝</span>
+        <h1>Mis Notas</h1>
+        <p>Notas libres con historial. Guarda todo lo que importa, cuando importa.</p>
+    </div>
+    <div class="card">
+        <div class="notes-toolbar">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="notes-filter-btn active" type="button" data-filter="all">Todas</button>
+                <button class="notes-filter-btn" type="button" data-filter="general">General</button>
+                <button class="notes-filter-btn" type="button" data-filter="reflexion">Reflexión</button>
+                <button class="notes-filter-btn" type="button" data-filter="decision">Decisión</button>
+                <button class="notes-filter-btn" type="button" data-filter="aprendizaje">Aprendizaje</button>
+            </div>
+            <div class="notes-toolbar-right">
+                <input class="notes-search" type="search" id="notesSearch" placeholder="Buscar nota..." aria-label="Buscar nota">
+                <button class="action-btn" id="addNoteBtn" type="button">+ Nueva nota</button>
+            </div>
+        </div>
+        <div id="notesList" class="notes-list">
+            <div class="notes-empty">Aún no hay notas. Crea tu primera nota.</div>
+        </div>
+    </div>
+    <!-- Modal de edición/creación -->
+    <div class="note-form-overlay hidden" id="noteFormOverlay" role="dialog" aria-modal="true" aria-labelledby="noteFormTitleEl">
+        <div class="note-form-box">
+            <div class="note-form-title" id="noteFormTitleEl">Nueva nota</div>
+            <div>
+                <label class="note-form-label" for="noteFormInputTitle">Título (opcional)</label>
+                <input class="note-form-field" type="text" id="noteFormInputTitle" placeholder="Ej: Decisión del día, Aprendizaje clave...">
+            </div>
+            <div>
+                <label class="note-form-label" for="noteFormInputContent">Contenido</label>
+                <textarea class="note-form-field note-form-textarea" id="noteFormInputContent" placeholder="Escribe aquí tu nota..."></textarea>
+            </div>
+            <div>
+                <label class="note-form-label" for="noteFormInputTag">Categoría</label>
+                <select class="note-form-field" id="noteFormInputTag">
+                    <option value="general">General</option>
+                    <option value="reflexion">Reflexión</option>
+                    <option value="decision">Decisión</option>
+                    <option value="aprendizaje">Aprendizaje</option>
+                </select>
+            </div>
+            <div class="note-form-row">
+                <button class="note-cancel-btn" type="button" id="noteFormCancelBtn">Cancelar</button>
+                <button class="action-btn" type="button" id="noteFormSaveBtn">Guardar nota</button>
+            </div>
+            <div style="font-size:.8em;color:var(--text-d);text-align:center;min-height:18px" id="noteFormStatus"></div>
+        </div>
+    </div>
+</div>
 <!-- ==================== ESTADÍSTICAS ==================== -->
 <div id="sec-stats" class="section" role="tabpanel">
     <div class="s-head">
@@ -1132,7 +1279,18 @@
     monthlyChart: _codigoContainer.querySelector('#monthlyChart'),
     yearlyChart: _codigoContainer.querySelector('#yearlyChart'),
     guidePanelsHost: null,
-    legacyGuidesMarker: null
+    legacyGuidesMarker: null,
+    notesList: _codigoContainer.querySelector('#notesList'),
+    addNoteBtn: _codigoContainer.querySelector('#addNoteBtn'),
+    notesSearch: _codigoContainer.querySelector('#notesSearch'),
+    noteFormOverlay: _codigoContainer.querySelector('#noteFormOverlay'),
+    noteFormTitleEl: _codigoContainer.querySelector('#noteFormTitleEl'),
+    noteFormInputTitle: _codigoContainer.querySelector('#noteFormInputTitle'),
+    noteFormInputContent: _codigoContainer.querySelector('#noteFormInputContent'),
+    noteFormInputTag: _codigoContainer.querySelector('#noteFormInputTag'),
+    noteFormSaveBtn: _codigoContainer.querySelector('#noteFormSaveBtn'),
+    noteFormCancelBtn: _codigoContainer.querySelector('#noteFormCancelBtn'),
+    noteFormStatus: _codigoContainer.querySelector('#noteFormStatus')
   };
 
   var weeklyAnswers = Array.from({ length: 9 }, function (_, index) {
@@ -1273,8 +1431,23 @@
     return base;
   }
 
+  function normalizeFreeNote(n) {
+    if (!n || typeof n !== 'object') return null;
+    var id = String(n.id || '');
+    var content = cleanText(n.content);
+    if (!id || !content) return null;
+    return {
+      id: id,
+      title: cleanText(n.title),
+      content: content,
+      tag: String(n.tag || 'general'),
+      createdAt: String(n.createdAt || ''),
+      updatedAt: String(n.updatedAt || '')
+    };
+  }
+
   function normalizeState(raw) {
-    var next = { version: 2, records: {}, reviews: { weeks: {}, months: {}, years: {} } };
+    var next = { version: 2, records: {}, reviews: { weeks: {}, months: {}, years: {} }, freeNotes: [] };
     var source = raw && typeof raw === 'object' ? raw : {};
     var records = source.records && typeof source.records === 'object' ? source.records : {};
     Object.keys(records).forEach(function (key) {
@@ -1285,6 +1458,11 @@
       Object.keys(sourceBucket).forEach(function (key) {
         next.reviews[bucket][key] = sourceBucket[key];
       });
+    });
+    var rawNotes = Array.isArray(source.freeNotes) ? source.freeNotes : [];
+    rawNotes.forEach(function (n) {
+      var norm = normalizeFreeNote(n);
+      if (norm) next.freeNotes.push(norm);
     });
     return next;
   }
@@ -1326,8 +1504,12 @@
   /* NAVIGATION */
   var showSec = window.__monolithShowSec = function showSec(id) {
     var target = document.getElementById(id) || document.getElementById('sec-home');
-    sections.forEach(function (section) { section.classList.remove('active'); });
+    sections.forEach(function (section) {
+      section.classList.remove('active');
+      section.style.display = 'none';
+    });
     target.classList.add('active');
+    target.style.display = 'block';
     btnBack.classList.toggle('visible', target.id !== 'sec-home');
     counterBar.classList.toggle('on', target.id === 'sec-checklist');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1712,6 +1894,7 @@
       var review = normalizeYearReview(state.reviews.years[key]);
       notesCount += countFilled([review.identity, review.achievements, review.lessons, review.commitment]);
     });
+    notesCount += (state.freeNotes || []).length;
 
     var MAX_STREAK_DAYS = 3650; // límite defensivo: ~10 años
     var streak = 0;
@@ -1917,14 +2100,264 @@
     renderMonthlyChart();
     renderYearlyChart(stats);
   }
+  /* =========================================================
+     FREE NOTES — CRUD
+  ========================================================= */
+  var _notesEditingId = null;
+  var _notesFilter = 'all';
+  var _notesSearch = '';
+
+  function genNoteId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function formatNoteDate(iso) {
+    if (!iso) return '';
+    try {
+      return new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch (e) { return ''; }
+  }
+
+  function escHtml(str) {
+    return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function renderNotes() {
+    if (!els.notesList) return;
+    var notes = state.freeNotes.slice().reverse();
+    var filtered = notes.filter(function (n) {
+      var matchTag = _notesFilter === 'all' || n.tag === _notesFilter;
+      var q = _notesSearch.toLowerCase().trim();
+      var matchSearch = !q || n.title.toLowerCase().indexOf(q) >= 0 || n.content.toLowerCase().indexOf(q) >= 0;
+      return matchTag && matchSearch;
+    });
+    if (!filtered.length) {
+      els.notesList.innerHTML = '<div class="notes-empty">' + (notes.length ? 'Sin resultados para este filtro.' : 'Aún no hay notas. Crea tu primera nota.') + '</div>';
+      return;
+    }
+    var tagLabels = { general: 'General', reflexion: 'Reflexión', decision: 'Decisión', aprendizaje: 'Aprendizaje' };
+    els.notesList.innerHTML = filtered.map(function (n) {
+      var titleHtml = n.title
+        ? '<div class="note-card-title">' + escHtml(n.title) + '</div>'
+        : '<div class="note-card-title" style="color:var(--text-m);font-style:italic;font-family:inherit">Sin título</div>';
+      var tagLabel = tagLabels[n.tag] || n.tag;
+      var tagHtml = n.tag && n.tag !== 'general' ? '<span class="note-tag">' + escHtml(tagLabel) + '</span>' : '';
+      var dateHtml = formatNoteDate(n.createdAt);
+      var updHtml = n.updatedAt && n.updatedAt !== n.createdAt ? ' · editada ' + formatNoteDate(n.updatedAt) : '';
+      return '<div class="note-card" data-note-id="' + escHtml(n.id) + '">' +
+        '<div class="note-card-head">' + titleHtml +
+        '<div class="note-card-actions">' +
+        '<button class="note-icon-btn" type="button" data-edit-note="' + escHtml(n.id) + '" aria-label="Editar nota">Editar</button>' +
+        '<button class="note-icon-btn del" type="button" data-delete-note="' + escHtml(n.id) + '" aria-label="Eliminar nota">Eliminar</button>' +
+        '</div></div>' +
+        '<div class="note-card-body">' + escHtml(n.content) + '</div>' +
+        '<div class="note-card-meta">' + tagHtml + '<span>' + escHtml(dateHtml + updHtml) + '</span></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function openNoteForm(noteId) {
+    if (!els.noteFormOverlay) return;
+    _notesEditingId = noteId || null;
+    if (noteId) {
+      var note = null;
+      for (var i = 0; i < state.freeNotes.length; i++) {
+        if (state.freeNotes[i].id === noteId) { note = state.freeNotes[i]; break; }
+      }
+      if (!note) return;
+      if (els.noteFormTitleEl) els.noteFormTitleEl.textContent = 'Editar nota';
+      if (els.noteFormInputTitle) els.noteFormInputTitle.value = note.title;
+      if (els.noteFormInputContent) els.noteFormInputContent.value = note.content;
+      if (els.noteFormInputTag) els.noteFormInputTag.value = note.tag || 'general';
+    } else {
+      if (els.noteFormTitleEl) els.noteFormTitleEl.textContent = 'Nueva nota';
+      if (els.noteFormInputTitle) els.noteFormInputTitle.value = '';
+      if (els.noteFormInputContent) els.noteFormInputContent.value = '';
+      if (els.noteFormInputTag) els.noteFormInputTag.value = 'general';
+    }
+    if (els.noteFormStatus) els.noteFormStatus.textContent = '';
+    els.noteFormOverlay.classList.remove('hidden');
+    setTimeout(function () {
+      if (els.noteFormInputContent) els.noteFormInputContent.focus();
+    }, 60);
+  }
+
+  function closeNoteForm() {
+    if (!els.noteFormOverlay) return;
+    els.noteFormOverlay.classList.add('hidden');
+    _notesEditingId = null;
+  }
+
+  function saveNoteFromForm() {
+    var title = cleanText(els.noteFormInputTitle ? els.noteFormInputTitle.value : '');
+    var content = cleanText(els.noteFormInputContent ? els.noteFormInputContent.value : '');
+    var tag = els.noteFormInputTag ? els.noteFormInputTag.value : 'general';
+    if (!content) {
+      if (els.noteFormStatus) els.noteFormStatus.textContent = 'El contenido no puede estar vacío.';
+      return;
+    }
+    var now = new Date().toISOString();
+    if (_notesEditingId) {
+      for (var i = 0; i < state.freeNotes.length; i++) {
+        if (state.freeNotes[i].id === _notesEditingId) {
+          state.freeNotes[i] = { id: state.freeNotes[i].id, title: title, content: content, tag: tag, createdAt: state.freeNotes[i].createdAt, updatedAt: now };
+          break;
+        }
+      }
+    } else {
+      state.freeNotes.push({ id: genNoteId(), title: title, content: content, tag: tag, createdAt: now, updatedAt: now });
+    }
+    saveState();
+    closeNoteForm();
+    renderNotes();
+    renderSummary();
+  }
+
+  function deleteNote(noteId) {
+    if (!noteId) return;
+    if (!confirm('¿Eliminar esta nota? Esta acción no se puede deshacer.')) return;
+    var next = [];
+    for (var i = 0; i < state.freeNotes.length; i++) {
+      if (state.freeNotes[i].id !== noteId) next.push(state.freeNotes[i]);
+    }
+    state.freeNotes = next;
+    saveState();
+    renderNotes();
+    renderSummary();
+  }
+
+  function bindNotes() {
+    if (!els.addNoteBtn) return;
+    els.addNoteBtn.addEventListener('click', function () { openNoteForm(null); });
+    if (els.noteFormSaveBtn) els.noteFormSaveBtn.addEventListener('click', saveNoteFromForm);
+    if (els.noteFormCancelBtn) els.noteFormCancelBtn.addEventListener('click', closeNoteForm);
+    if (els.noteFormOverlay) {
+      els.noteFormOverlay.addEventListener('click', function (e) {
+        if (e.target === els.noteFormOverlay) closeNoteForm();
+      });
+      els.noteFormOverlay.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeNoteForm();
+      });
+    }
+    if (els.noteFormInputContent) {
+      els.noteFormInputContent.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); saveNoteFromForm(); }
+      });
+    }
+    if (els.notesList) {
+      els.notesList.addEventListener('click', function (e) {
+        var editBtn = e.target.closest('[data-edit-note]');
+        var delBtn = e.target.closest('[data-delete-note]');
+        if (editBtn) openNoteForm(editBtn.getAttribute('data-edit-note'));
+        if (delBtn) deleteNote(delBtn.getAttribute('data-delete-note'));
+      });
+    }
+    var filterBtns = Array.from(_codigoContainer.querySelectorAll('.notes-filter-btn'));
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        _notesFilter = btn.getAttribute('data-filter') || 'all';
+        filterBtns.forEach(function (b) { b.classList.toggle('active', b === btn); });
+        renderNotes();
+      });
+    });
+    if (els.notesSearch) {
+      els.notesSearch.addEventListener('input', function () {
+        _notesSearch = els.notesSearch.value;
+        renderNotes();
+      });
+    }
+  }
+  /* ========= END FREE NOTES ========= */
+
+  /* ════════════════════════════════════════════
+     MÓDULO: LECTURA DIARIA INTERACTIVA
+     Arquitectura reutilizable — puede replicarse
+     en Checklist, Preguntas y Revisión Semanal
+     cambiando solo el storageKey y el selector.
+     ════════════════════════════════════════════ */
+  var LD_KEY = 'ld_progress_v1';
+
+  function ldDateKey() {
+    return dateKey(new Date());
+  }
+
+  function ldLoadState() {
+    try { return safeJSON(localStorage.getItem(LD_KEY)); } catch (e) { return null; }
+  }
+
+  function ldSaveState(tasks) {
+    var done = tasks.map(function (t) { return t.classList.contains('done') ? 1 : 0; });
+    try { localStorage.setItem(LD_KEY, JSON.stringify({ date: ldDateKey(), done: done })); } catch (e) {}
+  }
+
+  function ldUpdateProgress(tasks) {
+    var total = tasks.length;
+    var doneCount = tasks.filter(function (t) { return t.classList.contains('done'); }).length;
+    var pct = total > 0 ? Math.round(doneCount / total * 100) : 0;
+    var countEl = _codigoContainer.querySelector('#ldProgressCount');
+    var pctEl = _codigoContainer.querySelector('#ldProgressPct');
+    var barEl = _codigoContainer.querySelector('#ldProgressBar');
+    var msgEl = _codigoContainer.querySelector('#ldCompleteMsg');
+    if (countEl) countEl.textContent = doneCount + ' / ' + total;
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (barEl) {
+      barEl.style.width = pct + '%';
+      barEl.classList.toggle('ld-complete', pct === 100);
+    }
+    if (msgEl) msgEl.classList.toggle('show', pct === 100);
+    // actualizar aria-checked
+    tasks.forEach(function (t) {
+      t.setAttribute('aria-checked', t.classList.contains('done') ? 'true' : 'false');
+    });
+  }
+
+  function bindLectura() {
+    var secLectura = _codigoContainer.querySelector('#sec-lectura');
+    if (!secLectura) return;
+
+    var tasks = Array.from(secLectura.querySelectorAll('.ld-task, .ld-commit'));
+    if (!tasks.length) return;
+
+    // Restaurar estado del día o limpiar si es día nuevo
+    var saved = ldLoadState();
+    var today = ldDateKey();
+    if (saved && saved.date === today && Array.isArray(saved.done)) {
+      saved.done.forEach(function (val, i) {
+        if (tasks[i] && val) tasks[i].classList.add('done');
+      });
+    } else {
+      tasks.forEach(function (t) { t.classList.remove('done'); });
+    }
+    ldUpdateProgress(tasks);
+
+    // Bind eventos
+    tasks.forEach(function (task) {
+      function toggle() {
+        task.classList.toggle('done');
+        ldSaveState(tasks);
+        ldUpdateProgress(tasks);
+      }
+      task.addEventListener('click', toggle);
+      task.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+  }
+  /* ════════════════════════════════════════════
+     FIN MÓDULO LECTURA DIARIA
+     ════════════════════════════════════════════ */
+
   function init() {
     migrateLegacy();
     bindCover();
     bindNavigation();
     bindDaily();
     bindReviews();
+    bindLectura();
+    bindNotes();
     fillDaily();
     fillReviews();
+    renderNotes();
     renderSummary();
   }
   init();
@@ -2005,7 +2438,7 @@
         html::-webkit-scrollbar{display:none;width:0;height:0}
         body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(201,168,76,.06),transparent 24%),var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-tap-highlight-color:transparent;scrollbar-width:none;-ms-overflow-style:none}
         body::-webkit-scrollbar{display:none;width:0;height:0}
-        button,input,textarea{font:inherit}
+        button,input,textarea,select{font:inherit}
         textarea{resize:vertical}
 
         /* COVER */
@@ -4248,6 +4681,7 @@
                 'sec-preguntas':    { view: 'codigo',       label: 'Código · Preguntas de Reflexión' },
                 'sec-checklist':    { view: 'codigo',       label: 'Código · Checklist Diario' },
                 'sec-semanal':      { view: 'codigo',       label: 'Código · Revisión Semanal' },
+                'sec-notas':        { view: 'codigo',       label: 'Código · Mis Notas' },
                 'sec-stats':        { view: 'codigo',       label: 'Código · Estadísticas' },
                 // Vista Constitución — categorías
                 'cat-nucleo':       { view: 'constitucion', label: 'Constitución · Núcleo Constitucional' },
